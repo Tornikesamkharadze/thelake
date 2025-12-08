@@ -1,63 +1,72 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 const TextImageSideSection = ({
   image,
   title,
   description, // string or array of strings
-  imagePosition = 'right', // 'left' or 'right'
-  backgroundColor = '#e8dfd0',
-  imageAlt = '',
+  imagePosition = "right", // 'left' or 'right'
+  backgroundColor = "#e8dfd0",
+  imageAlt = "",
   // ფერები
-  titleColor = '#000000',
-  descriptionColor = '#000000',
+  titleColor = "#000000",
+  descriptionColor = "#000000",
   // ფონტის ზომები - რესპონსიული
-  titleSize = { mobile: '20px', tablet: '24px', desktop: '28px' },
-  descriptionSize = { mobile: '14px', tablet: '16px', desktop: '18px' },
+  titleSize = { mobile: "20px", tablet: "24px", desktop: "28px" },
+  descriptionSize = { mobile: "14px", tablet: "16px", desktop: "18px" },
   // ფონტის სიმძიმე
-  titleWeight = '400',
-  descriptionWeight = '400',
+  titleWeight = "400",
+  descriptionWeight = "400",
   // ტექსტის ტრანსფორმაცია
-  titleTransform = 'uppercase',
-  descriptionTransform = 'none',
+  titleTransform = "uppercase",
+  descriptionTransform = "none",
 }) => {
-  const isImageRight = imagePosition === 'right';
-  
+  const isImageRight = imagePosition === "right";
+
   // თუ size string-ია, გადავიყვანოთ object-ად
-  const getTitleSize = typeof titleSize === 'string' 
-    ? { mobile: titleSize, tablet: titleSize, desktop: titleSize } 
-    : titleSize;
-  const getDescriptionSize = typeof descriptionSize === 'string' 
-    ? { mobile: descriptionSize, tablet: descriptionSize, desktop: descriptionSize } 
-    : descriptionSize;
+  const getTitleSize =
+    typeof titleSize === "string"
+      ? { mobile: titleSize, tablet: titleSize, desktop: titleSize }
+      : titleSize;
+  const getDescriptionSize =
+    typeof descriptionSize === "string"
+      ? {
+          mobile: descriptionSize,
+          tablet: descriptionSize,
+          desktop: descriptionSize,
+        }
+      : descriptionSize;
 
   // CSS clamp() function for fluid typography
   const getResponsiveSize = (sizes) => {
     const mobile = parseFloat(sizes.mobile);
     const desktop = parseFloat(sizes.desktop);
-    return `clamp(${sizes.mobile}, ${mobile + (desktop - mobile) * 0.5}px + 1vw, ${sizes.desktop})`;
+    return `clamp(${sizes.mobile}, ${
+      mobile + (desktop - mobile) * 0.5
+    }px + 1vw, ${sizes.desktop})`;
   };
 
   // პარაგრაფების მასივი
   const paragraphs = Array.isArray(description) ? description : [description];
 
   return (
-    <section 
-      className="relative py-16 md:py-24"
-      style={{ backgroundColor }}
-    >
+    <section className="relative py-16 md:py-24" style={{ backgroundColor }}>
       <div className="container mx-auto px-4">
-        <div className={`flex flex-col ${
-          isImageRight ? 'md:flex-row' : 'md:flex-row-reverse'
-        } gap-8 md:gap-12 lg:gap-16 items-center justify-center`}>
-          
+        <div
+          className={`flex flex-col ${
+            isImageRight ? "md:flex-row" : "md:flex-row-reverse"
+          } gap-8 md:gap-12 lg:gap-16 items-center justify-center`}
+        >
           {/* ტექსტის სექცია */}
-          <div className="w-full md:w-1/2 flex flex-col justify-center" style={{ maxWidth: '500px' }}>
+          <div
+            className="w-full md:w-1/2 flex flex-col justify-center"
+            style={{ maxWidth: "500px" }}
+          >
             {/* სათაური */}
-            <h2 
+            <h2
               className="mb-4 md:mb-6 tracking-wide"
-              style={{ 
+              style={{
                 color: titleColor,
                 fontSize: getResponsiveSize(getTitleSize),
                 fontWeight: titleWeight,
@@ -68,9 +77,9 @@ const TextImageSideSection = ({
             </h2>
 
             {/* აღწერა */}
-            <div 
+            <div
               className="leading-relaxed space-y-4"
-              style={{ 
+              style={{
                 color: descriptionColor,
                 fontSize: getResponsiveSize(getDescriptionSize),
                 fontWeight: descriptionWeight,
@@ -78,9 +87,7 @@ const TextImageSideSection = ({
               }}
             >
               {paragraphs.map((paragraph, index) => (
-                <p key={index}>
-                  {paragraph}
-                </p>
+                <p key={index}>{paragraph}</p>
               ))}
             </div>
           </div>
@@ -97,7 +104,6 @@ const TextImageSideSection = ({
               />
             </div>
           </div>
-
         </div>
       </div>
     </section>

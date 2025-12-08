@@ -1,10 +1,12 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Facebook, Instagram, Youtube } from "lucide-react"
+import Image from "next/image";
+import Link from "next/link";
+import { Facebook, Instagram, Youtube } from "lucide-react";
+import ContactPopup from "./ContactPopup";
 
 export function Footer() {
   return (
     <footer className="bg-[#F7EAD7] text-[#1A1A1A] py-16 px-6">
+      <ContactPopup />
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
         {/* Logo Section */}
         <div className="flex md:justify-start">
@@ -22,22 +24,40 @@ export function Footer() {
         <div>
           <h3 className="text-lg font-normal mb-6 tracking-wide">EXPLORE</h3>
           <nav className="flex flex-col">
-            <Link href="/about" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <Link
+              href="/about"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               About us
             </Link>
-            <Link href="/gallery" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <Link
+              href="/gallery"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               Gallery
             </Link>
-            <Link href="/interactive-map" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <Link
+              href="/interactive-map"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               Interactive map
             </Link>
-            <Link href="/contact" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <Link
+              href="/contact"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               Contact us
             </Link>
-            <Link href="/find-us" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <Link
+              href="/find-us"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               Find us
             </Link>
-            <Link href="/lang" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <Link
+              href="/lang"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               ENG/GEO
             </Link>
           </nav>
@@ -48,10 +68,16 @@ export function Footer() {
           <h3 className="text-lg font-normal mb-6 tracking-wide">CONTACT</h3>
           <div className="flex flex-col mb-6">
             <p className="text-base">Lisi Lake, Tbilisi, Georgia</p>
-            <a href="tel:+995511553333" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <a
+              href="tel:+995511553333"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               +995 511 55 33 33
             </a>
-            <a href="mailto:info@placemakers.ge" className="text-base hover:text-[#ED5C3F] transition-opacity">
+            <a
+              href="mailto:info@placemakers.ge"
+              className="text-base hover:text-[#ED5C3F] transition-opacity"
+            >
               info@placemakers.ge
             </a>
           </div>
@@ -65,7 +91,10 @@ export function Footer() {
               className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:opacity-80 transition-opacity"
               aria-label="Facebook"
             >
-              <Facebook className="w-5 h-5 text-[#E8DCC8]" fill="currentColor" />
+              <Facebook
+                className="w-5 h-5 text-[#E8DCC8]"
+                fill="currentColor"
+              />
             </a>
             <a
               href="https://instagram.com"
@@ -105,5 +134,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
