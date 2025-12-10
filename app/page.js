@@ -1,7 +1,14 @@
+import ContactWithAdressSection from "@/components/ContactWithAdressSection";
+import Divider from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 import ImageTextSection from "@/components/ImageTextSection";
+import MasterplanSection from "@/components/MasterplanSection";
+import PartnersSlider from "@/components/Partnersslider";
+import PropertyTypesSection from "@/components/PropertyTypesSection";
 import TextImageSideSection from "@/components/TextImageSideSection";
+import TextSection from "@/components/TextSection";
 
 export const metadata = {
   title: "The Lake by Placemakers - Exclusive Villas & Houses by Lisi Lake",
@@ -45,6 +52,40 @@ export default function Home() {
   return (
     <div>
       <Header />
+
+      <Hero
+        image="/hero-cover.webp"
+        height="100vh"
+        title="YOUR HOME <br/> OVER THE LAKE"
+        highlightWords={["THE LAKE"]}
+        uppercase={true}
+      />
+
+      <TextSection
+        title="WELCOME TO THE LAKE<br/>BY PLACEMAKERS"
+        description="A quiet, exclusive community with spacious villas (500–800 sq.m) and private houses (200–400 sq.m), created for people who appreciate comfort, beauty, and peace of mind."
+        highlightWords={["THE LAKE"]}
+        uppercase={true}
+        bgColor="bg-[#F7EAD7]"
+        buttonPosition="bottom"
+        textColor="text-black"
+        buttons={[
+          {
+            text: "DOWNLOAD BROCHURE",
+            link: "/brochure.pdf",
+            bgColor: "bg-transparent",
+            textColor: "text-black",
+            border: "border border-black",
+          },
+          {
+            text: "ENQUIRE",
+            link: "/contact",
+            bgColor: "bg-[#E85A4F]",
+            textColor: "text-black",
+          },
+        ]}
+      />
+
       <ImageTextSection
         image="/lake-1.png"
         title="Why Own at The Lake by placemakers?"
@@ -71,6 +112,18 @@ export default function Home() {
         subtitleTransform="none"
         descriptionTransform="none"
       />
+
+      <Divider
+        text="masterplan"
+        uppercase={true}
+        bgColor="bg-[#F7EAD7]"
+        textColor="text-black"
+      />
+
+      <MasterplanSection />
+      <PropertyTypesSection />
+      <ContactWithAdressSection/>
+      <PartnersSlider/>
 
       {/*     <TextImageSideSection
         image="/lake-1.png"
