@@ -188,7 +188,7 @@ const Header = () => {
             SNOHETTA
           </Link>
           <Link
-            href="/services"
+            href="/services-for-you"
             className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
           >
             SERVICES FOR YOU
@@ -305,7 +305,7 @@ const Header = () => {
               SNOHETTA
             </Link>
             <Link
-              href="/services"
+              href="/services-for-you"
               className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
