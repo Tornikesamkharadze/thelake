@@ -3,28 +3,24 @@
 import Image from "next/image";
 
 const TextImageSideSection = ({
+  id,
   image,
   title,
-  description, // string or array of strings
-  imagePosition = "right", // 'left' or 'right'
+  description,
+  imagePosition = "right",
   backgroundColor = "#e8dfd0",
   imageAlt = "",
-  // ფერები
   titleColor = "#000000",
   descriptionColor = "#000000",
-  // ფონტის ზომები - რესპონსიული
   titleSize = { mobile: "20px", tablet: "24px", desktop: "28px" },
   descriptionSize = { mobile: "14px", tablet: "16px", desktop: "18px" },
-  // ფონტის სიმძიმე
   titleWeight = "400",
   descriptionWeight = "400",
-  // ტექსტის ტრანსფორმაცია
   titleTransform = "uppercase",
   descriptionTransform = "none",
 }) => {
   const isImageRight = imagePosition === "right";
 
-  // თუ size string-ია, გადავიყვანოთ object-ად
   const getTitleSize =
     typeof titleSize === "string"
       ? { mobile: titleSize, tablet: titleSize, desktop: titleSize }
@@ -38,7 +34,6 @@ const TextImageSideSection = ({
         }
       : descriptionSize;
 
-  // CSS clamp() function for fluid typography
   const getResponsiveSize = (sizes) => {
     const mobile = parseFloat(sizes.mobile);
     const desktop = parseFloat(sizes.desktop);
@@ -47,23 +42,22 @@ const TextImageSideSection = ({
     }px + 1vw, ${sizes.desktop})`;
   };
 
-  // პარაგრაფების მასივი
   const paragraphs = Array.isArray(description) ? description : [description];
 
   return (
-    <section className="relative py-16 md:py-24" style={{ backgroundColor }}>
+    <section
+      id={id} // დაემატა id
+      className="relative py-16 md:py-24"
+      style={{ backgroundColor }}
+    >
       <div className="container mx-auto px-4">
-        <div
-          className={`flex flex-col ${
-            isImageRight ? "md:flex-row" : "md:flex-row-reverse"
-          } gap-8 md:gap-12 lg:gap-16 items-center justify-center`}
-        >
-          {/* ტექსტის სექცია */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
           <div
-            className="w-full md:w-1/2 flex flex-col justify-center"
+            className={`w-full flex flex-col justify-center ${
+              isImageRight ? "md:order-1" : "md:order-2"
+            }`}
             style={{ maxWidth: "500px" }}
           >
-            {/* სათაური */}
             <h2
               className="mb-4 md:mb-6 tracking-wide"
               style={{
@@ -76,7 +70,6 @@ const TextImageSideSection = ({
               {title}
             </h2>
 
-            {/* აღწერა */}
             <div
               className="leading-relaxed space-y-4"
               style={{
@@ -92,8 +85,9 @@ const TextImageSideSection = ({
             </div>
           </div>
 
-          {/* სურათის სექცია */}
-          <div className="w-full md:w-1/2">
+          <div
+            className={`w-full ${isImageRight ? "md:order-2" : "md:order-1"}`}
+          >
             <div className="relative aspect-4/3 w-full overflow-hidden">
               <Image
                 src={image}

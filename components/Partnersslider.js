@@ -47,7 +47,7 @@ export default function PartnersSlider() {
           src="/lake-transformed.webp"
           alt="Lake background"
           fill
-          className="object-cover object-center"
+          className="object-cover object-center w-auto h-auto"
           priority
         />
       </div>
@@ -69,7 +69,7 @@ export default function PartnersSlider() {
                   alt={partner.alt}
                   width={200}
                   height={80}
-                  className="object-contain"
+                  className="object-contain w-auto h-auto"
                 />
               </div>
             ))}

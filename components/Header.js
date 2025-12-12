@@ -3,21 +3,81 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { scroller } from "react-scroll";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const dropdownItems = [
-    { title: "LIFE IN NATURE", href: "/life-in-nature" },
-    { title: "SURROUNDINGS", href: "/surroundings" },
-    { title: "ART EVENTS", href: "/art-events" },
-    { title: "FISHING", href: "/fishing" },
-    { title: "SPORT ACTIVITIES", href: "/sport-activities" },
-    { title: "EDUCATION", href: "/education" },
+    {
+      title: "LIFE IN NATURE",
+      href: "/the-lake-lifestyle",
+      scrollTo: "life-in-nature",
+    },
+    {
+      title: "SURROUNDINGS",
+      href: "/the-lake-lifestyle",
+      scrollTo: "surroundings",
+    },
+    {
+      title: "ART EVENTS",
+      href: "/the-lake-lifestyle",
+      scrollTo: "art-events",
+    },
+    { title: "FISHING", href: "/the-lake-lifestyle", scrollTo: "fishing" },
+    {
+      title: "SPORT ACTIVITIES",
+      href: "/the-lake-lifestyle",
+      scrollTo: "sport-activities",
+    },
+    { title: "EDUCATION", href: "/the-lake-lifestyle", scrollTo: "education" },
   ];
+
+  const handleLifestyleClick = (e, item) => {
+    e.preventDefault();
+
+    // ჯერ დავხუროთ mobile menu
+    setIsDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+
+    if (pathname === "/the-lake-lifestyle") {
+      // დაველოდოთ menu-ს დახურვას, მერე scroll
+      setTimeout(() => {
+        const isMobile = window.innerWidth < 1536;
+        let headerHeight;
+
+        if (isMobile) {
+          // mobile-ზე ვიღებთ მხოლოდ visible header-ს (mobile menu გარეშე)
+          const topHeader = document.querySelector("header > div:first-child");
+          const mainHeader = document.querySelector(
+            "header > div:nth-child(2)"
+          );
+          const topHeight = topHeader ? topHeader.offsetHeight : 44;
+          const mainHeight = mainHeader ? mainHeader.offsetHeight : 104;
+          headerHeight = topHeight + mainHeight;
+        } else {
+          // desktop-ზე სრული header
+          const header = document.querySelector("header");
+          headerHeight = header ? header.offsetHeight : 148;
+        }
+
+        console.log("📱 Calculated header height:", headerHeight);
+
+        scroller.scrollTo(item.scrollTo, {
+          duration: 800,
+          delay: 0,
+          smooth: "easeInOutQuart",
+          offset: -headerHeight - 20,
+        });
+      }, 150); // მეტი დაყოვნება mobile menu-ს დახურვისთვის
+    } else {
+      router.push(`${item.href}#${item.scrollTo}`);
+    }
+  };
 
   const handleMobileLifestyleClick = () => {
     if (isDropdownOpen) {
@@ -30,7 +90,7 @@ const Header = () => {
 
   return (
     <header className="w-full sticky top-0 z-50">
-      {/* Top Header - stays visible longer (until lg breakpoint) */}
+      {/* Top Header */}
       <div className="bg-[#ED5C3F] h-11 px-4 md:px-15 flex items-center justify-end">
         <nav className="hidden lg:flex items-center gap-10 text-white text-sm">
           <Link href="/about" className="hover:opacity-80 transition-opacity">
@@ -48,15 +108,19 @@ const Header = () => {
           <Link href="/find-us" className="hover:opacity-80 transition-opacity">
             Find us
           </Link>
-          <button className="hover:opacity-80 transition-opacity font-medium">
-            ENG/GEO
-          </button>
+          <Link
+            href="/lang"
+            className="hover:opacity-80 transition-opacity font-medium flex items-center gap-1"
+          >
+            <span className="hover:text-[#d3b473] transition-colors">ENG</span>
+            <span>/</span>
+            <span className="hover:text-[#d3b473] transition-colors">GEO</span>
+          </Link>
         </nav>
       </div>
 
       {/* Main Header */}
       <div className="bg-[#C2B49B] h-26 px-4 md:px-8 flex items-center justify-between shadow-md">
-        {/* Logo */}
         <div className="shrink-0">
           <Link href="/">
             <Image
@@ -70,9 +134,7 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Desktop Navigation - hides earlier (at 1536px) */}
         <nav className="hidden 2xl:flex items-center gap-6 flex-1 justify-center">
-          {/* The Lake Lifestyle with Dropdown */}
           <div
             className="relative"
             onMouseEnter={() => setIsDropdownOpen(true)}
@@ -100,7 +162,6 @@ const Header = () => {
               </svg>
             </Link>
 
-            {/* Dropdown Menu */}
             {isDropdownOpen && (
               <div
                 className="absolute top-full left-0 mt-0 bg-[#C2B49B] shadow-lg overflow-hidden min-w-[220px]"
@@ -108,18 +169,24 @@ const Header = () => {
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
                 {dropdownItems.map((item, index) => (
-                  <Link
+                  <a
                     key={index}
-                    href={item.href}
-                    className="block px-6 py-3 text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors border-b border-[#B5A88E] last:border-b-0"
+                    href={`${item.href}#${item.scrollTo}`}
+                    onClick={(e) => handleLifestyleClick(e, item)}
+                    className="block px-6 py-3 text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors border-b border-[#B5A88E] last:border-b-0 cursor-pointer"
                   >
                     {item.title}
-                  </Link>
+                  </a>
                 ))}
               </div>
             )}
           </div>
-
+          <Link
+            href="/snohetta"
+            className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
+          >
+            SNOHETTA
+          </Link>
           <Link
             href="/services"
             className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
@@ -146,21 +213,19 @@ const Header = () => {
           </Link>
         </nav>
 
-        {/* Action Buttons */}
         <div className="hidden 2xl:flex items-center gap-4 shrink-0">
           <Link href="/own-a-house">
-            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap">
+            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
               OWN A HOUSE
             </button>
           </Link>
           <Link href="/enquire">
-            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap">
+            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
               ENQUIRE
             </button>
           </Link>
         </div>
 
-        {/* Mobile Menu Button - shows at 2xl */}
         <button
           className="2xl:hidden text-black"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -195,7 +260,6 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="2xl:hidden bg-[#C2B49B] border-t border-[#B5A88E] shadow-lg">
           <nav className="flex flex-col p-4">
-            {/* Mobile Dropdown Toggle */}
             <div className="border-b border-[#B5A88E] pb-2 mb-2">
               <button
                 onClick={handleMobileLifestyleClick}
@@ -221,19 +285,25 @@ const Header = () => {
               {isDropdownOpen && (
                 <div className="pl-4 flex flex-col gap-2 mt-2">
                   {dropdownItems.map((item, index) => (
-                    <Link
+                    <a
                       key={index}
-                      href={item.href}
-                      className="text-black uppercase tracking-wide text-sm font-medium py-2 hover:text-[#ED5C3F] transition-colors border-b border-[#B5A88E] last:border-b-0"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      href={`${item.href}#${item.scrollTo}`}
+                      onClick={(e) => handleLifestyleClick(e, item)}
+                      className="text-black uppercase tracking-wide text-sm font-medium py-2 hover:text-[#ED5C3F] transition-colors border-b border-[#B5A88E] last:border-b-0 cursor-pointer"
                     >
                       {item.title}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               )}
             </div>
-
+            <Link
+              href="/snohetta"
+              className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              SNOHETTA
+            </Link>
             <Link
               href="/services"
               className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
@@ -263,24 +333,22 @@ const Header = () => {
               WHATS ON*
             </Link>
 
-            {/* Mobile Action Buttons */}
             <div className="flex flex-col gap-3 mt-4">
               <Link
                 href="/own-a-house"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm">
+                <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
                   OWN A HOUSE
                 </button>
               </Link>
               <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)}>
-                <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm">
+                <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
                   ENQUIRE
                 </button>
               </Link>
             </div>
 
-            {/* Top Header Links - show in burger menu only below lg */}
             <div className="lg:hidden flex flex-col gap-2 mt-4 pt-4 border-t border-[#B5A88E]">
               <Link
                 href="/about"

@@ -1,17 +1,28 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube } from "lucide-react";
 import ContactPopup from "./ContactPopup";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   return (
-    <footer className="bg-[#F7EAD7] text-[#1A1A1A] py-16 px-6">
+    <footer
+      className={`${
+        isHomePage
+          ? "bg-[#F7EAD7] text-[#1A1A1A]"
+          : "bg-[#312618] text-[#F7EAD7]"
+      } py-16 px-6`}
+    >
       <ContactPopup />
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
         {/* Logo Section */}
         <div className="flex md:justify-start">
           <Image
-            src="/img/footer-logo.png"
+            src={isHomePage ? "/img/footer-logo.png" : "/footer-dark-logo.webp"}
             alt="The Lake by Placemakers"
             loading="eager"
             width={340}
@@ -54,11 +65,14 @@ export function Footer() {
             >
               Find us
             </Link>
-            <Link
-              href="/lang"
-              className="text-base hover:text-[#ED5C3F] transition-opacity"
-            >
-              ENG/GEO
+            <Link href="/lang" className="text-base flex items-center gap-1">
+              <span className="hover:text-[#ED5C3F] transition-opacity">
+                ENG
+              </span>
+              <span>/</span>
+              <span className="hover:text-[#ED5C3F] transition-opacity">
+                GEO
+              </span>
             </Link>
           </nav>
         </div>
@@ -88,11 +102,15 @@ export function Footer() {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:opacity-80 transition-opacity"
+              className={`w-10 h-10 rounded-full ${
+                isHomePage ? "bg-[#1A1A1A]" : "bg-[#F7EAD7]"
+              } flex items-center justify-center hover:opacity-80 transition-opacity`}
               aria-label="Facebook"
             >
               <Facebook
-                className="w-5 h-5 text-[#E8DCC8]"
+                className={`w-5 h-5 ${
+                  isHomePage ? "text-[#E8DCC8]" : "text-[#312618]"
+                }`}
                 fill="currentColor"
               />
             </a>
@@ -100,20 +118,30 @@ export function Footer() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:opacity-80 transition-opacity"
+              className={`w-10 h-10 rounded-full ${
+                isHomePage ? "bg-[#1A1A1A]" : "bg-[#F7EAD7]"
+              } flex items-center justify-center hover:opacity-80 transition-opacity`}
               aria-label="Instagram"
             >
-              <Instagram className="w-5 h-5 text-[#E8DCC8]" />
+              <Instagram
+                className={`w-5 h-5 ${
+                  isHomePage ? "text-[#E8DCC8]" : "text-[#312618]"
+                }`}
+              />
             </a>
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:opacity-80 transition-opacity"
+              className={`w-10 h-10 rounded-full ${
+                isHomePage ? "bg-[#1A1A1A]" : "bg-[#F7EAD7]"
+              } flex items-center justify-center hover:opacity-80 transition-opacity`}
               aria-label="X (Twitter)"
             >
               <svg
-                className="w-4 h-4 text-[#E8DCC8]"
+                className={`w-4 h-4 ${
+                  isHomePage ? "text-[#E8DCC8]" : "text-[#312618]"
+                }`}
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
@@ -125,10 +153,16 @@ export function Footer() {
               href="https://youtube.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center hover:opacity-80 transition-opacity"
+              className={`w-10 h-10 rounded-full ${
+                isHomePage ? "bg-[#1A1A1A]" : "bg-[#F7EAD7]"
+              } flex items-center justify-center hover:opacity-80 transition-opacity`}
               aria-label="YouTube"
             >
-              <Youtube className="w-5 h-5 text-[#E8DCC8]" />
+              <Youtube
+                className={`w-5 h-5 ${
+                  isHomePage ? "text-[#E8DCC8]" : "text-[#312618]"
+                }`}
+              />
             </a>
           </div>
         </div>

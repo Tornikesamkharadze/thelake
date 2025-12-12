@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRef, useEffect, useState } from "react";
 
 const ImageTextSection = ({
   image,
@@ -30,6 +31,29 @@ const ImageTextSection = ({
   descriptionTransform = "none",
 }) => {
   const isImageRight = imagePosition === "right";
+  const textBoxRef = useRef(null);
+  const [minImageHeight, setMinImageHeight] = useState(0);
+
+  // ტექსტ-ბოქსის სიმაღლის გაზომვა
+  useEffect(() => {
+    const updateHeight = () => {
+      if (textBoxRef.current && window.innerWidth >= 768) {
+        // დესქტოპზე
+        const textBoxHeight = textBoxRef.current.offsetHeight;
+        // ფოტო უნდა იყოს ტექსტ-ბოქსზე 20% მეტი მინიმუმ, მაგრამ არანაკლებ 500px
+        setMinImageHeight(Math.max(textBoxHeight * 1.2, 500));
+      } else {
+        setMinImageHeight(0);
+      }
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    // დაყოვნებით კიდევ ერთხელ, რომ ფონტები ჩაიტვირთოს
+    setTimeout(updateHeight, 100);
+
+    return () => window.removeEventListener("resize", updateHeight);
+  }, [title, subtitle, description]);
 
   // თუ titleSize string-ია, გადავიყვანოთ object-ად
   const getTitleSize =
@@ -49,11 +73,10 @@ const ImageTextSection = ({
         }
       : descriptionSize;
 
-  // CSS clamp() function for fluid typography - smooth responsive sizing
+  // CSS clamp() function for fluid typography
   const getResponsiveSize = (sizes) => {
     const mobile = parseFloat(sizes.mobile);
     const desktop = parseFloat(sizes.desktop);
-    // clamp(min, preferred, max) - automatically scales between mobile and desktop
     return `clamp(${sizes.mobile}, ${
       mobile + (desktop - mobile) * 0.5
     }px + 1vw, ${sizes.desktop})`;
@@ -71,71 +94,94 @@ const ImageTextSection = ({
               : "md:justify-end"
           }`}
         >
-          {/* სურათის კონტეინერი - relative position ტექსტისთვის */}
+          {/* მთავარი კონტეინერი */}
           <div className="relative w-full" style={{ maxWidth: "750px" }}>
-            {/* მობილზე 3:4 aspect ratio (უფრო მაღალი), დესქტოპზე 4:3 */}
-            <div className="relative aspect-3/4 md:aspect-4/3 w-full overflow-hidden">
-              <Image
-                src={image}
-                alt={imageAlt || title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 750px"
-              />
-            </div>
-
-            {/* ტექსტ ბოქსი - absolute ფოტოს კონტეინერის მიმართ */}
-            <div
-              className={`absolute ${
-                isImageRight
-                  ? "left-4 md:left-auto md:right-0 md:translate-x-[80%]"
-                  : "right-4 md:right-auto md:left-0 md:-translate-x-[80%]"
-              } top-1/2 -translate-y-1/2 w-auto max-w-[calc(100%-2rem)] md:max-w-[600px]`}
-            >
-              <div
-                className="p-4 md:p-8 lg:p-12"
-                style={{ backgroundColor: textBoxColor }}
-              >
-                {/* სათაური */}
-                <h2
-                  className="mb-3 md:mb-4 lg:mb-6 tracking-wide"
+            {/* ტელე flex column, დესქტოპზე relative positioning */}
+            <div className="flex flex-col md:block">
+              {/* სურათის კონტეინერი */}
+              <div className="relative w-full overflow-hidden">
+                {/* ტელეზე 350px, დესქტოპზე 500px ან დინამიური */}
+                <div
+                  className="relative w-full min-h-[350px] md:min-h-[500px]"
                   style={{
-                    color: titleColor,
-                    fontSize: getResponsiveSize(getTitleSize),
-                    fontWeight: titleWeight,
-                    textTransform: titleTransform,
+                    minHeight:
+                      minImageHeight > 0 ? `${minImageHeight}px` : undefined,
                   }}
                 >
-                  {title}
-                </h2>
+                  <Image
+                    src={image}
+                    alt={imageAlt || title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 750px"
+                  />
+                </div>
+              </div>
 
-                {/* ქვესათაური (თუ არსებობს) */}
-                {subtitle && (
-                  <h3
-                    className="mb-3 md:mb-4 lg:mb-6"
+              {/* ტექსტ ბოქსი */}
+              <div
+                ref={textBoxRef}
+                className={`
+                  relative 
+                  -mt-12 mx-4 
+                  md:absolute
+                  md:mt-0 md:mx-0
+                  ${
+                    isImageRight
+                      ? "md:right-0 md:translate-x-[80%]"
+                      : "md:left-0 md:-translate-x-[80%]"
+                  }
+                  md:top-1/2 md:-translate-y-1/2
+                  w-auto 
+                  md:max-w-[600px]
+                  z-10
+                `}
+              >
+                <div
+                  className="p-6 md:p-8 lg:p-12 shadow-lg"
+                  style={{ backgroundColor: textBoxColor }}
+                >
+                  {/* სათაური */}
+                  <h2
+                    className="mb-3 md:mb-4 lg:mb-6 tracking-wide"
                     style={{
-                      color: subtitleColor,
-                      fontSize: getResponsiveSize(getSubtitleSize),
-                      fontWeight: subtitleWeight,
-                      textTransform: subtitleTransform,
+                      color: titleColor,
+                      fontSize: getResponsiveSize(getTitleSize),
+                      fontWeight: titleWeight,
+                      textTransform: titleTransform,
                     }}
                   >
-                    {subtitle}
-                  </h3>
-                )}
+                    {title}
+                  </h2>
 
-                {/* აღწერა */}
-                <p
-                  className="leading-relaxed"
-                  style={{
-                    color: descriptionColor,
-                    fontSize: getResponsiveSize(getDescriptionSize),
-                    fontWeight: descriptionWeight,
-                    textTransform: descriptionTransform,
-                  }}
-                >
-                  {description}
-                </p>
+                  {/* ქვესათაური */}
+                  {subtitle && (
+                    <h3
+                      className="mb-3 md:mb-4 lg:mb-6"
+                      style={{
+                        color: subtitleColor,
+                        fontSize: getResponsiveSize(getSubtitleSize),
+                        fontWeight: subtitleWeight,
+                        textTransform: subtitleTransform,
+                      }}
+                    >
+                      {subtitle}
+                    </h3>
+                  )}
+
+                  {/* აღწერა */}
+                  <p
+                    className="leading-relaxed"
+                    style={{
+                      color: descriptionColor,
+                      fontSize: getResponsiveSize(getDescriptionSize),
+                      fontWeight: descriptionWeight,
+                      textTransform: descriptionTransform,
+                    }}
+                  >
+                    {description}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
