@@ -59,7 +59,7 @@ const servicesForYou = () => {
       />
       <TextSection
         title="Services for you"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit "
+        description="At The Lake, every detail of daily life is thoughtfully designed to give you more time and peace of mind. From grocery delivery to professional housekeeping, a dedicated business lounge to a vibrant kids zone, expert gardening to comprehensive pet care - our full suite of concierge services ensures your home and lifestyle are effortlessly maintained, so you can focus on what truly matters."
         highlightWords={["THE LAKE"]}
         uppercase={true}
         bgColor="bg-[#F7EAD7]"

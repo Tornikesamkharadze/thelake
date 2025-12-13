@@ -55,7 +55,7 @@ const NewsCard = ({
             {date}
           </p>
           
-          {/* ამონარიდი - მოკლე ვერსია Grid-ზე */}
+          {/*მოკლე ვერსია Grid-ზე */}
           <p 
             className="text-xs md:text-sm leading-relaxed mb-3 line-clamp-3"
             style={{ color: excerptColor }}
