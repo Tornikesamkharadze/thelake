@@ -123,7 +123,7 @@ export default function Gallery() {
 
         <div className="w-full overflow-visible">
           {currentImages.length > 0 ? (
-            <div className="min-h-[500px] md:min-h-[700px]">
+            <div className="min-h-[400px] md:min-h-[600px]">
               <Swiper
                 onSwiper={setSwiperInstance}
                 grabCursor={true}

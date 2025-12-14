@@ -118,3 +118,30 @@ body {
 .gallery-swiper .swiper-button-prev:hover {
   opacity: 0.8 !important;
 }
+
+/* თიმის სლაიდერი */
+
+.team-swiper {
+  padding: 0 0 0 0;
+  width: 100%;
+  overflow: visible;
+}
+.team-swiper .swiper-wrapper {
+  align-items: stretch;
+}
+.team-swiper .swiper-slide {
+  height: auto;
+  width: 430px !important; /* Fixed width based on Figma */
+}
+
+@media (max-width: 768px) {
+  .team-swiper .swiper-slide {
+    width: 320px !important; /* Smaller on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .team-swiper .swiper-slide {
+    width: 280px !important; /* Even smaller on very small screens */
+  }
+}

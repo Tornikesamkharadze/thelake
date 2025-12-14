@@ -54,25 +54,28 @@ export default function PartnersSlider() {
       <div className="absolute inset-0 bg-black/60"></div>
 
       <div className="relative h-full flex items-center pt-20 pb-20">
-        <div className="w-full overflow-hidden">
-          <div
-            className="flex animate-scroll w-fit hover:animation-paused"
-            ref={trackRef}
-          >
-            {repeatedPartners.map((partner, index) => (
-              <div
-                key={index}
-                className="text-white max-w-[300px] px-[60px] max-md:px-[30px] max-[480px]:px-5 whitespace-nowrap flex items-center justify-center shrink-0 transition-colors duration-300 hover:text-[#d3b473]"
-              >
-                <Image
-                  src={partner.src}
-                  alt={partner.alt}
-                  width={200}
-                  height={80}
-                  className="object-contain w-auto h-auto"
-                />
-              </div>
-            ))}
+        {/* Max width wrapper for large screens */}
+        <div className="w-full mx-auto" style={{ maxWidth: '2560px' }}>
+          <div className="w-full overflow-hidden">
+            <div
+              className="flex animate-scroll w-fit hover:animation-paused"
+              ref={trackRef}
+            >
+              {repeatedPartners.map((partner, index) => (
+                <div
+                  key={index}
+                  className="text-white max-w-[300px] px-[60px] max-md:px-[30px] max-[480px]:px-5 whitespace-nowrap flex items-center justify-center shrink-0 transition-colors duration-300 hover:text-[#d3b473]"
+                >
+                  <Image
+                    src={partner.src}
+                    alt={partner.alt}
+                    width={200}
+                    height={80}
+                    className="object-contain w-auto h-auto"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

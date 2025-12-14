@@ -122,8 +122,8 @@ export default function Home() {
 
       <MasterplanSection />
       <PropertyTypesSection />
-      <ContactWithAdressSection/>
-      <PartnersSlider/>
+      <ContactWithAdressSection />
+      <PartnersSlider />
 
       {/*     <TextImageSideSection
         image="/lake-1.png"
