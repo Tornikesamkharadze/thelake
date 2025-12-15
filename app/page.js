@@ -1,4 +1,4 @@
-import ContactWithAdressSection from "@/components/ContactWithAdressSection";
+import StayInTouchWithContact from "@/components/StayInTouchWithContact";
 import Divider from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
@@ -7,7 +7,6 @@ import ImageTextSection from "@/components/ImageTextSection";
 import MasterplanSection from "@/components/MasterplanSection";
 import PartnersSlider from "@/components/Partnersslider";
 import PropertyTypesSection from "@/components/PropertyTypesSection";
-import TextImageSideSection from "@/components/TextImageSideSection";
 import TextSection from "@/components/TextSection";
 
 export const metadata = {
@@ -122,18 +121,12 @@ export default function Home() {
 
       <MasterplanSection />
       <PropertyTypesSection />
-      <ContactWithAdressSection />
+      <StayInTouchWithContact
+        showAddressBox={true}
+        backgroundColor="#d3b473"
+        addressBoxBg="#F7EAD7"
+      />
       <PartnersSlider />
-
-      {/*     <TextImageSideSection
-        image="/lake-1.png"
-        title="LIFE IN NATURE"
-        description="Located in Tbilisi's main recreation area, embraced by mountain terrain and overlooking Lisi Lake. Here, every day begins with clean air, open views, and the quiet rhythm of nature, yet the city's energy is only minutes away."
-        imagePosition="right"
-        backgroundColor="#e8dfd0"
-        titleColor="#000000"
-        descriptionColor="#000000"
-      /> */}
       <Footer />
     </div>
   );
