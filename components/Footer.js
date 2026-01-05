@@ -1,13 +1,20 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube } from "lucide-react";
 import ContactPopup from "./ContactPopup";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export function Footer() {
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
+  const params = useParams();
+  const t = useTranslations("footer");
+  const locale = params.locale || "ka";
+
+  const isHomePage = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   return (
     <footer
@@ -27,61 +34,57 @@ export function Footer() {
             loading="eager"
             width={340}
             height={120}
-            className="w-auto h-auto "
+            className="w-auto h-auto"
           />
         </div>
 
         {/* Explore Section */}
         <div>
-          <h3 className="text-lg font-normal mb-6 tracking-wide">EXPLORE</h3>
+          <h3 className="text-lg font-normal mb-6 tracking-wide">
+            {t("explore")}
+          </h3>
           <nav className="flex flex-col">
             <Link
-              href="/about"
+              href={`/${locale}/about`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
-              About us
+              {t("nav.aboutUs")}
             </Link>
             <Link
-              href="/gallery"
+              href={`/${locale}/gallery`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
-              Gallery
+              {t("nav.gallery")}
             </Link>
             <Link
-              href="/interactive-map"
+              href={`/${locale}/interactive-map`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
-              Interactive map
+              {t("nav.interactiveMap")}
             </Link>
             <Link
-              href="/contact"
+              href={`/${locale}/contact`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
-              Contact us
+              {t("nav.contactUs")}
             </Link>
             <Link
-              href="/find-us"
+              href={`/${locale}/find-us`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
-              Find us
+              {t("nav.findUs")}
             </Link>
-            <Link href="/lang" className="text-base flex items-center gap-1">
-              <span className="hover:text-[#ED5C3F] transition-opacity">
-                ENG
-              </span>
-              <span>/</span>
-              <span className="hover:text-[#ED5C3F] transition-opacity">
-                GEO
-              </span>
-            </Link>
+            <LanguageSwitcher className="text-base mt-2" />
           </nav>
         </div>
 
         {/* Contact Section */}
         <div>
-          <h3 className="text-lg font-normal mb-6 tracking-wide">CONTACT</h3>
+          <h3 className="text-lg font-normal mb-6 tracking-wide">
+            {t("contact")}
+          </h3>
           <div className="flex flex-col mb-6">
-            <p className="text-base">Lisi Lake, Tbilisi, Georgia</p>
+            <p className="text-base">{t("address")}</p>
             <a
               href="tel:+995511553333"
               className="text-base hover:text-[#ED5C3F] transition-opacity"

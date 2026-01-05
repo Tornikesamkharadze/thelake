@@ -1,0 +1,75 @@
+{
+  "header": {
+    "nav": {
+      "aboutUs": "About Us",
+      "gallery": "Gallery",
+      "interactiveMap": "Interactive Map",
+      "contactUs": "Contact us",
+      "findUs": "Find us",
+      "lakeLyfestyle": "THE LAKE LIFESTYLE",
+      "snohetta": "SNOHETTA",
+      "servicesForYou": "SERVICES FOR YOU",
+      "barKitchen": "BAR & KITCHEN",
+      "spaWellness": "SPA & WELLNESS",
+      "whatsOn": "WHATS ON*"
+    },
+    "dropdown": {
+      "lifeInNature": "LIFE IN NATURE",
+      "surroundings": "SURROUNDINGS",
+      "artEvents": "ART EVENTS",
+      "fishing": "FISHING",
+      "sportActivities": "SPORT ACTIVITIES",
+      "education": "EDUCATION"
+    },
+    "buttons": {
+      "ownAHouse": "OWN A HOUSE",
+      "enquire": "ENQUIRE"
+    }
+  },
+  "footer": {
+    "explore": "EXPLORE",
+    "contact": "CONTACT",
+    "address": "Lisi Lake, Tbilisi, Georgia",
+    "nav": {
+      "aboutUs": "About us",
+      "gallery": "Gallery",
+      "interactiveMap": "Interactive map",
+      "contactUs": "Contact us",
+      "findUs": "Find us"
+    }
+  },
+  "hero": {
+    "title": "YOUR HOME <br/> OVER THE LAKE",
+    "highlightWords": ["THE LAKE"]
+  },
+  "welcome": {
+    "title": "WELCOME TO THE LAKE<br/>BY PLACEMAKERS",
+    "description": "A quiet, exclusive community with spacious villas (500–800 sq.m) and private houses (200–400 sq.m), created for people who appreciate comfort, beauty, and peace of mind.",
+    "downloadBrochure": "DOWNLOAD BROCHURE",
+    "enquire": "contact"
+  },
+  "whyOwn": {
+    "title": "Why Own at The Lake by placemakers?",
+    "subtitle": "Your home. Your sanctuary. Your playground",
+    "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood features 90 villas and houses surrounded by a private park and panoramic lake views. Just 7 km from the city centre, it offers an exclusive lifestyle shaped by international architecture and nature's calm"
+  },
+  "divider": {
+    "masterplan": "masterplan"
+  },
+  "plot-types": {
+    "private-houses": "private houses",
+    "land-plots": "land plots",
+    "private-villas": "private villas"
+  },
+  "contact": {
+    "title": "STAY IN TOUCH",
+    "contactTitle": "CONTACT",
+    "namePlaceholder": "Name and Surname",
+    "emailPlaceholder": "E-mail",
+    "phonePlaceholder": "Phone number",
+    "address": "15D Tuta Street. 0159\nTbilisi, Georgia",
+    "phone": "+995 511 55 33 33",
+    "email": "info@placemakers.ge",
+    "website": "Www.TheLake.ge"
+  }
+}

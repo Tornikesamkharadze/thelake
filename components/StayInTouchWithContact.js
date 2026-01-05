@@ -2,36 +2,27 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function StayInTouchWithContact({
-  // ძირითადი პარამეტრები
   showAddressBox = true,
   backgroundImage = null,
   backgroundColor = "#d3b473",
-
-  // ფორმის სტილები
-  formTitle = "STAY IN TOUCH",
-  formTitleColor = "#374151",
   contactBoxBackgroundColor = "#f4e9d8",
-
-  // ადრესის ბოქსის სტილები
   addressBoxBg = "#f4e9d8",
   addressBoxTitleColor = "#374151",
-
-  // ინფუთების სტილები
+  formTitleColor = "#374151",
   inputBorderColor = "#6b7280",
   inputFocusBorderColor = "#374151",
   inputTextColor = "#374151",
   submitButtonColor = "#ed5c3f",
   submitButtonHoverColor = "#d54a35",
-
-  // ლინკების სტილები
   linkColor = "#6b7280",
   linkHoverColor = "#ed5c3f",
-
-  // callback ფუნქცია
   onSubmit = null,
 }) {
+  const t = useTranslations("contact");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -98,7 +89,7 @@ export default function StayInTouchWithContact({
                 }`}
                 style={{ color: formTitleColor }}
               >
-                {formTitle}
+                {t("title")}
               </h2>
 
               <form
@@ -110,7 +101,7 @@ export default function StayInTouchWithContact({
                 <input
                   type="text"
                   name="name"
-                  placeholder="Name and Surname"
+                  placeholder={t("namePlaceholder")}
                   className="w-full p-4 bg-transparent border transition-colors duration-300 rounded-none h-14 font-inherit tbc-regular focus:outline-none"
                   style={{
                     borderColor: inputBorderColor,
@@ -130,7 +121,7 @@ export default function StayInTouchWithContact({
                 <input
                   type="email"
                   name="email"
-                  placeholder="E-mail"
+                  placeholder={t("emailPlaceholder")}
                   className="w-full p-4 bg-transparent border transition-colors duration-300 rounded-none h-14 font-inherit tbc-regular focus:outline-none"
                   style={{
                     borderColor: inputBorderColor,
@@ -151,7 +142,7 @@ export default function StayInTouchWithContact({
                   <input
                     type="tel"
                     name="phone"
-                    placeholder="Phone number"
+                    placeholder={t("phonePlaceholder")}
                     className={`p-4 bg-transparent border transition-colors duration-300 rounded-none h-14 font-inherit tbc-regular focus:outline-none ${
                       !showAddressBox
                         ? "flex-1"
@@ -198,7 +189,7 @@ export default function StayInTouchWithContact({
             </div>
           </div>
 
-          {/* Contact Info Box - მხოლოდ თუ showAddressBox === true */}
+          {/* Contact Info Box */}
           {showAddressBox && (
             <div className="relative">
               <div
@@ -209,10 +200,10 @@ export default function StayInTouchWithContact({
                   className="font-medium text-[27px] uppercase text-center mb-8 tracking-widest tbc-medium"
                   style={{ color: addressBoxTitleColor }}
                 >
-                  CONTACT
+                  {t("contactTitle")}
                 </h3>
                 <div className="flex flex-col text-center">
-                  {/* ადრესი */}
+                  {/* Address */}
                   <div>
                     <a
                       href="https://maps.app.goo.gl/m2F9LwKSAY6TMB5ZA"
@@ -225,16 +216,15 @@ export default function StayInTouchWithContact({
                       }
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
-                      <p className="text-base mb-0">
-                        15D Tuta Street. 0159 <br />
-                        Tbilisi, Georgia
+                      <p className="text-base mb-0 whitespace-pre-line">
+                        {t("address")}
                       </p>
                     </a>
                   </div>
 
                   <hr className="border-none border-t border-black my-4" />
 
-                  {/* ტელეფონი */}
+                  {/* Phone */}
                   <div>
                     <a
                       href="https://web.whatsapp.com/send?phone=+995511553333"
@@ -247,16 +237,16 @@ export default function StayInTouchWithContact({
                       }
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
-                      <p className="text-base mb-0">+995 511 55 33 33</p>
+                      <p className="text-base mb-0">{t("phone")}</p>
                     </a>
                   </div>
 
                   <hr className="border-none border-t border-black my-4" />
 
-                  {/* ემეილი და ვებსაიტი */}
+                  {/* Email & Website */}
                   <div className="flex flex-col">
                     <a
-                      href="mailto:info@placemakers.ge"
+                      href={`mailto:${t("email")}`}
                       className="no-underline transition-colors duration-300 tbc-regular"
                       style={{ color: linkColor }}
                       onMouseEnter={(e) =>
@@ -264,7 +254,7 @@ export default function StayInTouchWithContact({
                       }
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
-                      <p className="text-base mb-0">info@placemakers.ge</p>
+                      <p className="text-base mb-0">{t("email")}</p>
                     </a>
 
                     <a
@@ -278,7 +268,7 @@ export default function StayInTouchWithContact({
                       }
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
-                      <p className="text-base mb-0">Www.TheLake.ge</p>
+                      <p className="text-base mb-0">{t("website")}</p>
                     </a>
                   </div>
                 </div>

@@ -9,9 +9,9 @@ export default function Divider({
     <div
       className={`${bgColor} w-full h-[59px] flex items-center justify-center px-6`}
     >
-      <div className="border-t  py-3 text-center w-full">
+      <div className="border-t py-3 text-center w-full">
         <h3
-          className={`text-[25px] tracking-[0.4em] ${textColor} ${
+          className={`text-base md:text-[25px] tracking-[0.4em] ${textColor} ${
             uppercase ? "uppercase" : ""
           }`}
         >

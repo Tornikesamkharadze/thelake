@@ -25,7 +25,7 @@ export default function Hero({
 
       return (
         <h1
-          className="text-5xl font-light mb-4" // font-light = 300
+          className="text-5xl font-light mb-4 leading-15" // font-light = 300
           dangerouslySetInnerHTML={{ __html: formattedTitle }}
         />
       );

@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,8 +20,80 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+  font-weight: 400 !important;
 }
+
+/* TBC Contractica Font Classes */
+.font-contractica {
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+}
+
+.font-contractica-light {
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+  font-weight: 300;
+}
+
+.font-contractica-book {
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+  font-weight: 350;
+}
+
+.font-contractica-regular {
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+.font-contractica-medium {
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+.font-contractica-bold {
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
+.font-contractica-black {
+  font-family: var(--font-contractica), Arial, Helvetica, sans-serif;
+  font-weight: 900;
+}
+
+/* TBC Contractica CAPS Font Classes */
+.font-contractica-caps {
+  font-family: var(--font-contractica-caps), Arial, Helvetica, sans-serif;
+}
+
+.font-contractica-caps-light {
+  font-family: var(--font-contractica-caps), Arial, Helvetica, sans-serif;
+  font-weight: 300;
+}
+
+.font-contractica-caps-book {
+  font-family: var(--font-contractica-caps), Arial, Helvetica, sans-serif;
+  font-weight: 350;
+}
+
+.font-contractica-caps-regular {
+  font-family: var(--font-contractica-caps), Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+.font-contractica-caps-medium {
+  font-family: var(--font-contractica-caps), Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+.font-contractica-caps-bold {
+  font-family: var(--font-contractica-caps), Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
+.font-contractica-caps-black {
+  font-family: var(--font-contractica-caps), Arial, Helvetica, sans-serif;
+  font-weight: 900;
+}
+
 /* თიმის სლაიდერის ანიმაციები */
 @keyframes scroll {
   0% {
@@ -47,6 +117,7 @@ body {
 .animation-paused {
   animation-play-state: paused;
 }
+
 /* გალერია */
 .gallery-swiper {
   padding: 0 0 60px 0;

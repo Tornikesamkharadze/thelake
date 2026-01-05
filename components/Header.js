@@ -3,55 +3,66 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import { scroller } from "react-scroll";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const params = useParams();
+  const t = useTranslations("header");
+
+  const locale = params.locale || "ka";
 
   const dropdownItems = [
     {
-      title: "LIFE IN NATURE",
-      href: "/the-lake-lifestyle",
+      title: t("dropdown.lifeInNature"),
+      href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "life-in-nature",
     },
     {
-      title: "SURROUNDINGS",
-      href: "/the-lake-lifestyle",
+      title: t("dropdown.surroundings"),
+      href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "surroundings",
     },
     {
-      title: "ART EVENTS",
-      href: "/the-lake-lifestyle",
+      title: t("dropdown.artEvents"),
+      href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "art-events",
     },
-    { title: "FISHING", href: "/the-lake-lifestyle", scrollTo: "fishing" },
     {
-      title: "SPORT ACTIVITIES",
-      href: "/the-lake-lifestyle",
+      title: t("dropdown.fishing"),
+      href: `/${locale}/the-lake-lifestyle`,
+      scrollTo: "fishing",
+    },
+    {
+      title: t("dropdown.sportActivities"),
+      href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "sport-activities",
     },
-    { title: "EDUCATION", href: "/the-lake-lifestyle", scrollTo: "education" },
+    {
+      title: t("dropdown.education"),
+      href: `/${locale}/the-lake-lifestyle`,
+      scrollTo: "education",
+    },
   ];
 
   const handleLifestyleClick = (e, item) => {
     e.preventDefault();
 
-    // ჯერ დავხუროთ mobile menu
     setIsDropdownOpen(false);
     setIsMobileMenuOpen(false);
 
-    if (pathname === "/the-lake-lifestyle") {
-      // დაველოდოთ menu-ს დახურვას, მერე scroll
+    if (pathname === `/${locale}/the-lake-lifestyle`) {
       setTimeout(() => {
         const isMobile = window.innerWidth < 1536;
         let headerHeight;
 
         if (isMobile) {
-          // mobile-ზე ვიღებთ მხოლოდ visible header-ს (mobile menu გარეშე)
           const topHeader = document.querySelector("header > div:first-child");
           const mainHeader = document.querySelector(
             "header > div:nth-child(2)"
@@ -60,12 +71,9 @@ const Header = () => {
           const mainHeight = mainHeader ? mainHeader.offsetHeight : 104;
           headerHeight = topHeight + mainHeight;
         } else {
-          // desktop-ზე სრული header
           const header = document.querySelector("header");
           headerHeight = header ? header.offsetHeight : 148;
         }
-
-        console.log("📱 Calculated header height:", headerHeight);
 
         scroller.scrollTo(item.scrollTo, {
           duration: 800,
@@ -73,7 +81,7 @@ const Header = () => {
           smooth: "easeInOutQuart",
           offset: -headerHeight - 20,
         });
-      }, 150); // მეტი დაყოვნება mobile menu-ს დახურვისთვის
+      }, 150);
     } else {
       router.push(`${item.href}#${item.scrollTo}`);
     }
@@ -81,7 +89,7 @@ const Header = () => {
 
   const handleMobileLifestyleClick = () => {
     if (isDropdownOpen) {
-      router.push("/the-lake-lifestyle");
+      router.push(`/${locale}/the-lake-lifestyle`);
       setIsMobileMenuOpen(false);
     } else {
       setIsDropdownOpen(true);
@@ -93,36 +101,44 @@ const Header = () => {
       {/* Top Header */}
       <div className="bg-[#ED5C3F] h-11 px-4 md:px-15 flex items-center justify-end">
         <nav className="hidden lg:flex items-center gap-10 text-white text-sm">
-          <Link href="/about" className="hover:opacity-80 transition-opacity">
-            About Us
-          </Link>
-          <Link href="/gallery" className="hover:opacity-80 transition-opacity">
-            Gallery
-          </Link>
-          <Link href="/map" className="hover:opacity-80 transition-opacity">
-            Interactive Map
-          </Link>
-          <Link href="/contact" className="hover:opacity-80 transition-opacity">
-            Contact us
-          </Link>
-          <Link href="/find-us" className="hover:opacity-80 transition-opacity">
-            Find us
+          <Link
+            href={`/${locale}/about`}
+            className="hover:opacity-80 transition-opacity"
+          >
+            {t("nav.aboutUs")}
           </Link>
           <Link
-            href="/lang"
-            className="hover:opacity-80 transition-opacity font-medium flex items-center gap-1"
+            href={`/${locale}/gallery`}
+            className="hover:opacity-80 transition-opacity"
           >
-            <span className="hover:text-[#d3b473] transition-colors">ENG</span>
-            <span>/</span>
-            <span className="hover:text-[#d3b473] transition-colors">GEO</span>
+            {t("nav.gallery")}
           </Link>
+          <Link
+            href={`/${locale}/map`}
+            className="hover:opacity-80 transition-opacity"
+          >
+            {t("nav.interactiveMap")}
+          </Link>
+          <Link
+            href={`/${locale}/contact`}
+            className="hover:opacity-80 transition-opacity"
+          >
+            {t("nav.contactUs")}
+          </Link>
+          <Link
+            href={`/${locale}/find-us`}
+            className="hover:opacity-80 transition-opacity"
+          >
+            {t("nav.findUs")}
+          </Link>
+          <LanguageSwitcher className="font-medium" />
         </nav>
       </div>
 
       {/* Main Header */}
       <div className="bg-[#C2B49B] h-26 px-4 md:px-8 flex items-center justify-between shadow-md">
         <div className="shrink-0">
-          <Link href="/">
+          <Link href={`/${locale}`}>
             <Image
               src="/img/logo.png"
               alt="The Lake Logo"
@@ -141,10 +157,10 @@ const Header = () => {
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
             <Link
-              href="/the-lake-lifestyle"
+              href={`/${locale}/the-lake-lifestyle`}
               className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors flex items-center gap-1"
             >
-              THE LAKE LIFESTYLE
+              {t("nav.lakeLyfestyle")}
               <svg
                 className={`w-4 h-4 transition-transform ${
                   isDropdownOpen ? "rotate-180" : ""
@@ -182,46 +198,46 @@ const Header = () => {
             )}
           </div>
           <Link
-            href="/snohetta"
+            href={`/${locale}/snohetta`}
             className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
           >
-            SNOHETTA
+            {t("nav.snohetta")}
           </Link>
           <Link
-            href="/services-for-you"
+            href={`/${locale}/services-for-you`}
             className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
           >
-            SERVICES FOR YOU
+            {t("nav.servicesForYou")}
           </Link>
           <Link
-            href="/bar-kitchen"
+            href={`/${locale}/bar-kitchen`}
             className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
           >
-            BAR & KITCHEN
+            {t("nav.barKitchen")}
           </Link>
           <Link
-            href="/spa-wellness"
+            href={`/${locale}/spa-wellness`}
             className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
           >
-            SPA & WELLNESS
+            {t("nav.spaWellness")}
           </Link>
           <Link
-            href="/whats-on"
+            href={`/${locale}/whats-on`}
             className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
           >
-            WHATS ON*
+            {t("nav.whatsOn")}
           </Link>
         </nav>
 
         <div className="hidden 2xl:flex items-center gap-4 shrink-0">
-          <Link href="/own-a-house">
+          <Link href={`/${locale}/own-a-house`}>
             <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
-              OWN A HOUSE
+              {t("buttons.ownAHouse")}
             </button>
           </Link>
-          <Link href="/enquire">
+          <Link href={`/${locale}/enquire`}>
             <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
-              ENQUIRE
+              {t("buttons.enquire")}
             </button>
           </Link>
         </div>
@@ -265,7 +281,7 @@ const Header = () => {
                 onClick={handleMobileLifestyleClick}
                 className="w-full text-left text-black uppercase tracking-wide font-medium py-3 flex items-center justify-between gap-2 hover:text-[#ED5C3F] transition-colors"
               >
-                <span className="flex-1">THE LAKE LIFESTYLE</span>
+                <span className="flex-1">{t("nav.lakeLyfestyle")}</span>
                 <svg
                   className={`w-4 h-4 shrink-0 transition-transform ${
                     isDropdownOpen ? "rotate-180" : ""
@@ -298,96 +314,97 @@ const Header = () => {
               )}
             </div>
             <Link
-              href="/snohetta"
+              href={`/${locale}/snohetta`}
               className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              SNOHETTA
+              {t("nav.snohetta")}
             </Link>
             <Link
-              href="/services-for-you"
+              href={`/${locale}/services-for-you`}
               className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              SERVICES FOR YOU
+              {t("nav.servicesForYou")}
             </Link>
             <Link
-              href="/bar-kitchen"
+              href={`/${locale}/bar-kitchen`}
               className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              BAR & KITCHEN
+              {t("nav.barKitchen")}
             </Link>
             <Link
-              href="/spa-wellness"
+              href={`/${locale}/spa-wellness`}
               className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              SPA & WELLNESS
+              {t("nav.spaWellness")}
             </Link>
             <Link
-              href="/whats-on"
+              href={`/${locale}/whats-on`}
               className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              WHATS ON*
+              {t("nav.whatsOn")}
             </Link>
 
             <div className="flex flex-col gap-3 mt-4">
               <Link
-                href="/own-a-house"
+                href={`/${locale}/own-a-house`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
-                  OWN A HOUSE
+                  {t("buttons.ownAHouse")}
                 </button>
               </Link>
-              <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link
+                href={`/${locale}/enquire`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
-                  ENQUIRE
+                  {t("buttons.enquire")}
                 </button>
               </Link>
             </div>
 
             <div className="lg:hidden flex flex-col gap-2 mt-4 pt-4 border-t border-[#B5A88E]">
               <Link
-                href="/about"
+                href={`/${locale}/about`}
                 className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                About Us
+                {t("nav.aboutUs")}
               </Link>
               <Link
-                href="/gallery"
+                href={`/${locale}/gallery`}
                 className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Gallery
+                {t("nav.gallery")}
               </Link>
               <Link
-                href="/map"
+                href={`/${locale}/map`}
                 className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Interactive Map
+                {t("nav.interactiveMap")}
               </Link>
               <Link
-                href="/contact"
+                href={`/${locale}/contact`}
                 className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Contact us
+                {t("nav.contactUs")}
               </Link>
               <Link
-                href="/find-us"
+                href={`/${locale}/find-us`}
                 className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Find us
+                {t("nav.findUs")}
               </Link>
-              <button className="text-black py-2 text-sm text-left font-medium hover:text-[#ED5C3F] transition-colors">
-                ENG/GEO
-              </button>
+              <LanguageSwitcher className="py-2 text-sm text-left font-medium" />
             </div>
           </nav>
         </div>
