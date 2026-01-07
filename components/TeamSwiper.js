@@ -1,52 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { motion, useInView } from "framer-motion";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 
 const TeamSwiper = ({
-  // ტექსტები
   title = "TEAM",
   members = [],
-  // ფერები
   backgroundColor = "#ffffff",
   titleColor = "#000000",
   cardBackgroundColor = "#F7EAD7",
   nameColor = "#312618",
   positionColor = "#312618",
   descriptionColor = "#312618",
-  // ფონტის სიმძიმე
   titleWeight = "400",
   nameWeight = "400",
   positionWeight = "400",
   descriptionWeight = "400",
-  // ტექსტის ტრანსფორმაცია
   titleTransform = "uppercase",
   nameTransform = "none",
   positionTransform = "none",
   descriptionTransform = "none",
-  // Swiper settings
   autoplay = true,
   autoplayDelay = 3000,
   loop = true,
 }) => {
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
     <section
+      ref={sectionRef}
       className="relative w-full py-8 md:py-5"
       style={{ backgroundColor }}
     >
       {/* სათაური */}
       {title && (
         <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12 mb-4 md:mb-4">
-          <h2
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
             className="text-center tracking-wide text-[28px] md:text-[36px] lg:text-[42px]"
             style={{
               color: titleColor,
@@ -55,13 +56,17 @@ const TeamSwiper = ({
             }}
           >
             {title}
-          </h2>
+          </motion.h2>
         </div>
       )}
 
-      {/* Swiper - სრული სიგანე */}
-      <div className="w-full relative">
-        {/* Max width wrapper for large screens */}
+      {/* Swiper */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="w-full relative"
+      >
         <div className="mx-auto" style={{ maxWidth: "2560px" }}>
           <Swiper
             onSwiper={setSwiperInstance}
@@ -93,24 +98,37 @@ const TeamSwiper = ({
           >
             {members.map((member, index) => (
               <SwiperSlide key={index}>
-                <div className="group cursor-pointer">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
+                  className="group cursor-pointer"
+                >
                   {/* სურათი */}
                   <div className="relative w-full h-[290px] md:h-[365px] overflow-hidden mb-0">
-                    <Image
-                      src={member.image}
-                      alt={member.name || "Team member"}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 480px) 280px, (max-width: 768px) 320px, 430px"
-                    />
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.4 }}
+                      className="w-full h-full"
+                    >
+                      <Image
+                        src={member.image}
+                        alt={member.name || "Team member"}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 480px) 280px, (max-width: 768px) 320px, 430px"
+                      />
+                    </motion.div>
                   </div>
 
                   {/* ინფორმაცია */}
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={isInView ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
                     className="p-4 md:p-6"
                     style={{ backgroundColor: cardBackgroundColor }}
                   >
-                    {/* სახელი და გვარი */}
                     {member.name && (
                       <h3
                         className="text-[18px] md:text-[20px] mb-1"
@@ -124,7 +142,6 @@ const TeamSwiper = ({
                       </h3>
                     )}
 
-                    {/* პოზიცია */}
                     {member.position && (
                       <p
                         className="text-[14px] md:text-[15px] mb-2"
@@ -138,7 +155,6 @@ const TeamSwiper = ({
                       </p>
                     )}
 
-                    {/* აღწერა */}
                     {member.description && (
                       <p
                         className="text-[13px] md:text-[14px] leading-relaxed"
@@ -151,17 +167,24 @@ const TeamSwiper = ({
                         {member.description}
                       </p>
                     )}
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
 
-          {/* Custom Navigation Buttons - ქვემოთ */}
-          <div className="flex justify-center gap-4 mt-8">
-            <button
+          {/* Navigation Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex justify-center gap-4 mt-8"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => swiperInstance?.slidePrev()}
-              className="group flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="group flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full transition-all duration-300 cursor-pointer"
               style={{
                 backgroundColor: "rgba(247, 234, 215, 0.95)",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -173,11 +196,13 @@ const TeamSwiper = ({
                 strokeWidth={2}
                 style={{ color: "#312618" }}
               />
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => swiperInstance?.slideNext()}
-              className="group flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full transition-all duration-300 hover:scale-105 cursor-pointer"
+              className="group flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full transition-all duration-300 cursor-pointer"
               style={{
                 backgroundColor: "rgba(247, 234, 215, 0.95)",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -189,10 +214,10 @@ const TeamSwiper = ({
                 strokeWidth={2}
                 style={{ color: "#312618" }}
               />
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

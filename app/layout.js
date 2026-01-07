@@ -76,7 +76,7 @@ const tbcContracticaCaps = localFont({
 export default function RootLayout({ children }) {
   return (
     <html className={`${tbcContractica.variable} ${tbcContracticaCaps.variable}`}>
-      <body>
+      <body >
         {children}
       </body>
     </html>

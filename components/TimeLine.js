@@ -1,28 +1,66 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+
 const Timeline = ({
-  // ტექსტები
   items = [],
-  // ფერები
   backgroundColor = "#e8dfd0",
   lineColor = "#ED5C3F",
   dotColor = "#ED5C3F",
   yearColor = "#000000",
   titleColor = "#000000",
   descriptionColor = "#000000",
-  // ფონტის სიმძიმე
   yearWeight = "400",
   titleWeight = "700",
   descriptionWeight = "400",
-  // ტექსტის ტრანსფორმაცია
   yearTransform = "none",
   titleTransform = "none",
   descriptionTransform = "none",
-  // დოტის ზომა
   dotSize = "14px",
 }) => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  const lineVariants = {
+    hidden: { scaleX: 0 },
+    visible: {
+      scaleX: 1,
+      transition: {
+        duration: 1.5,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.3 + i * 0.2,
+        duration: 0.6,
+      },
+    }),
+  };
+
+  const dotVariants = {
+    hidden: { scale: 0 },
+    visible: (i) => ({
+      scale: 1,
+      transition: {
+        delay: 0.5 + i * 0.2,
+        duration: 0.4,
+        type: "spring",
+        stiffness: 200,
+      },
+    }),
+  };
+
   return (
     <section
+      ref={sectionRef}
       className="relative w-full py-12 md:py-16"
       style={{ backgroundColor }}
     >
@@ -30,15 +68,22 @@ const Timeline = ({
         {/* DESKTOP VERSION */}
         <div className="hidden md:block relative">
           {/* ხაზი */}
-          <div
-            className="absolute left-[2%] right-[2%] top-1/2 h-px"
+          <motion.div
+            variants={lineVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="absolute left-[2%] right-[2%] top-1/2 h-px origin-left"
             style={{ backgroundColor: lineColor }}
           />
 
           <div className="relative flex justify-between px-[2%]">
             {items.map((item, i) => (
-              <div
+              <motion.div
                 key={i}
+                custom={i}
+                variants={itemVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
                 className="relative flex flex-col items-center max-w-[200px]"
               >
                 {/* წელი */}
@@ -54,7 +99,13 @@ const Timeline = ({
                 </div>
 
                 {/* დოტი */}
-                <div className="absolute top-1/2 -translate-y-1/2">
+                <motion.div
+                  custom={i}
+                  variants={dotVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  className="absolute top-1/2 -translate-y-1/2"
+                >
                   <span
                     className="block rounded-full"
                     style={{
@@ -64,11 +115,10 @@ const Timeline = ({
                       boxShadow: `0 0 0 2px ${dotColor}35`,
                     }}
                   />
-                </div>
+                </motion.div>
 
                 {/* ტექსტები */}
                 <div className="mt-10 text-center space-y-2">
-                  {/* სათაური */}
                   {item.title && (
                     <h3
                       className="leading-tight text-[14px] md:text-[16px] lg:text-[18px]"
@@ -82,7 +132,6 @@ const Timeline = ({
                     </h3>
                   )}
 
-                  {/* აღწერა */}
                   {item.description && (
                     <p
                       className="leading-relaxed text-[13px] md:text-[14px]"
@@ -96,7 +145,7 @@ const Timeline = ({
                     </p>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -105,15 +154,22 @@ const Timeline = ({
         <div className="block md:hidden">
           <div className="relative max-w-[340px] mx-auto px-4">
             {/* ვერტიკალური ხაზი */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px"
+            <motion.div
+              initial={{ scaleY: 0 }}
+              animate={isInView ? { scaleY: 1 } : {}}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px origin-top"
               style={{ backgroundColor: lineColor }}
             />
 
             <div className="space-y-10">
               {items.map((item, i) => (
-                <div
+                <motion.div
                   key={i}
+                  custom={i}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
                   className="relative flex items-center justify-center gap-6"
                 >
                   {/* მარცხენა - წელი */}
@@ -131,7 +187,13 @@ const Timeline = ({
                   </div>
 
                   {/* დოტი */}
-                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <motion.div
+                    custom={i}
+                    variants={dotVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                  >
                     <span
                       className="block rounded-full"
                       style={{
@@ -141,7 +203,7 @@ const Timeline = ({
                         boxShadow: `0 0 0 2px ${dotColor}35`,
                       }}
                     />
-                  </div>
+                  </motion.div>
 
                   {/* მარჯვენა - ტექსტები */}
                   <div className="w-[100px] shrink-0 pl-6 space-y-1">
@@ -170,7 +232,7 @@ const Timeline = ({
                       </p>
                     )}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>

@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { motion, useInView } from "framer-motion";
 
 export default function PartnersSlider() {
   const trackRef = useRef(null);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true });
 
   useEffect(() => {
     const track = trackRef.current;
@@ -34,15 +37,20 @@ export default function PartnersSlider() {
     { src: "/img/partners/salt.webp", alt: "salt logo" },
   ];
 
-  // დუბლირება უწყვეტი ანიმაციისთვის (5-ჯერ)
   const repeatedPartners = Array(5).fill(partners).flat();
 
   return (
     <section
+      ref={sectionRef}
       className="relative h-[200px] overflow-hidden"
       id="contact-partners-section"
     >
-      <div className="absolute inset-0">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 1 }}
+        className="absolute inset-0"
+      >
         <Image
           src="/lake-transformed.webp"
           alt="Lake background"
@@ -50,20 +58,32 @@ export default function PartnersSlider() {
           className="object-cover object-center w-auto h-auto"
           priority
         />
-      </div>
-      <div className="absolute inset-0 bg-black/60"></div>
+      </motion.div>
+      
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 0.6 } : {}}
+        transition={{ duration: 1 }}
+        className="absolute inset-0 bg-black/60"
+      />
 
       <div className="relative h-full flex items-center pt-20 pb-20">
-        {/* Max width wrapper for large screens */}
-        <div className="w-full mx-auto" style={{ maxWidth: '2560px' }}>
-          <div className="w-full overflow-hidden">
+        <div className="w-full mx-auto" style={{ maxWidth: "2560px" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="w-full overflow-hidden"
+          >
             <div
               className="flex animate-scroll w-fit hover:animation-paused"
               ref={trackRef}
             >
               {repeatedPartners.map((partner, index) => (
-                <div
+                <motion.div
                   key={index}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
                   className="text-white max-w-[300px] px-[60px] max-md:px-[30px] max-[480px]:px-5 whitespace-nowrap flex items-center justify-center shrink-0 transition-colors duration-300 hover:text-[#d3b473]"
                 >
                   <Image
@@ -73,10 +93,10 @@ export default function PartnersSlider() {
                     height={80}
                     className="object-contain w-auto h-auto"
                   />
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

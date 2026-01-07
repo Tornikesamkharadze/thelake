@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
 
 const ContactWithImage = ({
   image,
@@ -14,23 +15,28 @@ const ContactWithImage = ({
   backgroundColor = "#C2B49B",
   textBoxColor = "#F7EAD7",
   imageAlt = "Contact Image",
-  // ფერები
   titleColor = "#000000",
   infoColor = "#000000",
-  // ფონტის ზომები - რესპონსიული
   titleSize = { mobile: "24px", tablet: "28px", desktop: "32px" },
   infoSize = { mobile: "16px", tablet: "18px", desktop: "20px" },
-  // ფონტის სიმძიმე
   titleWeight = "400",
   infoWeight = "400",
-  // ტექსტის ტრანსფორმაცია
   titleTransform = "uppercase",
 }) => {
   const isImageRight = imagePosition === "right";
   const textBoxRef = useRef(null);
+  const sectionRef = useRef(null);
   const [minImageHeight, setMinImageHeight] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  // ტექსტ-ბოქსის სიმაღლის გაზომვა
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     const updateHeight = () => {
       if (textBoxRef.current && window.innerWidth >= 768) {
@@ -48,7 +54,6 @@ const ContactWithImage = ({
     return () => window.removeEventListener("resize", updateHeight);
   }, [title, location, phone, email]);
 
-  // თუ size string-ია, გადავიყვანოთ object-ად
   const getTitleSize =
     typeof titleSize === "string"
       ? { mobile: titleSize, tablet: titleSize, desktop: titleSize }
@@ -58,7 +63,6 @@ const ContactWithImage = ({
       ? { mobile: infoSize, tablet: infoSize, desktop: infoSize }
       : infoSize;
 
-  // CSS clamp() function for fluid typography
   const getResponsiveSize = (sizes) => {
     const mobile = parseFloat(sizes.mobile);
     const desktop = parseFloat(sizes.desktop);
@@ -67,20 +71,33 @@ const ContactWithImage = ({
     }px + 1vw, ${sizes.desktop})`;
   };
 
+  const contactItems = [
+    { content: location, href: locationUrl, external: true },
+    { content: phone, href: `tel:${phone.replace(/\s/g, "")}`, external: false },
+    { content: email, href: `mailto:${email}`, external: false },
+  ];
+
   return (
-    <section className="relative py-16 md:py-24" style={{ backgroundColor }}>
+    <section
+      ref={sectionRef}
+      className="relative py-16 md:py-24 overflow-hidden"
+      style={{ backgroundColor }}
+    >
       <div className="container mx-auto px-4">
         <div
           className={`flex ${
             isImageRight ? "md:justify-start" : "md:justify-end"
           }`}
         >
-          {/* მთავარი კონტეინერი */}
           <div className="relative w-full" style={{ maxWidth: "750px" }}>
-            {/* ტელე flex column, დესქტოპზე relative positioning */}
             <div className="flex flex-col md:block">
               {/* სურათის კონტეინერი */}
-              <div className="relative w-full overflow-hidden">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.8 }}
+                className="relative w-full overflow-hidden"
+              >
                 <div
                   className="relative w-full min-h-[350px] md:min-h-[500px]"
                   style={{
@@ -96,11 +113,14 @@ const ContactWithImage = ({
                     sizes="(max-width: 768px) 100vw, 750px"
                   />
                 </div>
-              </div>
+              </motion.div>
 
               {/* ტექსტ ბოქსი */}
-              <div
+              <motion.div
                 ref={textBoxRef}
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.2 }}
                 className={`
                   relative 
                   -mt-12 mx-4 
@@ -123,7 +143,10 @@ const ContactWithImage = ({
                   style={{ backgroundColor: textBoxColor }}
                 >
                   {/* სათაური */}
-                  <h2
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                     className="mb-10 md:mb-12 lg:mb-16 text-center tracking-[0.3em]"
                     style={{
                       color: titleColor,
@@ -133,65 +156,64 @@ const ContactWithImage = ({
                     }}
                   >
                     {title}
-                  </h2>
+                  </motion.h2>
 
                   {/* ინფორმაცია */}
                   <div className="space-y-8 md:space-y-10">
-                    {/* ლოკაცია */}
-                    {location && (
-                      <address className="not-italic border-b border-gray-300 pb-8 md:pb-10">
-                        <a
-                          href={locationUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-center block hover:opacity-70 transition-opacity"
-                          style={{
-                            color: infoColor,
-                            fontSize: getResponsiveSize(getInfoSize),
-                            fontWeight: infoWeight,
-                          }}
-                        >
-                          {location}
-                        </a>
-                      </address>
-                    )}
-
-                    {/* ტელეფონი */}
-                    {phone && (
-                      <div className="text-center border-b border-gray-300 pb-8 md:pb-10">
-                        <a
-                          href={`tel:${phone.replace(/\s/g, "")}`}
-                          className="hover:opacity-70 transition-opacity"
-                          style={{
-                            color: infoColor,
-                            fontSize: getResponsiveSize(getInfoSize),
-                            fontWeight: infoWeight,
-                          }}
-                        >
-                          {phone}
-                        </a>
-                      </div>
-                    )}
-
-                    {/* ელ-ფოსტა */}
-                    {email && (
-                      <div className="text-center">
-                        <a
-                          href={`mailto:${email}`}
-                          className="hover:opacity-70 transition-opacity"
-                          style={{
-                            color: infoColor,
-                            fontSize: getResponsiveSize(getInfoSize),
-                            fontWeight: infoWeight,
-                          }}
-                        >
-                          {email}
-                        </a>
-                      </div>
-                    )}
+                    {contactItems.map((item, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                        className={
+                          index < contactItems.length - 1
+                            ? "border-b border-gray-300 pb-8 md:pb-10"
+                            : ""
+                        }
+                      >
+                        {index === 0 ? (
+                          <address className="not-italic">
+                            <motion.a
+                              href={item.href}
+                              target={item.external ? "_blank" : undefined}
+                              rel={
+                                item.external
+                                  ? "noopener noreferrer"
+                                  : undefined
+                              }
+                              whileHover={{ scale: 1.02 }}
+                              className="text-center block hover:opacity-70 transition-opacity"
+                              style={{
+                                color: infoColor,
+                                fontSize: getResponsiveSize(getInfoSize),
+                                fontWeight: infoWeight,
+                              }}
+                            >
+                              {item.content}
+                            </motion.a>
+                          </address>
+                        ) : (
+                          <div className="text-center">
+                            <motion.a
+                              href={item.href}
+                              whileHover={{ scale: 1.02 }}
+                              className="hover:opacity-70 transition-opacity"
+                              style={{
+                                color: infoColor,
+                                fontSize: getResponsiveSize(getInfoSize),
+                                fontWeight: infoWeight,
+                              }}
+                            >
+                              {item.content}
+                            </motion.a>
+                          </div>
+                        )}
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

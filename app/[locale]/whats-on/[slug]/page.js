@@ -5,7 +5,7 @@ import { newsData } from "@/components/whats-on/newsData";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const news = newsData.find((item) => item.slug === slug);
 
   if (!news) {
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }) {
       title: `${news.title} | The Lake by Placemakers`,
       description: news.excerpt.substring(0, 160),
       type: "article",
-      locale: "en_US",
+      locale: locale === 'ka' ? 'ka_GE' : 'en_US',
       siteName: "The Lake",
       images: [news.image || "/og-image.png"],
       article: {
@@ -45,7 +45,11 @@ export async function generateMetadata({ params }) {
       images: [news.image || "/og-image.png"],
     },
     alternates: {
-      canonical: `/whats-on/${slug}`,
+      canonical: `/${locale}/whats-on/${slug}`,
+      languages: {
+        'en': `/en/whats-on/${slug}`,
+        'ka': `/ka/whats-on/${slug}`,
+      },
     },
   };
 }
@@ -76,7 +80,18 @@ export default async function NewsPage({ params }) {
 }
 
 export async function generateStaticParams() {
-  return newsData.map((item) => ({
-    slug: item.slug,
-  }));
+  // Generate params for both locales
+  const locales = ['en', 'ka'];
+  const params = [];
+  
+  locales.forEach(locale => {
+    newsData.forEach(item => {
+      params.push({
+        locale,
+        slug: item.slug,
+      });
+    });
+  });
+  
+  return params;
 }

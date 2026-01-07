@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
 
 const ImageTextSection = ({
   image,
@@ -13,34 +14,29 @@ const ImageTextSection = ({
   textBoxColor = "#d4c4b0",
   imageAlt = "",
   centerSingle = false,
-  // ფერები
   titleColor = "#000000",
   subtitleColor = "#000000",
   descriptionColor = "#000000",
-  // ფონტის ზომები - რესპონსიული (mobile / tablet / desktop)
   titleSize = { mobile: "18px", tablet: "22px", desktop: "25px" },
   subtitleSize = { mobile: "14px", tablet: "16px", desktop: "19px" },
   descriptionSize = { mobile: "13px", tablet: "16px", desktop: "19px" },
-  // ფონტის სიმძიმე
   titleWeight = "400",
   subtitleWeight = "700",
   descriptionWeight = "400",
-  // ტექსტის ტრანსფორმაცია
   titleTransform = "uppercase",
   subtitleTransform = "none",
   descriptionTransform = "none",
 }) => {
   const isImageRight = imagePosition === "right";
   const textBoxRef = useRef(null);
+  const sectionRef = useRef(null);
   const [minImageHeight, setMinImageHeight] = useState(0);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  // ტექსტ-ბოქსის სიმაღლის გაზომვა
   useEffect(() => {
     const updateHeight = () => {
       if (textBoxRef.current && window.innerWidth >= 768) {
-        // დესქტოპზე
         const textBoxHeight = textBoxRef.current.offsetHeight;
-        // ფოტო უნდა იყოს ტექსტ-ბოქსზე 20% მეტი მინიმუმ, მაგრამ არანაკლებ 500px
         setMinImageHeight(Math.max(textBoxHeight * 1.2, 500));
       } else {
         setMinImageHeight(0);
@@ -49,13 +45,11 @@ const ImageTextSection = ({
 
     updateHeight();
     window.addEventListener("resize", updateHeight);
-    // დაყოვნებით კიდევ ერთხელ, რომ ფონტები ჩაიტვირთოს
     setTimeout(updateHeight, 100);
 
     return () => window.removeEventListener("resize", updateHeight);
   }, [title, subtitle, description]);
 
-  // თუ titleSize string-ია, გადავიყვანოთ object-ად
   const getTitleSize =
     typeof titleSize === "string"
       ? { mobile: titleSize, tablet: titleSize, desktop: titleSize }
@@ -73,7 +67,6 @@ const ImageTextSection = ({
         }
       : descriptionSize;
 
-  // CSS clamp() function for fluid typography
   const getResponsiveSize = (sizes) => {
     const mobile = parseFloat(sizes.mobile);
     const desktop = parseFloat(sizes.desktop);
@@ -82,8 +75,22 @@ const ImageTextSection = ({
     }px + 1vw, ${sizes.desktop})`;
   };
 
+  // Mobile detection for safer animations
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
-    <section className="relative py-16 md:py-24" style={{ backgroundColor }}>
+    <section
+      ref={sectionRef}
+      className="relative py-16 md:py-24 overflow-hidden"
+      style={{ backgroundColor }}
+    >
       <div className="container mx-auto px-4">
         <div
           className={`flex ${
@@ -94,13 +101,15 @@ const ImageTextSection = ({
               : "md:justify-end"
           }`}
         >
-          {/* მთავარი კონტეინერი */}
           <div className="relative w-full" style={{ maxWidth: "750px" }}>
-            {/* ტელე flex column, დესქტოპზე relative positioning */}
             <div className="flex flex-col md:block">
               {/* სურათის კონტეინერი */}
-              <div className="relative w-full overflow-hidden">
-                {/* ტელეზე 350px, დესქტოპზე 500px ან დინამიური */}
+              <motion.div
+                initial={{ opacity: 0, x: isMobile ? 0 : (isImageRight ? 50 : -50) }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8 }}
+                className="relative w-full overflow-hidden"
+              >
                 <div
                   className="relative w-full min-h-[350px] md:min-h-[500px]"
                   style={{
@@ -116,11 +125,14 @@ const ImageTextSection = ({
                     sizes="(max-width: 768px) 100vw, 750px"
                   />
                 </div>
-              </div>
+              </motion.div>
 
               {/* ტექსტ ბოქსი */}
-              <div
+              <motion.div
                 ref={textBoxRef}
+                initial={{ opacity: 0, x: isMobile ? 0 : (isImageRight ? -50 : 50) }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.2 }}
                 className={`
                   relative 
                   -mt-12 mx-4 
@@ -142,7 +154,10 @@ const ImageTextSection = ({
                   style={{ backgroundColor: textBoxColor }}
                 >
                   {/* სათაური */}
-                  <h2
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                     className="mb-3 md:mb-4 lg:mb-6 tracking-wide"
                     style={{
                       color: titleColor,
@@ -152,11 +167,14 @@ const ImageTextSection = ({
                     }}
                   >
                     {title}
-                  </h2>
+                  </motion.h2>
 
                   {/* ქვესათაური */}
                   {subtitle && (
-                    <h3
+                    <motion.h3
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={isInView ? { opacity: 1, y: 0 } : {}}
+                      transition={{ duration: 0.6, delay: 0.5 }}
                       className="mb-3 md:mb-4 lg:mb-6"
                       style={{
                         color: subtitleColor,
@@ -166,11 +184,14 @@ const ImageTextSection = ({
                       }}
                     >
                       {subtitle}
-                    </h3>
+                    </motion.h3>
                   )}
 
                   {/* აღწერა */}
-                  <p
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.6 }}
                     className="leading-relaxed"
                     style={{
                       color: descriptionColor,
@@ -180,9 +201,9 @@ const ImageTextSection = ({
                     }}
                   >
                     {description}
-                  </p>
+                  </motion.p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

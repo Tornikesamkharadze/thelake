@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { motion, useInView } from "framer-motion";
 
 export default function StayInTouchWithContact({
   showAddressBox = true,
@@ -22,12 +23,22 @@ export default function StayInTouchWithContact({
   onSubmit = null,
 }) {
   const t = useTranslations("contact");
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [isMobile, setIsMobile] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
   });
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,9 +57,34 @@ export default function StayInTouchWithContact({
     });
   };
 
+  const inputVariants = {
+    hidden: { opacity: 0, x: isMobile ? 0 : -30 },
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: 0.5 + i * 0.1,
+        duration: 0.5,
+      },
+    }),
+  };
+
+  const contactInfoVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.6 + i * 0.1,
+        duration: 0.5,
+      },
+    }),
+  };
+
   return (
-    <div className="relative" id="contact-section">
+    <div className="relative overflow-x-hidden md:overflow-x-visible" id="contact-section">
       <section
+        ref={sectionRef}
         className="relative px-4 pt-[120px] pb-16"
         style={{
           backgroundColor: backgroundColor,
@@ -71,7 +107,10 @@ export default function StayInTouchWithContact({
               !showAddressBox ? "max-w-[700px] w-full" : ""
             }`}
           >
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
               className={
                 !showAddressBox
                   ? "p-10 md:p-16 lg:p-20 shadow-[0_10px_25px_rgba(0,0,0,0.1)]"
@@ -83,14 +122,17 @@ export default function StayInTouchWithContact({
                   : "transparent",
               }}
             >
-              <h2
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.2 }}
                 className={`text-[33px] uppercase tracking-widest font-medium tbc-medium ${
                   !showAddressBox ? "text-center mb-10 md:mb-12" : ""
                 }`}
                 style={{ color: formTitleColor }}
               >
                 {t("title")}
-              </h2>
+              </motion.h2>
 
               <form
                 onSubmit={handleSubmit}
@@ -98,7 +140,12 @@ export default function StayInTouchWithContact({
                   !showAddressBox ? "w-full" : "max-w-[400px]"
                 }`}
               >
-                <input
+                <motion.input
+                  custom={0}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  whileFocus={{ scale: 1.02 }}
                   type="text"
                   name="name"
                   placeholder={t("namePlaceholder")}
@@ -118,7 +165,12 @@ export default function StayInTouchWithContact({
                   required
                 />
 
-                <input
+                <motion.input
+                  custom={1}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  whileFocus={{ scale: 1.02 }}
                   type="email"
                   name="email"
                   placeholder={t("emailPlaceholder")}
@@ -138,7 +190,13 @@ export default function StayInTouchWithContact({
                   required
                 />
 
-                <div className="flex gap-4 items-stretch w-full">
+                <motion.div
+                  custom={2}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  className="flex gap-4 items-stretch w-full"
+                >
                   <input
                     type="tel"
                     name="phone"
@@ -163,7 +221,9 @@ export default function StayInTouchWithContact({
                     required
                   />
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     type="submit"
                     className="text-white border-none px-6 py-4 cursor-pointer transition-colors duration-300 flex items-center justify-center w-[60px] h-14 shrink-0"
                     style={{
@@ -183,29 +243,41 @@ export default function StayInTouchWithContact({
                       height={20}
                       className="brightness-0 invert"
                     />
-                  </button>
-                </div>
+                  </motion.button>
+                </motion.div>
               </form>
-            </div>
+            </motion.div>
           </div>
 
           {/* Contact Info Box */}
           {showAddressBox && (
             <div className="relative">
-              <div
+              <motion.div
+                initial={{ opacity: 0, x: isMobile ? 0 : 50 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.3 }}
                 className="shadow-[0_10px_25px_rgba(0,0,0,0.1)] p-8 px-6 relative z-10 -mb-25 max-[1023px]:mb-0 max-w-[350px] max-[1023px]:max-w-full mx-auto mt-[70px]"
                 style={{ backgroundColor: addressBoxBg }}
               >
-                <h3
+                <motion.h3
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.5 }}
                   className="font-medium text-[27px] uppercase text-center mb-8 tracking-widest tbc-medium"
                   style={{ color: addressBoxTitleColor }}
                 >
                   {t("contactTitle")}
-                </h3>
+                </motion.h3>
                 <div className="flex flex-col text-center">
                   {/* Address */}
-                  <div>
-                    <a
+                  <motion.div
+                    custom={0}
+                    variants={contactInfoVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                  >
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
                       href="https://maps.app.goo.gl/m2F9LwKSAY6TMB5ZA"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -219,14 +291,20 @@ export default function StayInTouchWithContact({
                       <p className="text-base mb-0 whitespace-pre-line">
                         {t("address")}
                       </p>
-                    </a>
-                  </div>
+                    </motion.a>
+                  </motion.div>
 
                   <hr className="border-none border-t border-black my-4" />
 
                   {/* Phone */}
-                  <div>
-                    <a
+                  <motion.div
+                    custom={1}
+                    variants={contactInfoVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                  >
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
                       href="https://web.whatsapp.com/send?phone=+995511553333"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -238,14 +316,21 @@ export default function StayInTouchWithContact({
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
                       <p className="text-base mb-0">{t("phone")}</p>
-                    </a>
-                  </div>
+                    </motion.a>
+                  </motion.div>
 
                   <hr className="border-none border-t border-black my-4" />
 
                   {/* Email & Website */}
-                  <div className="flex flex-col">
-                    <a
+                  <motion.div
+                    custom={2}
+                    variants={contactInfoVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                    className="flex flex-col"
+                  >
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
                       href={`mailto:${t("email")}`}
                       className="no-underline transition-colors duration-300 tbc-regular"
                       style={{ color: linkColor }}
@@ -255,9 +340,10 @@ export default function StayInTouchWithContact({
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
                       <p className="text-base mb-0">{t("email")}</p>
-                    </a>
+                    </motion.a>
 
-                    <a
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
                       href="https://www.thelake.ge"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -269,10 +355,10 @@ export default function StayInTouchWithContact({
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
                       <p className="text-base mb-0">{t("website")}</p>
-                    </a>
-                  </div>
+                    </motion.a>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           )}
         </div>

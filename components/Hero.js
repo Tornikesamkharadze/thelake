@@ -1,4 +1,7 @@
-// components/Hero.jsx
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function Hero({
   image,
   video,
@@ -6,7 +9,7 @@ export default function Hero({
   subtitle,
   height = "60vh",
   uppercase = false,
-  highlightWords = [], // მაგ: ["LAKE", "HOME"]
+  highlightWords = [],
 }) {
   const renderTitle = () => {
     if (!title) return null;
@@ -14,7 +17,6 @@ export default function Hero({
     if (highlightWords.length > 0) {
       let formattedTitle = title;
 
-      // ყველა highlight სიტყვა შევცვალოთ bold-ით
       highlightWords.forEach((word) => {
         const regex = new RegExp(`(${word})`, "gi");
         formattedTitle = formattedTitle.replace(
@@ -24,14 +26,26 @@ export default function Hero({
       });
 
       return (
-        <h1
-          className="text-5xl font-light mb-4 leading-15" // font-light = 300
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-5xl font-light mb-4 leading-15"
           dangerouslySetInnerHTML={{ __html: formattedTitle }}
         />
       );
     }
 
-    return <h1 className="text-5xl font-normal mb-4">{title}</h1>; // font-normal = 400
+    return (
+      <motion.h1
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className="text-5xl font-normal mb-4"
+      >
+        {title}
+      </motion.h1>
+    );
   };
 
   return (
@@ -40,35 +54,56 @@ export default function Hero({
       style={{ height: `calc(${height} - 148px)` }}
     >
       {/* ვიდეო ან ფოტო */}
-      {video ? (
-        <video
-          src={video}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-        />
-      ) : (
-        <img
-          src={image}
-          alt={title || "Hero"}
-          className="w-full h-full object-cover"
-        />
-      )}
+      <motion.div
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="w-full h-full"
+      >
+        {video ? (
+          <video
+            src={video}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <img
+            src={image}
+            alt={title || "Hero"}
+            className="w-full h-full object-cover"
+          />
+        )}
+      </motion.div>
 
       {/* Overlay */}
       {(title || subtitle) && (
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="absolute inset-0 bg-black/40 flex items-center justify-center"
+        >
           <div
             className={`text-center text-white px-4 ${
               uppercase ? "uppercase" : ""
             }`}
           >
             {renderTitle()}
-            {subtitle && <p className="text-xl font-normal">{subtitle}</p>}
+            {subtitle && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="text-xl font-normal"
+              >
+                {subtitle}
+              </motion.p>
+            )}
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
