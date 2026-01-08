@@ -7,8 +7,14 @@ import TextImageSideSection from "@/components/TextImageSideSection";
 import TextSection from "@/components/TextSection";
 import React, { useEffect } from "react";
 import { scroller, Element } from "react-scroll";
+import { useTranslations, useLocale } from "next-intl";
+import { useParams } from "next/navigation";
 
 const theLakeLifeStyle = () => {
+  const t = useTranslations();
+  const params = useParams();
+  const locale = params.locale || "ka";
+
   useEffect(() => {
     const hash = window.location.hash;
     if (hash) {
@@ -64,8 +70,8 @@ const theLakeLifeStyle = () => {
         textColor="text-white"
         buttons={[
           {
-            text: "ENQUIRE",
-            link: "/contact",
+            text: t("welcome.enquire"),
+            link: `/${locale}/contact`,
             bgColor: "bg-[#E85A4F]",
             textColor: "text-black",
           },
