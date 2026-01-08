@@ -89,7 +89,7 @@ const servicesForYou = () => {
       <TextImageSideSection
         id="business-lounge"
         image="/business-lounge.webp"
-        title="Business lounge"
+        title="business lounge"
         description="A quiet corner for focus and reflection, the Business Lounge and Library offer a calm retreat from the day’s pace. Whether it’s work, reading, or conversation, the space blends comfort with sophistication, lined with curated books, soft light, and views over the lake"
         imagePosition="right"
         backgroundColor="#C2B49B"
