@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useParams } from "next/navigation";
@@ -17,6 +17,20 @@ const Header = () => {
   const t = useTranslations("header");
 
   const locale = params.locale || "ka";
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
 
   const dropdownItems = [
     {
@@ -274,7 +288,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="2xl:hidden bg-[#C2B49B] border-t border-[#B5A88E] shadow-lg">
+        <div className="2xl:hidden fixed inset-x-0 top-[148px] bottom-0 bg-[#C2B49B] border-t border-[#B5A88E] shadow-lg overflow-y-auto">
           <nav className="flex flex-col p-4">
             <div className="border-b border-[#B5A88E] pb-2 mb-2">
               <button
