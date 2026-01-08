@@ -71,5 +71,12 @@
     "phone": "+995 511 55 33 33",
     "email": "info@placemakers.ge",
     "website": "Www.TheLake.ge"
+  },
+  "notFound": {
+    "title": "დაკარგული ტბაში",
+    "description": "შორს გაცურდით ნაპირიდან.<br/>დაბრუნდით მშვიდ წყლებში.",
+    "returnHome": "დაბრუნება ნაპირზე",
+    "exploreProperties": "იყიდე სახლი",
+    "branding": "The Lake by Placemakers"
   }
 }
