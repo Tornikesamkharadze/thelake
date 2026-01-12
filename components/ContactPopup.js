@@ -18,11 +18,37 @@ export default function ContactPopup() {
 
   const handleWhatsApp = () => {
     const phoneNumber = "+995511553333";
-    window.location.href = `whatsapp://send?phone=${phoneNumber}`;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Mobile - open app directly
+      window.location.href = `whatsapp://send?phone=${phoneNumber}`;
+    } else {
+      // Desktop - try app first, fallback to web
+      window.location.href = `whatsapp://send?phone=${phoneNumber}`;
+      setTimeout(() => {
+        window.open(
+          `https://web.whatsapp.com/send?phone=${phoneNumber}`,
+          "_blank"
+        );
+      }, 1500);
+    }
   };
 
   const handleMessenger = () => {
-    window.location.href = "fb-messenger://user-thread/645219515337992";
+    const pageId = "645219515337992";
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Mobile - open app directly
+      window.location.href = `fb-messenger://user-thread/${pageId}`;
+    } else {
+      // Desktop - try app first, fallback to web
+      window.location.href = `fb-messenger://user-thread/${pageId}`;
+      setTimeout(() => {
+        window.open(`https://m.me/${pageId}`, "_blank");
+      }, 1500);
+    }
   };
 
   const popupVariants = {
