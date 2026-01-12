@@ -102,7 +102,7 @@ export function Footer() {
           {/* Social Media Icons */}
           <div className="flex gap-3">
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/thelake.ge/"
               target="_blank"
               rel="noopener noreferrer"
               className={`w-10 h-10 rounded-full ${
@@ -118,7 +118,7 @@ export function Footer() {
               />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/thelake_tba/"
               target="_blank"
               rel="noopener noreferrer"
               className={`w-10 h-10 rounded-full ${
@@ -133,27 +133,7 @@ export function Footer() {
               />
             </a>
             <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`w-10 h-10 rounded-full ${
-                isHomePage ? "bg-[#1A1A1A]" : "bg-[#F7EAD7]"
-              } flex items-center justify-center hover:opacity-80 transition-opacity`}
-              aria-label="X (Twitter)"
-            >
-              <svg
-                className={`w-4 h-4 ${
-                  isHomePage ? "text-[#E8DCC8]" : "text-[#312618]"
-                }`}
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-            </a>
-            <a
-              href="https://youtube.com"
+              href="https://www.youtube.com/@TheLakeByPlacemakers"
               target="_blank"
               rel="noopener noreferrer"
               className={`w-10 h-10 rounded-full ${

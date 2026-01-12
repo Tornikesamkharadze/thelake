@@ -18,26 +18,11 @@ export default function ContactPopup() {
 
   const handleWhatsApp = () => {
     const phoneNumber = "+995511553333";
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-      window.location.href = `whatsapp://send?phone=${phoneNumber}`;
-      setTimeout(() => {
-        window.location.href = `https://web.whatsapp.com/send?phone=${phoneNumber}`;
-      }, 2000);
-    } else {
-      window.open(
-        `https://web.whatsapp.com/send?phone=${phoneNumber}`,
-        "_blank"
-      );
-    }
+    window.location.href = `whatsapp://send?phone=${phoneNumber}`;
   };
 
   const handleMessenger = () => {
-    window.open(
-      "https://www.facebook.com/messages/t/645219515337992",
-      "_blank"
-    );
+    window.location.href = "fb-messenger://user-thread/645219515337992";
   };
 
   const popupVariants = {
