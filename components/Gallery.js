@@ -23,6 +23,7 @@ const STATIC_IMAGES = {
     "/exterior/5.webp",
   ],
 };
+
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState("Exterior");
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -32,7 +33,6 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // სიმულაცია loading-ის
     const timer = setTimeout(() => {
       setLoading(false);
     }, 300);
@@ -89,12 +89,10 @@ export default function Gallery() {
       <section className="w-full bg-white py-16 md:py-24">
         <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
-            {/* Title - ცენტრში */}
-            <h2 className="text-3xl md:text-4xl text-[#000000] font-normal  flex-1 text-center">
+            <h2 className="text-3xl md:text-4xl text-[#000000] font-normal flex-1 text-center">
               GALLERY
             </h2>
 
-            {/* Filter Buttons - მარჯვნივ */}
             <div className="flex gap-2 text-sm md:text-base items-baseline">
               <button
                 onClick={() => setActiveFilter("Exterior")}
@@ -144,7 +142,7 @@ export default function Gallery() {
                     onClick={() => openLightbox(index)}
                     className="cursor-pointer"
                   >
-                    <div className="relative w-full h-[300px] md:h-[500px] transition-all duration-500">
+                    <div className="relative w-full h-[300px] md:h-[500px]">
                       <img
                         src={image}
                         alt={`Gallery image ${index + 1}`}
@@ -162,6 +160,7 @@ export default function Gallery() {
           )}
         </div>
       </section>
+
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center cursor-pointer"
