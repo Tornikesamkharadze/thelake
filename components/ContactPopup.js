@@ -24,14 +24,11 @@ export default function ContactPopup() {
       // Mobile - open app directly
       window.location.href = `whatsapp://send?phone=${phoneNumber}`;
     } else {
-      // Desktop - try app first, fallback to web
-      window.location.href = `whatsapp://send?phone=${phoneNumber}`;
-      setTimeout(() => {
-        window.open(
-          `https://web.whatsapp.com/send?phone=${phoneNumber}`,
-          "_blank"
-        );
-      }, 1500);
+      // Desktop - open web version directly
+      window.open(
+        `https://web.whatsapp.com/send?phone=${phoneNumber}`,
+        "_blank"
+      );
     }
   };
 
@@ -43,11 +40,8 @@ export default function ContactPopup() {
       // Mobile - open app directly
       window.location.href = `fb-messenger://user-thread/${pageId}`;
     } else {
-      // Desktop - try app first, fallback to web
-      window.location.href = `fb-messenger://user-thread/${pageId}`;
-      setTimeout(() => {
-        window.open(`https://m.me/${pageId}`, "_blank");
-      }, 1500);
+      // Desktop - open web version directly
+      window.open(`https://m.me/${pageId}`, "_blank");
     }
   };
 
