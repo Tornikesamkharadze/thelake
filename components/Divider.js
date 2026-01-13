@@ -15,9 +15,9 @@ export default function Divider({
   return (
     <div
       ref={dividerRef}
-      className={`${bgColor} w-full h-[59px] flex items-center justify-center px-6 overflow-hidden`}
+      className={`${bgColor} w-full h-20 flex items-center justify-center px-6 overflow-hidden`}
     >
-      <div className="border-t py-3 text-center w-full relative">
+      <div className="border-t text-center w-full relative">
         <motion.div
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
