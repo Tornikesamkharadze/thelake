@@ -4,15 +4,15 @@ import Hero from "@/components/Hero";
 import ImageTextSection from "@/components/ImageTextSection";
 
 export const metadata = {
-  title: "Club House by Snøhetta - The Lake by Placemakers",
+  title: "Lake House by Snøhetta - The Lake by Placemakers",
   description:
-    "The Club House, designed by world-renowned Snøhetta studio, is the heart of our lakeside community. A chic gathering space for morning coffee, yoga, cultural events, and evening cocktails with panoramic lake views. Where modern design meets Georgian authenticity.",
+    "The Lake House, designed by world-renowned Snøhetta studio, is the heart of our lakeside community. A chic gathering space for morning coffee, yoga, cultural events, and evening cocktails with panoramic lake views. Where modern design meets Georgian authenticity.",
   keywords: [
-    "Club House Snøhetta",
-    "The Lake Club House",
+    "Lake House Snøhetta",
+    "The Lake Lake House",
     "Snøhetta architecture",
-    "community clubhouse Lisi Lake",
-    "lakeside club Tbilisi",
+    "community Lakehouse Lisi Lake",
+    "lakeside Lake Tbilisi",
     "Norwegian architecture Georgia",
     "cultural events venue",
     "yoga studio Tbilisi",
@@ -26,9 +26,9 @@ export const metadata = {
     "Snøhetta Tbilisi",
   ],
   openGraph: {
-    title: "Club House by Snøhetta | The Lake by Placemakers",
+    title: "Lake House by Snøhetta | The Lake by Placemakers",
     description:
-      "Iconic Club House designed by world-leading Norwegian studio Snøhetta. Morning coffee to late-night gatherings, yoga sessions to art exhibitions, all with stunning lake views.",
+      "Iconic Lake House designed by world-leading Norwegian studio Snøhetta. Morning coffee to late-night gatherings, yoga sessions to art exhibitions, all with stunning lake views.",
     type: "website",
     locale: "en_US",
     siteName: "The Lake",
@@ -36,7 +36,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Club House by Snøhetta - Where Community Comes Together",
+    title: "Lake House by Snøhetta - Where Community Comes Together",
     description:
       "Chic yet grounded. Modern design meets Georgian authenticity. From morning yoga to evening cocktails by the lake.",
     images: ["/og-image.png"],
@@ -52,16 +52,16 @@ const snohetta = () => {
       <Hero
         image="/hero-cover.webp"
         height="100vh"
-        title="Club House By <br/>Snohetta"
-        highlightWords={["Club House By <br/>Snohetta"]}
+        title="Lake House By <br/>Snohetta"
+        highlightWords={["Lake House By <br/>Snohetta"]}
         uppercase={true}
       />
 
       <ImageTextSection
         image="/lake-1.png"
-        title="The Lake house"
+        title="Lake house"
         subtitle=""
-        description="The Lake-house, designed by Snøhetta, the renowned Norwegian architecture studio, is the heart of the lakeside community. Chic yet grounded, it blends modern design with Georgian authenticity. A place to unwind and socialize, from slow morning coffee and lakeside brunches to afternoon yoga sessions, evening cocktails, and late-night fireside gatherings. Enjoy curated cultural events, art exhibitions, and quiet corners to read, work, or simply soak in the panoramic lake views, always offering the perfect setting for every moment of your day."
+        description="Lake-house, designed by Snøhetta, the renowned Norwegian architecture studio, is the heart of the lakeside community. Chic yet grounded, it blends modern design with Georgian authenticity. A place to unwind and socialize, from slow morning coffee and lakeside brunches to afternoon yoga sessions, evening cocktails, and late-night fireside gatherings. Enjoy curated cultural events, art exhibitions, and quiet corners to read, work, or simply soak in the panoramic lake views, always offering the perfect setting for every moment of your day."
         imagePosition="left"
         // ფერები
         titleColor="#000000"

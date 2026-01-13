@@ -28,7 +28,7 @@ export default function Divider({
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className={`text-base md:text-[25px] tracking-[0.4em] ${textColor} ${
+          className={`text-base text-[22px] md:text-[25px] tracking-[0.4em] ${textColor} ${
             uppercase ? "uppercase" : ""
           } relative z-10`}
         >

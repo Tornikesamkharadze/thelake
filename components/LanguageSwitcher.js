@@ -32,7 +32,7 @@ export default function LanguageSwitcher({ className = "" }) {
           locale === "en" ? "font-bold" : ""
         }`}
       >
-        ENG
+        Eng
       </button>
       <span>/</span>
       <button
@@ -41,7 +41,7 @@ export default function LanguageSwitcher({ className = "" }) {
           locale === "ka" ? "font-bold" : ""
         }`}
       >
-        GEO
+        Geo
       </button>
     </div>
   );

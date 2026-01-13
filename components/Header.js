@@ -156,9 +156,9 @@ const Header = () => {
             <Image
               src="/img/logo.png"
               alt="The Lake Logo"
-              width={220}
+              width={177}
               height={60}
-              className="w-auto h-auto object-contain"
+              className="h-auto object-contain"
               priority
             />
           </Link>
