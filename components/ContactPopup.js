@@ -119,7 +119,7 @@ export default function ContactPopup() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 focus:outline-none cursor-pointer bg-transparent border-none p-0"
+        className="fixed bottom-15 right-6 z-50 focus:outline-none cursor-pointer bg-transparent border-none p-0"
         aria-label={isOpen ? "Close contact menu" : "Open contact menu"}
       >
         <motion.img

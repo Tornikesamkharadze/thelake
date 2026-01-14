@@ -35,7 +35,7 @@ const ImageTextSection = ({
 
   useEffect(() => {
     const updateHeight = () => {
-      if (textBoxRef.current && window.innerWidth >= 768) {
+      if (textBoxRef.current && window.innerWidth >= 1280) {
         const textBoxHeight = textBoxRef.current.offsetHeight;
         setMinImageHeight(Math.max(textBoxHeight * 1.2, 500));
       } else {
@@ -79,39 +79,42 @@ const ImageTextSection = ({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => setIsMobile(window.innerWidth < 1280);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 md:py-24 overflow-hidden"
+      className="relative py-16 xl:py-24 overflow-hidden"
       style={{ backgroundColor }}
     >
       <div className="container mx-auto px-4">
         <div
           className={`flex ${
             centerSingle
-              ? "md:justify-center"
+              ? "justify-center"
               : isImageRight
-              ? "md:justify-start"
-              : "md:justify-end"
+              ? "xl:justify-start justify-center"
+              : "xl:justify-end justify-center"
           }`}
         >
           <div className="relative w-full" style={{ maxWidth: "750px" }}>
-            <div className="flex flex-col md:block">
+            <div className="flex flex-col xl:block">
               {/* სურათის კონტეინერი */}
               <motion.div
-                initial={{ opacity: 0, x: isMobile ? 0 : (isImageRight ? 50 : -50) }}
+                initial={{
+                  opacity: 0,
+                  x: isMobile ? 0 : isImageRight ? 50 : -50,
+                }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8 }}
                 className="relative w-full overflow-hidden"
               >
                 <div
-                  className="relative w-full min-h-[350px] md:min-h-[500px]"
+                  className="relative w-full min-h-[350px] xl:min-h-[500px]"
                   style={{
                     minHeight:
                       minImageHeight > 0 ? `${minImageHeight}px` : undefined,
@@ -122,7 +125,7 @@ const ImageTextSection = ({
                     alt={imageAlt || title}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 750px"
+                    sizes="(max-width: 1280px) 100vw, 750px"
                   />
                 </div>
               </motion.div>
@@ -130,27 +133,30 @@ const ImageTextSection = ({
               {/* ტექსტ ბოქსი */}
               <motion.div
                 ref={textBoxRef}
-                initial={{ opacity: 0, x: isMobile ? 0 : (isImageRight ? -50 : 50) }}
+                initial={{
+                  opacity: 0,
+                  x: isMobile ? 0 : isImageRight ? -50 : 50,
+                }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className={`
                   relative 
                   -mt-12 mx-4 
-                  md:absolute
-                  md:mt-0 md:mx-0
+                  xl:absolute
+                  xl:mt-0 xl:mx-0
                   ${
                     isImageRight
-                      ? "md:right-0 md:translate-x-[80%]"
-                      : "md:left-0 md:-translate-x-[80%]"
+                      ? "xl:right-0 xl:translate-x-[80%]"
+                      : "xl:left-0 xl:-translate-x-[80%]"
                   }
-                  md:top-1/2 md:-translate-y-1/2
+                  xl:top-1/2 xl:-translate-y-1/2
                   w-auto 
-                  md:max-w-[600px]
+                  xl:max-w-[600px]
                   z-10
                 `}
               >
                 <div
-                  className="p-6 md:p-8 lg:p-12 shadow-lg"
+                  className="p-6 xl:p-8 lg:p-12 shadow-lg"
                   style={{ backgroundColor: textBoxColor }}
                 >
                   {/* სათაური */}
@@ -158,7 +164,7 @@ const ImageTextSection = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    className="mb-3 md:mb-4 lg:mb-6 tracking-wide"
+                    className="mb-3 xl:mb-4 lg:mb-6 tracking-wide"
                     style={{
                       color: titleColor,
                       fontSize: getResponsiveSize(getTitleSize),
@@ -175,7 +181,7 @@ const ImageTextSection = ({
                       initial={{ opacity: 0, y: 20 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
                       transition={{ duration: 0.6, delay: 0.5 }}
-                      className="mb-3 md:mb-4 lg:mb-6"
+                      className="mb-3 xl:mb-4 lg:mb-6"
                       style={{
                         color: subtitleColor,
                         fontSize: getResponsiveSize(getSubtitleSize),
