@@ -73,7 +73,7 @@ const Header = () => {
 
     if (pathname === `/${locale}/the-lake-lifestyle`) {
       setTimeout(() => {
-        const isMobile = window.innerWidth < 1536;
+        const isMobile = window.innerWidth < 1280;
         let headerHeight;
 
         if (isMobile) {
@@ -114,7 +114,7 @@ const Header = () => {
     <header className="w-full sticky top-0 z-50">
       {/* Top Header */}
       <div className="bg-[#ED5C3F] h-11 px-4 md:px-15 flex items-center justify-end">
-        <nav className="hidden lg:flex items-center gap-10 text-white text-sm">
+        <nav className="hidden xl:flex items-center gap-10 text-white text-[12px]">
           <Link
             href={`/${locale}/about`}
             className="hover:opacity-80 transition-opacity"
@@ -164,7 +164,7 @@ const Header = () => {
           </Link>
         </div>
 
-        <nav className="hidden 2xl:flex items-center gap-6 flex-1 justify-center">
+        <nav className="hidden xl:flex items-center gap-6 flex-1 justify-center">
           <div
             className="relative"
             onMouseEnter={() => setIsDropdownOpen(true)}
@@ -172,7 +172,7 @@ const Header = () => {
           >
             <Link
               href={`/${locale}/the-lake-lifestyle`}
-              className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors flex items-center gap-1"
+              className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors flex items-center gap-1"
             >
               {t("nav.lakeLyfestyle")}
               <svg
@@ -203,7 +203,7 @@ const Header = () => {
                     key={index}
                     href={`${item.href}#${item.scrollTo}`}
                     onClick={(e) => handleLifestyleClick(e, item)}
-                    className="block px-6 py-3 text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors border-b border-[#B5A88E] last:border-b-0 cursor-pointer"
+                    className="block px-6 py-3 text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors border-b border-[#B5A88E] last:border-b-0 cursor-pointer"
                   >
                     {item.title}
                   </a>
@@ -213,51 +213,51 @@ const Header = () => {
           </div>
           <Link
             href={`/${locale}/snohetta`}
-            className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
+            className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
           >
             {t("nav.snohetta")}
           </Link>
           <Link
             href={`/${locale}/services-for-you`}
-            className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
+            className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
           >
             {t("nav.servicesForYou")}
           </Link>
           <Link
             href={`/${locale}/bar-kitchen`}
-            className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
+            className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
           >
             {t("nav.barKitchen")}
           </Link>
           <Link
             href={`/${locale}/spa-wellness`}
-            className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
+            className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
           >
             {t("nav.spaWellness")}
           </Link>
           <Link
             href={`/${locale}/whats-on`}
-            className="text-black uppercase tracking-wide text-sm font-medium hover:text-[#ED5C3F] transition-colors"
+            className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
           >
             {t("nav.whatsOn")}
           </Link>
         </nav>
 
-        <div className="hidden 2xl:flex items-center gap-4 shrink-0">
+        <div className="hidden xl:flex items-center gap-4 shrink-0">
           <Link href={`/${locale}/own-a-house`}>
-            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
+            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
               {t("buttons.ownAHouse")}
             </button>
           </Link>
           <Link href={`/${locale}/enquire`}>
-            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-sm hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
+            <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
               {t("buttons.enquire")}
             </button>
           </Link>
         </div>
 
         <button
-          className="2xl:hidden text-black"
+          className="xl:hidden text-black"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -288,7 +288,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="2xl:hidden fixed inset-x-0 top-[148px] bottom-0 bg-[#C2B49B] border-t border-[#B5A88E] shadow-lg overflow-y-auto">
+        <div className="xl:hidden fixed inset-x-0 top-[148px] bottom-0 bg-[#C2B49B] border-t border-[#B5A88E] shadow-lg overflow-y-auto">
           <nav className="flex flex-col p-4">
             <div className="border-b border-[#B5A88E] pb-2 mb-2">
               <button
@@ -382,7 +382,7 @@ const Header = () => {
               </Link>
             </div>
 
-            <div className="lg:hidden flex flex-col gap-2 mt-4 pt-4 border-t border-[#B5A88E]">
+            <div className="xl:hidden flex flex-col gap-2 mt-4 pt-4 border-t border-[#B5A88E]">
               <Link
                 href={`/${locale}/about`}
                 className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
