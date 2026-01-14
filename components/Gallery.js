@@ -17,10 +17,11 @@ const STATIC_IMAGES = {
     "/interior/d.webp",
   ],
   Exterior: [
-    "/exterior/1.webp",
-    "/exterior/3.webp",
-    "/exterior/4.webp",
-    "/exterior/5.webp",
+    "/exterior/v1.webp",
+    "/exterior/v2.webp",
+    "/exterior/v3.webp",
+    "/exterior/v4.webp",
+    "/exterior/v5.webp",
   ],
 };
 
