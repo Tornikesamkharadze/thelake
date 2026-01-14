@@ -333,7 +333,7 @@ const Header = () => {
                 className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("nav.snohetta")}
+                {t("nav.lakehouse")}
               </Link>
               <Link
                 href={`/${locale}/services-for-you`}
