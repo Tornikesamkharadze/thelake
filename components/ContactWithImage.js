@@ -31,7 +31,7 @@ const ContactWithImage = ({
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => setIsMobile(window.innerWidth < 1400);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -39,7 +39,7 @@ const ContactWithImage = ({
 
   useEffect(() => {
     const updateHeight = () => {
-      if (textBoxRef.current && window.innerWidth >= 768) {
+      if (textBoxRef.current && window.innerWidth >= 1400) {
         const textBoxHeight = textBoxRef.current.offsetHeight;
         setMinImageHeight(Math.max(textBoxHeight * 1.2, 500));
       } else {
@@ -84,17 +84,19 @@ const ContactWithImage = ({
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 md:py-24 overflow-hidden"
+      className="relative py-16 min-[1400px]:py-24 overflow-hidden"
       style={{ backgroundColor }}
     >
       <div className="container mx-auto px-4">
         <div
           className={`flex ${
-            isImageRight ? "md:justify-start" : "md:justify-end"
+            isImageRight
+              ? "min-[1400px]:justify-start justify-center"
+              : "min-[1400px]:justify-end justify-center"
           }`}
         >
           <div className="relative w-full" style={{ maxWidth: "750px" }}>
-            <div className="flex flex-col md:block">
+            <div className="flex flex-col min-[1400px]:block">
               {/* სურათის კონტეინერი */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -103,7 +105,7 @@ const ContactWithImage = ({
                 className="relative w-full overflow-hidden"
               >
                 <div
-                  className="relative w-full min-h-[350px] md:min-h-[500px]"
+                  className="relative w-full min-h-[350px] min-[1400px]:min-h-[500px]"
                   style={{
                     minHeight:
                       minImageHeight > 0 ? `${minImageHeight}px` : undefined,
@@ -114,7 +116,7 @@ const ContactWithImage = ({
                     alt={imageAlt}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 750px"
+                    sizes="(max-width: 1400px) 100vw, 750px"
                   />
                 </div>
               </motion.div>
@@ -128,22 +130,22 @@ const ContactWithImage = ({
                 className={`
                   relative 
                   -mt-12 mx-4 
-                  md:absolute
-                  md:mt-0 md:mx-0
+                  min-[1400px]:absolute
+                  min-[1400px]:mt-0 min-[1400px]:mx-0
                   ${
                     isImageRight
-                      ? "md:right-0 md:translate-x-[80%]"
-                      : "md:left-0 md:-translate-x-[80%]"
+                      ? "min-[1400px]:right-0 min-[1400px]:translate-x-[60%]"
+                      : "min-[1400px]:left-0 min-[1400px]:-translate-x-[60%]"
                   }
-                  md:top-1/2 md:-translate-y-1/2
+                  min-[1400px]:top-1/2 min-[1400px]:-translate-y-1/2
                   w-auto 
-                  md:min-w-[699px]
-                  md:max-w-[699px]
+                  min-[1400px]:min-w-[699px]
+                  min-[1400px]:max-w-[699px]
                   z-10
                 `}
               >
                 <div
-                  className="p-8 md:p-10 lg:p-14 shadow-lg"
+                  className="p-8 min-[1400px]:p-10 lg:p-14 shadow-lg"
                   style={{ backgroundColor: textBoxColor }}
                 >
                   {/* სათაური */}
@@ -151,7 +153,7 @@ const ContactWithImage = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    className="mb-10 md:mb-12 lg:mb-16 text-center tracking-[0.3em]"
+                    className="mb-10 min-[1400px]:mb-12 lg:mb-16 text-center tracking-[0.3em]"
                     style={{
                       color: titleColor,
                       fontSize: getResponsiveSize(getTitleSize),
@@ -163,7 +165,7 @@ const ContactWithImage = ({
                   </motion.h2>
 
                   {/* ინფორმაცია */}
-                  <div className="space-y-8 md:space-y-10">
+                  <div className="space-y-8 min-[1400px]:space-y-10">
                     {contactItems.map((item, index) => (
                       <motion.div
                         key={index}
@@ -172,7 +174,7 @@ const ContactWithImage = ({
                         transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
                         className={
                           index < contactItems.length - 1
-                            ? "border-b border-gray-300 pb-8 md:pb-10"
+                            ? "border-b border-gray-300 pb-8 min-[1400px]:pb-10"
                             : ""
                         }
                       >
