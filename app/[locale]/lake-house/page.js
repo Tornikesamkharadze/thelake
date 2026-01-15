@@ -6,25 +6,25 @@ import Hero from "@/components/Hero";
 import ImageTextSection from "@/components/ImageTextSection";
 import { useTranslations } from "next-intl";
 
-const BarKitchen = () => {
+const Snohetta = () => {
   const t = useTranslations();
 
   return (
     <div>
       <Header />
       <Hero
-        image="/bar-and-kitchen-bg.webp"
+        image="/hero-cover.webp"
         height="100vh"
-        title={t("barKitchen.hero.title")}
-        highlightWords={[t("barKitchen.hero.title")]}
+        title={t("snohetta.hero.title")}
+        highlightWords={[t("snohetta.hero.title")]}
         uppercase={true}
       />
 
       <ImageTextSection
-        image="/bakery.webp"
-        title={t("barKitchen.bakery.title")}
+        image="/lake-1.png"
+        title={t("snohetta.lakeHouse.title")}
         subtitle=""
-        description={t("barKitchen.bakery.description")}
+        description={t("snohetta.lakeHouse.description")}
         imagePosition="left"
         titleColor="#000000"
         subtitleColor="#000000"
@@ -42,33 +42,11 @@ const BarKitchen = () => {
         descriptionTransform="none"
       />
       <ImageTextSection
-        image="/bar.webp"
-        title={t("barKitchen.bar.title")}
+        image="/lake-1.png"
+        title={t("snohetta.studio.title")}
         subtitle=""
-        description={t("barKitchen.bar.description")}
+        description={t("snohetta.studio.description")}
         imagePosition="right"
-        titleColor="#000000"
-        subtitleColor="#000000"
-        descriptionColor="#000000"
-        backgroundColor="#F7EAD7"
-        textBoxColor="#F7EAD7"
-        titleSize="25px"
-        subtitleSize="19px"
-        descriptionSize="19px"
-        titleWeight="400"
-        subtitleWeight="700"
-        descriptionWeight="400"
-        titleTransform="uppercase"
-        subtitleTransform="none"
-        descriptionTransform="none"
-      />
-
-      <ImageTextSection
-        image="/restaurant.webp"
-        title={t("barKitchen.restaurant.title")}
-        subtitle=""
-        description={t("barKitchen.restaurant.description")}
-        imagePosition="left"
         titleColor="#000000"
         subtitleColor="#000000"
         descriptionColor="#000000"
@@ -90,4 +68,4 @@ const BarKitchen = () => {
   );
 };
 
-export default BarKitchen;
+export default Snohetta;

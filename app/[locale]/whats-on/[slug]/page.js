@@ -1,11 +1,13 @@
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import NewsDetail from "@/components/whats-on/NewsDetail";
-import { newsData } from "@/components/whats-on/newsData";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
+  const t = await getTranslations({ locale });
+  const newsData = t.raw("newsData");
   const news = newsData.find((item) => item.slug === slug);
 
   if (!news) {
@@ -31,7 +33,7 @@ export async function generateMetadata({ params }) {
       title: `${news.title} | The Lake by Placemakers`,
       description: news.excerpt.substring(0, 160),
       type: "article",
-      locale: locale === 'ka' ? 'ka_GE' : 'en_US',
+      locale: locale === "ka" ? "ka_GE" : "en_US",
       siteName: "The Lake",
       images: [news.image || "/og-image.png"],
       article: {
@@ -47,15 +49,17 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `/${locale}/whats-on/${slug}`,
       languages: {
-        'en': `/en/whats-on/${slug}`,
-        'ka': `/ka/whats-on/${slug}`,
+        en: `/en/whats-on/${slug}`,
+        ka: `/ka/whats-on/${slug}`,
       },
     },
   };
 }
 
 export default async function NewsPage({ params }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const t = await getTranslations({ locale });
+  const newsData = t.raw("newsData");
 
   const news = newsData.find((item) => item.slug === slug);
 
@@ -80,18 +84,27 @@ export default async function NewsPage({ params }) {
 }
 
 export async function generateStaticParams() {
-  // Generate params for both locales
-  const locales = ['en', 'ka'];
+  const locales = ["en", "ka"];
   const params = [];
-  
-  locales.forEach(locale => {
-    newsData.forEach(item => {
+
+  // Import both translations
+  const enTranslations = (await import("@/messages/en.json")).default;
+  const kaTranslations = (await import("@/messages/ka.json")).default;
+
+  const translationsMap = {
+    en: enTranslations,
+    ka: kaTranslations,
+  };
+
+  locales.forEach((locale) => {
+    const newsData = translationsMap[locale].newsData;
+    newsData.forEach((item) => {
       params.push({
         locale,
         slug: item.slug,
       });
     });
   });
-  
+
   return params;
 }

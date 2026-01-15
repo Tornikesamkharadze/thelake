@@ -79,5 +79,276 @@
     "returnHome": "Return to Shore",
     "exploreProperties": "Explore Properties",
     "branding": "The Lake by Placemakers"
+  },
+  "lifestyle": {
+    "title": "LIFESTYLE",
+    "wellbeing": {
+      "title": "wellbeing at our core",
+      "description": "A quiet, exclusive community with spacious villas (500–800 sq.m) and private houses (200–400 sq.m), created for people who appreciate comfort, beauty, and peace of mind."
+    },
+    "lifeInNature": {
+      "title": "LIFE IN NATURE",
+      "description": "Located in Tbilisi's main recreation area, embraced by mountain terrain and overlooking Lisi Lake. Here, every day begins with clean air, open views, and the quiet rhythm of nature, yet the city's energy is only minutes away."
+    },
+    "surroundings": {
+      "title": "surroundings",
+      "description": "Water ponds, scenic hiking trails, and mountain bike tracks weave through the landscape. all just minutes from the nearby Hippodrome, where you can rent horses and enjoy riding."
+    },
+    "artEvents": {
+      "title": "art events",
+      "description": "A multifunctional space for contemporary art exhibitions and cultural events, hosting curated shows by leading Georgian and international artists."
+    },
+    "fishing": {
+      "title": "fishing",
+      "description": "Fishing equipment is available for residents who wish to enjoy quiet moments by the lake and discover unique local species."
+    },
+    "sportActivities": {
+      "title": "Sport activities",
+      "description": "Here, nature becomes your playground. Ride a mountain bike through the hills, explore off-road trails, play padel, or follow the velo path around the lake."
+    },
+    "education": {
+      "title": "education",
+      "description": "Highly rated private schools and kindergartens are located within minutes, offering convenience for families."
+    }
+  },
+  "snohetta": {
+    "hero": {
+      "title": "Lake House By <br/>Snohetta"
+    },
+    "lakeHouse": {
+      "title": "Lake house",
+      "description": "Lake-house, designed by Snøhetta, the renowned Norwegian architecture studio, is the heart of the lakeside community. Chic yet grounded, it blends modern design with Georgian authenticity. A place to unwind and socialize, from slow morning coffee and lakeside brunches to afternoon yoga sessions, evening cocktails, and late-night fireside gatherings. Enjoy curated cultural events, art exhibitions, and quiet corners to read, work, or simply soak in the panoramic lake views, always offering the perfect setting for every moment of your day."
+    },
+    "studio": {
+      "title": "Snøhetta",
+      "description": "Snøhetta is a world-leading architecture and design studio known for projects that blend bold creativity with a deep sensitivity to context. Their portfolio includes iconic cultural landmarks such as the Oslo Opera House, the National September 11 Memorial Pavilion in New York, and the Bibliotheca Alexandrina in Egypt, each celebrated for their innovative forms and immersive experiences. Their approach combines architecture, landscape, and interior design into cohesive environments, emphasizing human experience, sustainability, and harmony with the surroundings. Every project tells a story, creating spaces that are not only visually striking but also deeply connected to the people and culture they serve."
+    }
+  },
+  "services": {
+    "hero": {
+      "title": "Services for you",
+      "highlight": "for you"
+    },
+    "intro": {
+      "title": "Services for you",
+      "description": "At The Lake, every detail of daily life is thoughtfully designed to give you more time and peace of mind. From grocery delivery to professional housekeeping, a dedicated business lounge to a vibrant kids zone, expert gardening to comprehensive pet care - our full suite of concierge services ensures your home and lifestyle are effortlessly maintained, so you can focus on what truly matters."
+    },
+    "delivery": {
+      "title": "delivery",
+      "description": "From groceries and essentials to fresh meals from the Clubhouse restaurant, delivery across The Lake community is seamless and fast, so you can enjoy more time doing what you love."
+    },
+    "housekeeping": {
+      "title": "housekeeping",
+      "description": "From everyday cleaning to special requests, our housekeeping team is here to make life easier. Reliable, careful, and always respectful of your privacy, so your home feels its best, every day."
+    },
+    "businessLounge": {
+      "title": "business lounge",
+      "description": "A quiet corner for focus and reflection, the Business Lounge and Library offer a calm retreat from the day's pace. Whether it's work, reading, or conversation, the space blends comfort with sophistication, lined with curated books, soft light, and views over the lake"
+    },
+    "kidsZone": {
+      "title": "Kids zone",
+      "description": "A bright, engaging space designed for play, learning, and imagination. The Kids Zone offers safe indoor and outdoor areas where children can explore freely, make friends, and grow surrounded by nature."
+    },
+    "gardening": {
+      "title": "GARDENING",
+      "description": "Professional gardening services keep every outdoor space, from private courtyards to shared gardens, beautifully maintained. Our landscape team ensures your surroundings stay lush, seasonal, and perfectly in tune with the natural setting."
+    },
+    "petService": {
+      "title": "PET SERVICE",
+      "description": "Professional pet services take care of every need, walking, grooming, and even looking after your pets while you travel. Your companions stay happy, safe, and well cared for, wherever life takes you."
+    }
+  },
+  "barKitchen": {
+    "hero": {
+      "title": "Bar & kitchen"
+    },
+    "bakery": {
+      "title": "bakery",
+      "description": "Fresh sourdough, carefully selected pastries, and small-batch wines are paired with local meats, cheeses and seasonal pantry items. A space that combines quality and comfort, part bakery, part specialty shop."
+    },
+    "bar": {
+      "title": "bar",
+      "description": "A relaxed, welcoming space where evenings come alive. More than just a place for drinks, it's where people gather and connect, smoothly flowing into the lounge and library. Enjoy signature cocktails, Georgian spirits, and warm, layered lighting that sets the mood for everything from an early aperitif to a late-night nightcap."
+    },
+    "restaurant": {
+      "title": "restaurant",
+      "description": "A farm-to-table restaurant featuring an open kitchen and seasonal local ingredients, offering a warm, stylish atmosphere connected to the rhythms of the land. The open kitchen is the heart of the space. During the day, the kitchen hosts occasional cooking classes and interactive sessions, inviting guests to experience the art of cooking."
+    }
+  },
+  "spaWellness": {
+    "hero": {
+      "title": "spa & wellness"
+    },
+    "spa": {
+      "title": "spa",
+      "description": "Designed for rest and renewal. Treatments use natural ingredients inspired by the lake and surrounding landscape, offering massages, facials, and rituals that restore balance to body and mind."
+    },
+    "pool": {
+      "title": "pool",
+      "description": "A calm, elegant pool framed by nature, perfect for early morning laps or slow swims at sunset. With comfortable loungers and lake views all around, it's a daily escape where relaxation comes naturally."
+    },
+    "gym": {
+      "title": "gym",
+      "description": "A modern fitness space equipped with the latest training technology. Large windows open to views of the lake and hills, creating an inspiring environment for both intense workouts and quiet morning stretches."
+    },
+    "yoga": {
+      "title": "yoga",
+      "description": "From sunrise stretches by the lake to evening group sessions on the deck, yoga becomes part of the daily rhythm. Surrounded by fresh air and soft light, it's where balance, focus, and calm naturally return."
+    }
+  },
+  "whatsOn": {
+    "readMore": "Read More",
+    "news": "News",
+    "backToNews": "Back to News"
+  },
+  "newsData": [
+    {
+      "slug": "news-1",
+      "image": "/Rectangle.png",
+      "title": "NEWS 1",
+      "date": "28.03.25",
+      "excerpt": "Set on 14 hectares by Lisi Lake, this private neighbourhood features 90 villas and houses surrounded by a private park and panoramic lake views. Just 7 km from the city centre, it offers an exclusive lifestyle shaped by international architecture and nature's calm.",
+      "textBoxColor": "#F7EAD7",
+      "linkColor": "#d4745a",
+      "additionalImage": "/Rectangle.png",
+      "contentBottom": "This exclusive community offers residents a unique blend of tranquility and accessibility. With modern amenities and stunning natural surroundings, it represents the perfect balance between urban convenience and peaceful lakeside living."
+    },
+    {
+      "slug": "news-2",
+      "image": "/Rectangle.png",
+      "title": "NEWS 2",
+      "date": "23.03.25",
+      "excerpt": "Experience luxury living in a serene environment where every detail has been carefully considered. From the architectural design to the landscaping, every element reflects quality and sophistication.",
+      "textBoxColor": "#F7EAD7",
+      "linkColor": "#d4745a",
+      "additionalImage": "/Rectangle.png",
+      "contentBottom": "Residents enjoy access to premium facilities and services, making daily life both comfortable and convenient. The community fosters a sense of belonging while respecting individual privacy."
+    },
+    {
+      "slug": "news-3",
+      "image": "/Rectangle.png",
+      "title": "NEWS 3",
+      "date": "20.03.25",
+      "excerpt": "Discover a lifestyle that prioritizes both comfort and connection to nature. The development seamlessly integrates modern living with the natural beauty of the lakeside location.",
+      "textBoxColor": "#F7EAD7",
+      "linkColor": "#d4745a",
+      "additionalImage": "/Rectangle.png",
+      "contentBottom": "With carefully planned infrastructure and attention to environmental sustainability, this community sets new standards for residential development in the region."
+    },
+    {
+      "slug": "news-4",
+      "image": "/Rectangle.png",
+      "title": "NEWS 4",
+      "date": "15.03.25",
+      "excerpt": "A thoughtfully designed neighborhood that combines privacy with community spirit. Residents benefit from a secure environment and exceptional quality of life.",
+      "textBoxColor": "#F7EAD7",
+      "linkColor": "#d4745a",
+      "additionalImage": "/Rectangle.png",
+      "contentBottom": "The strategic location offers the best of both worlds - peaceful surroundings with easy access to the city center and all essential services nearby."
+    }
+  ],
+  "about": {
+    "whoAreWe": {
+      "title": "who are we",
+      "subtitle": "Placemakers motto",
+      "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood features 90 villas and houses surrounded by a private park and panoramic lake views. Just 7 km from the city centre, it offers an exclusive lifestyle shaped by international architecture and nature's calm"
+    },
+    "teamTitle": "TEAM",
+    "team": [
+      {
+        "image": "/team-member.webp",
+        "name": "Name Surname",
+        "position": "CEO / Founder",
+        "description": "dolor sit amet, consectetuer adipiscing elit, sed diam nonummy"
+      },
+      {
+        "image": "/team-member.webp",
+        "name": "Name Surname",
+        "position": "CEO / Founder",
+        "description": "dolor sit amet, consectetuer adipiscing elit, sed diam nonummy"
+      },
+      {
+        "image": "/team-member.webp",
+        "name": "Name Surname",
+        "position": "CEO / Founder",
+        "description": "dolor sit amet, consectetuer adipiscing elit, sed diam nonummy"
+      },
+      {
+        "image": "/team-member.webp",
+        "name": "Name Surname",
+        "position": "CEO / Founder",
+        "description": "dolor sit amet, consectetuer adipiscing elit, sed diam nonummy"
+      },
+      {
+        "image": "/team-member.webp",
+        "name": "Name Surname",
+        "position": "CEO / Founder",
+        "description": "dolor sit amet, consectetuer adipiscing elit, sed diam nonummy"
+      },
+      {
+        "image": "/team-member.webp",
+        "name": "Name Surname",
+        "position": "CEO / Founder",
+        "description": "dolor sit amet, consectetuer adipiscing elit, sed diam nonummy"
+      }
+    ],
+    "aboutProject": {
+      "title": "about the project",
+      "subtitle": "The Lake motto",
+      "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood features 90 villas and houses surrounded by a private park and panoramic lake views. Just 7 km from the city centre, it offers an exclusive lifestyle shaped by international architecture and nature's calm"
+    },
+    "timelineTitle": "timeline",
+    "timeline": [
+      {
+        "year": "2024 JAN",
+        "title": "Idea is born",
+        "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood"
+      },
+      {
+        "year": "2024 FEB",
+        "title": "Planning begins",
+        "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood"
+      },
+      {
+        "year": "2024 MAR",
+        "title": "Construction starts",
+        "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood"
+      },
+      {
+        "year": "2024 APR",
+        "title": "First milestone",
+        "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood"
+      }
+    ]
+  },
+  "gallery": {
+    "title": "GALLERY",
+    "exterior": "Exterior",
+    "interior": "Interior",
+    "loading": "Loading...",
+    "noImages": "No images found",
+    "imageAlt": "Gallery image"
+  },
+  "findUs": {
+    "mapTitle": "Lisi Lake Location",
+    "distanceTitle": "DISTANCE FROM ...",
+    "distances": [
+      {
+        "time": "5 MIN BY CAR",
+        "location": "Insert Nearest Private School here"
+      },
+      {
+        "time": "5 MIN WALKING DISTANCE",
+        "location": "Lisi lake"
+      },
+      {
+        "time": "5 MIN BY CAR",
+        "location": "Nearest busy road with public transportation"
+      },
+      {
+        "time": "5 MIN BY CAR",
+        "location": "Nearest sports centre"
+      }
+    ]
   }
 }

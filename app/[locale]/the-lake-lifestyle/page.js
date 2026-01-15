@@ -29,14 +29,12 @@ const theLakeLifeStyle = () => {
             "header > div:nth-child(2)"
           );
           const topHeight = topHeader ? topHeader.offsetHeight : 44;
-          const mainHeight = mainHeader ? mainHeader.offsetHeight : 104; // აქ იყო შეცდომა
+          const mainHeight = mainHeader ? mainHeader.offsetHeight : 104;
           headerHeight = topHeight + mainHeight;
         } else {
           const header = document.querySelector("header");
           headerHeight = header ? header.offsetHeight : 148;
         }
-
-        console.log("📱 Initial scroll - header height:", headerHeight);
 
         scroller.scrollTo(id, {
           duration: 800,
@@ -55,14 +53,14 @@ const theLakeLifeStyle = () => {
       <Hero
         image="/lifestyle-hero-bg.webp"
         height="80vh"
-        title="LIFESTYLE"
-        highlightWords={["LIFESTYLE"]}
+        title={t("lifestyle.title")}
+        highlightWords={[t("lifestyle.title")]}
         uppercase={true}
       />
 
       <TextSection
-        title="wellbeing at our core"
-        description="A quiet, exclusive community with spacious villas (500–800 sq.m) and private houses (200–400 sq.m), created for people who appreciate comfort, beauty, and peace of mind."
+        title={t("lifestyle.wellbeing.title")}
+        description={t("lifestyle.wellbeing.description")}
         highlightWords={[""]}
         uppercase={true}
         bgColor="bg-[#C2B49B]"
@@ -82,8 +80,8 @@ const theLakeLifeStyle = () => {
         <TextImageSideSection
           id="life-in-nature"
           image="/lake-1.png"
-          title="LIFE IN NATURE"
-          description="Located in Tbilisi's main recreation area, embraced by mountain terrain and overlooking Lisi Lake. Here, every day begins with clean air, open views, and the quiet rhythm of nature, yet the city's energy is only minutes away."
+          title={t("lifestyle.lifeInNature.title")}
+          description={t("lifestyle.lifeInNature.description")}
           imagePosition="right"
           backgroundColor="#F7EAD7"
           titleColor="#000000"
@@ -95,8 +93,8 @@ const theLakeLifeStyle = () => {
         <TextImageSideSection
           id="surroundings"
           image="/surroundings.webp"
-          title="surroundings"
-          description="Water ponds, scenic hiking trails, and mountain bike tracks weave through the landscape. all just minutes from the nearby Hippodrome, where you can rent horses and enjoy riding."
+          title={t("lifestyle.surroundings.title")}
+          description={t("lifestyle.surroundings.description")}
           imagePosition="left"
           backgroundColor="#F7EAD7"
           titleColor="#000000"
@@ -108,8 +106,8 @@ const theLakeLifeStyle = () => {
         <TextImageSideSection
           id="art-events"
           image="/art-events.webp"
-          title="art events"
-          description="A multifunctional space for contemporary art exhibitions and cultural events, hosting curated shows by leading Georgian and international artists."
+          title={t("lifestyle.artEvents.title")}
+          description={t("lifestyle.artEvents.description")}
           imagePosition="right"
           backgroundColor="#F7EAD7"
           titleColor="#000000"
@@ -121,8 +119,8 @@ const theLakeLifeStyle = () => {
         <TextImageSideSection
           id="fishing"
           image="/fishing.webp"
-          title="fishing"
-          description="Fishing equipment is available for residents who wish to enjoy quiet moments by the lake and discover unique local species."
+          title={t("lifestyle.fishing.title")}
+          description={t("lifestyle.fishing.description")}
           imagePosition="left"
           backgroundColor="#F7EAD7"
           titleColor="#000000"
@@ -134,8 +132,8 @@ const theLakeLifeStyle = () => {
         <TextImageSideSection
           id="sport-activities"
           image="/Sport-activities.webp"
-          title="Sport activities"
-          description="Here, nature becomes your playground. Ride a mountain bike through the hills, explore off-road trails, play padel, or follow the velo path around the lake."
+          title={t("lifestyle.sportActivities.title")}
+          description={t("lifestyle.sportActivities.description")}
           imagePosition="right"
           backgroundColor="#F7EAD7"
           titleColor="#000000"
@@ -147,8 +145,8 @@ const theLakeLifeStyle = () => {
         <TextImageSideSection
           id="education"
           image="/education.webp"
-          title="education"
-          description="Highly rated private schools and kindergartens are located within minutes, offering convenience for families."
+          title={t("lifestyle.education.title")}
+          description={t("lifestyle.education.description")}
           imagePosition="left"
           backgroundColor="#F7EAD7"
           titleColor="#000000"

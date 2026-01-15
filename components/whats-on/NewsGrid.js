@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { motion, useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const NewsCard = ({
   slug,
@@ -12,15 +13,15 @@ const NewsCard = ({
   title,
   date,
   excerpt,
-  textBoxColor = '#e8dfd0',
-  titleColor = '#000000',
-  dateColor = '#999999',
-  excerptColor = '#000000',
-  linkText = 'Read More',
-  linkColor = '#d4745a',
+  textBoxColor = "#e8dfd0",
+  titleColor = "#000000",
+  dateColor = "#999999",
+  excerptColor = "#000000",
+  linkColor = "#d4745a",
   locale,
   index,
 }) => {
+  const t = useTranslations();
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { once: true, margin: "-100px" });
   const [isMobile, setIsMobile] = useState(false);
@@ -28,8 +29,8 @@ const NewsCard = ({
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   if (!image) return null;
@@ -43,9 +44,7 @@ const NewsCard = ({
     >
       <Link href={`/${locale}/whats-on/${slug}`} className="block group">
         <div className="relative flex items-center">
-          
-          {/* ფოტო - მარჯვნივ */}
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
             className="relative w-full aspect-4/3 overflow-hidden ml-[10%]"
@@ -58,49 +57,40 @@ const NewsCard = ({
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </motion.div>
-          
-          {/* ტექსტ ბოქსი - absolute, მარცხნივ, ვერტიკალურად შუაში */}
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, x: isMobile ? 0 : -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
             className="absolute left-0 top-1/2 -translate-y-1/2 w-[50%] md:w-[45%] p-4 md:p-6 z-10"
             style={{ backgroundColor: textBoxColor }}
           >
-            {/* სათაური */}
-            <h3 
+            <h3
               className="text-base md:text-lg font-normal mb-2 uppercase tracking-wide"
               style={{ color: titleColor }}
             >
               {title}
             </h3>
-            
-            {/* თარიღი */}
-            <p 
-              className="text-xs mb-2"
-              style={{ color: dateColor }}
-            >
+
+            <p className="text-xs mb-2" style={{ color: dateColor }}>
               {date}
             </p>
-            
-            {/* მოკლე ვერსია Grid-ზე */}
-            <p 
+
+            <p
               className="text-xs md:text-sm leading-relaxed mb-3 line-clamp-3"
               style={{ color: excerptColor }}
             >
               {excerpt.substring(0, 150)}...
             </p>
-            
-            {/* Read More ლინკი */}
-            <motion.span 
+
+            <motion.span
               whileHover={{ x: 5 }}
               className="text-xs md:text-sm font-normal inline-block"
               style={{ color: linkColor }}
             >
-              {linkText} →
+              {t("whatsOn.readMore")} →
             </motion.span>
           </motion.div>
-          
         </div>
       </Link>
     </motion.div>
@@ -109,22 +99,22 @@ const NewsCard = ({
 
 const NewsGrid = ({
   newsItems = [],
-  backgroundColor = '#ffffff',
-  gridGap = '2rem',
+  backgroundColor = "#ffffff",
+  gridGap = "2rem",
 }) => {
   const params = useParams();
-  const locale = params.locale || 'ka';
+  const locale = params.locale || "ka";
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="relative py-16 md:py-24 overflow-hidden"
       style={{ backgroundColor }}
     >
       <div className="container mx-auto px-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -143,7 +133,6 @@ const NewsGrid = ({
               titleColor={item.titleColor}
               dateColor={item.dateColor}
               excerptColor={item.excerptColor}
-              linkText={item.linkText || 'Read More'}
               linkColor={item.linkColor}
               locale={locale}
               index={index}

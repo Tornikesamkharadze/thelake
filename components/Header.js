@@ -213,7 +213,7 @@ const Header = () => {
               )}
             </div>
             <Link
-              href={`/${locale}/snohetta`}
+              href={`/${locale}/lake-house`}
               className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
             >
               {t("nav.lakehouse")}
@@ -329,7 +329,7 @@ const Header = () => {
                 )}
               </div>
               <Link
-                href={`/${locale}/snohetta`}
+                href={`/${locale}/lake-house`}
                 className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -429,7 +429,7 @@ const Header = () => {
       {/* Bottom Sticky Buttons - Show between 1066px and 2xl breakpoints */}
       <div className="hidden min-[1066px]:flex 2xl:hidden fixed bottom-0 left-0 right-0 bg-[#2C3E50] z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <Link href={`/${locale}/own-a-house`} className="flex-1 ">
-          <button className="w-full bg-[#ed5c3f] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#3498DB] transition-colors cursor-pointer">
+          <button className="w-full bg-[#ed5c3f] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#312618] transition-colors cursor-pointer">
             {t("buttons.ownAHouse")}
           </button>
         </Link>

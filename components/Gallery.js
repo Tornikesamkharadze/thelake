@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -11,10 +12,21 @@ const STATIC_IMAGES = {
     "/interior/1.webp",
     "/interior/2.webp",
     "/interior/3.webp",
-    "/interior/a.webp",
-    "/interior/b.webp",
-    "/interior/c.webp",
-    "/interior/d.webp",
+    "/interior/4.webp",
+    "/interior/5.webp",
+    "/interior/6.webp",
+    "/interior/7.webp",
+    "/interior/8.webp",
+    "/interior/9.webp",
+    "/interior/10.webp",
+    "/interior/11.webp",
+    "/interior/12.webp",
+    "/interior/13.webp",
+    "/interior/14.webp",
+    "/interior/15.webp",
+    "/interior/16.webp",
+    "/interior/17.webp",
+    "/interior/18.webp",
   ],
   Exterior: [
     "/exterior/v1.webp",
@@ -26,6 +38,7 @@ const STATIC_IMAGES = {
 };
 
 export default function Gallery() {
+  const t = useTranslations();
   const [activeFilter, setActiveFilter] = useState("Exterior");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -75,10 +88,10 @@ export default function Gallery() {
       <section className="w-full bg-white py-16 md:py-24">
         <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-8 text-center">
-            GALLERY
+            {t("gallery.title")}
           </h2>
           <div className="flex items-center justify-center h-64">
-            <div className="text-lg">იტვირთება...</div>
+            <div className="text-lg">{t("gallery.loading")}</div>
           </div>
         </div>
       </section>
@@ -91,7 +104,7 @@ export default function Gallery() {
         <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-3xl md:text-4xl text-[#000000] font-normal flex-1 text-center">
-              GALLERY
+              {t("gallery.title")}
             </h2>
 
             <div className="flex gap-2 text-sm md:text-base items-baseline">
@@ -103,7 +116,7 @@ export default function Gallery() {
                     : "text-[#312618] font-normal hover:text-gray-600"
                 }`}
               >
-                Exterior
+                {t("gallery.exterior")}
               </button>
               <span className="text-gray-300">|</span>
               <button
@@ -114,7 +127,7 @@ export default function Gallery() {
                     : "text-[#312618] font-normal hover:text-gray-600"
                 }`}
               >
-                Interior
+                {t("gallery.interior")}
               </button>
             </div>
           </div>
@@ -146,7 +159,7 @@ export default function Gallery() {
                     <div className="relative w-full h-[300px] md:h-[500px]">
                       <img
                         src={image}
-                        alt={`Gallery image ${index + 1}`}
+                        alt={`${t("gallery.imageAlt")} ${index + 1}`}
                         className="w-full h-full object-cover shadow-lg"
                       />
                     </div>
@@ -156,7 +169,7 @@ export default function Gallery() {
             </div>
           ) : (
             <div className="text-center py-12 text-gray-500">
-              სურათები არ მოიძებნა
+              {t("gallery.noImages")}
             </div>
           )}
         </div>
@@ -187,7 +200,7 @@ export default function Gallery() {
           >
             <img
               src={allImages[currentImageIndex]}
-              alt={`Gallery image ${currentImageIndex + 1}`}
+              alt={`${t("gallery.imageAlt")} ${currentImageIndex + 1}`}
               className="max-w-full max-h-[90vh] object-contain"
             />
           </div>

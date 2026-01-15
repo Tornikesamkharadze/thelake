@@ -84,11 +84,11 @@ const Timeline = ({
                 variants={itemVariants}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
-                className="relative flex flex-col items-center max-w-[200px]"
+                className="relative flex flex-col items-center max-w-[250px]" // ← გაზარდე 200px-დან 250px-მდე
               >
                 {/* წელი */}
                 <div
-                  className="mb-10 text-center font-serif italic text-[20px] md:text-[24px] lg:text-[28px]"
+                  className="mb-10 text-center font-serif italic text-[18px] md:text-[20px] lg:text-[24px]" // ← შემცირე ფონტი
                   style={{
                     color: yearColor,
                     fontWeight: yearWeight,
@@ -118,10 +118,10 @@ const Timeline = ({
                 </motion.div>
 
                 {/* ტექსტები */}
-                <div className="mt-10 text-center space-y-2">
+                <div className="mt-10 text-center space-y-2 px-2">
                   {item.title && (
                     <h3
-                      className="leading-tight text-[14px] md:text-[16px] lg:text-[18px]"
+                      className="leading-tight text-[13px] md:text-[14px] lg:text-[16px] wrap-break-words" // ← შეამცირე ფონტი და დაამატე break-words
                       style={{
                         color: titleColor,
                         fontWeight: titleWeight,
@@ -131,10 +131,9 @@ const Timeline = ({
                       {item.title}
                     </h3>
                   )}
-
                   {item.description && (
                     <p
-                      className="leading-relaxed text-[13px] md:text-[14px]"
+                      className="leading-relaxed text-[12px] md:text-[13px] wrap-break-words" // ← შეამცირე ფონტი და დაამატე break-words
                       style={{
                         color: descriptionColor,
                         fontWeight: descriptionWeight,
@@ -151,9 +150,8 @@ const Timeline = ({
         </div>
 
         {/* MOBILE VERSION */}
-        <div className="block md:hidden">
-          <div className="relative max-w-[340px] mx-auto px-4">
-            {/* ვერტიკალური ხაზი */}
+        <div className="block md:hidden overflow-hidden">
+          <div className="relative max-w-full mx-auto px-2">
             <motion.div
               initial={{ scaleY: 0 }}
               animate={isInView ? { scaleY: 1 } : {}}
@@ -161,8 +159,7 @@ const Timeline = ({
               className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px origin-top"
               style={{ backgroundColor: lineColor }}
             />
-
-            <div className="space-y-10">
+            <div className="space-y-8">
               {items.map((item, i) => (
                 <motion.div
                   key={i}
@@ -170,12 +167,11 @@ const Timeline = ({
                   variants={itemVariants}
                   initial="hidden"
                   animate={isInView ? "visible" : "hidden"}
-                  className="relative flex items-center justify-center gap-6"
+                  className="relative flex items-center justify-center gap-4"
                 >
-                  {/* მარცხენა - წელი */}
-                  <div className="w-[100px] shrink-0 text-right pr-6">
+                  <div className="w-[calc(50%-8px)] shrink-0 text-right pr-4">
                     <span
-                      className="font-serif italic leading-none inline-block text-[20px] md:text-[24px]"
+                      className="font-serif italic leading-none inline-block text-[16px] md:text-[20px]"
                       style={{
                         color: yearColor,
                         fontWeight: yearWeight,
@@ -192,7 +188,7 @@ const Timeline = ({
                     variants={dotVariants}
                     initial="hidden"
                     animate={isInView ? "visible" : "hidden"}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" // ← დაამატე z-10
                   >
                     <span
                       className="block rounded-full"
@@ -206,7 +202,7 @@ const Timeline = ({
                   </motion.div>
 
                   {/* მარჯვენა - ტექსტები */}
-                  <div className="w-[100px] shrink-0 pl-6 space-y-1">
+                  <div className="w-[calc(50%-8px)] shrink-0 pl-4 space-y-1">
                     {item.title && (
                       <h3
                         className="leading-snug text-[14px] md:text-[16px]"

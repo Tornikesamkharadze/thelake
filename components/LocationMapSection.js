@@ -2,8 +2,10 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export default function LocationMapSection() {
+  const t = useTranslations();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [isMobile, setIsMobile] = useState(false);
@@ -15,24 +17,7 @@ export default function LocationMapSection() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const distances = [
-    {
-      time: "5 MIN BY CAR",
-      location: "Insert Nearest Private School here",
-    },
-    {
-      time: "5 MIN WALKING DISTANCE",
-      location: "Lisi lake",
-    },
-    {
-      time: "5 MIN BY CAR",
-      location: "Nearest busy road with public transportation",
-    },
-    {
-      time: "5 MIN BY CAR",
-      location: "Nearest sports centre",
-    },
-  ];
+  const distances = t.raw("findUs.distances");
 
   const itemVariants = {
     hidden: { opacity: 0, x: isMobile ? 0 : -30 },
@@ -64,7 +49,7 @@ export default function LocationMapSection() {
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Lisi Lake Location"
+            title={t("findUs.mapTitle")}
           />
         </div>
       </motion.div>
@@ -79,7 +64,7 @@ export default function LocationMapSection() {
             transition={{ duration: 0.8 }}
             className="text-[28px] md:text-[36px] lg:text-[48px] font-bold text-black text-center mb-10 md:mb-16 lg:mb-12 tracking-wide tbc-bold"
           >
-            DISTANCE FROM ...
+            {t("findUs.distanceTitle")}
           </motion.h2>
 
           {/* Distance List */}
