@@ -102,12 +102,12 @@ export default function Gallery() {
     <>
       <section className="w-full bg-white py-16 md:py-24">
         <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl md:text-4xl text-[#000000] font-normal flex-1 text-center">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h2 className="text-3xl md:text-4xl text-[#000000] font-normal md:flex-1 text-center w-full md:w-auto">
               {t("gallery.title")}
             </h2>
 
-            <div className="flex gap-2 text-sm md:text-base items-baseline">
+            <div className="flex gap-2 text-sm md:text-base items-baseline md:absolute md:right-4 lg:right-8">
               <button
                 onClick={() => setActiveFilter("Exterior")}
                 className={`px-4 py-2 transition-colors cursor-pointer ${
