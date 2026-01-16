@@ -7,10 +7,12 @@ import { useRouter, usePathname, useParams } from "next/navigation";
 import { scroller } from "react-scroll";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
+import EnquirePopup from "./EnquirePopup";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isEnquirePopupOpen, setIsEnquirePopupOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -250,11 +252,12 @@ const Header = () => {
                 {t("buttons.ownAHouse")}
               </button>
             </Link>
-            <Link href={`/${locale}/enquire`}>
-              <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
-                {t("buttons.enquire")}
-              </button>
-            </Link>
+            <button
+              onClick={() => setIsEnquirePopupOpen(true)}
+              className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer"
+            >
+              {t("buttons.enquire")}
+            </button>
           </div>
 
           <button
@@ -373,14 +376,15 @@ const Header = () => {
                     {t("buttons.ownAHouse")}
                   </button>
                 </Link>
-                <Link
-                  href={`/${locale}/enquire`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                <button
+                  onClick={() => {
+                    setIsEnquirePopupOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer"
                 >
-                  <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
-                    {t("buttons.enquire")}
-                  </button>
-                </Link>
+                  {t("buttons.enquire")}
+                </button>
               </div>
 
               <div className="min-[1066px]:hidden flex flex-col gap-2 mt-4 pt-4 border-t border-[#B5A88E]">
@@ -433,12 +437,19 @@ const Header = () => {
             {t("buttons.ownAHouse")}
           </button>
         </Link>
-        <Link href={`/${locale}/enquire`} className="flex-1">
-          <button className="w-full bg-[#C2B49B] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#2C3E50] transition-colors cursor-pointer">
-            {t("buttons.enquire")}
-          </button>
-        </Link>
+        <button
+          onClick={() => setIsEnquirePopupOpen(true)}
+          className="flex-1 w-full bg-[#C2B49B] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#2C3E50] transition-colors cursor-pointer"
+        >
+          {t("buttons.enquire")}
+        </button>
       </div>
+
+      {/* EnquirePopup */}
+      <EnquirePopup
+        isOpen={isEnquirePopupOpen}
+        onClose={() => setIsEnquirePopupOpen(false)}
+      />
     </>
   );
 };

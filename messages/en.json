@@ -350,5 +350,16 @@
         "location": "Nearest sports centre"
       }
     ]
+  },
+  "enquirePopup": {
+    "title": "ENQUIRE",
+    "form": {
+      "fullName": "Full Name",
+      "email": "E-Mail",
+      "phoneNumber": "Phone Number",
+      "message": "Your message",
+      "preferredMethod": "Preferred communication method",
+      "submit": "SEND"
+    }
   }
 }
