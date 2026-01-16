@@ -167,7 +167,8 @@ const Header = () => {
             </Link>
           </div>
 
-          <nav className="hidden min-[1066px]:flex items-center gap-6 flex-1 justify-center">
+          <nav className="hidden min-[1066px]:flex items-center gap-4 xl:gap-6 flex-1 justify-center">
+            {/* ყველა ლინკი რჩება იგივე */}
             <div
               className="relative"
               onMouseEnter={() => setIsDropdownOpen(true)}
@@ -246,7 +247,7 @@ const Header = () => {
             </Link>
           </nav>
 
-          <div className="hidden 2xl:flex items-center gap-4 shrink-0">
+          <div className="hidden xl:flex items-center gap-3 shrink-0 ml-2">
             <Link href={`/${locale}/own-a-house`}>
               <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
                 {t("buttons.ownAHouse")}
@@ -430,9 +431,9 @@ const Header = () => {
         )}
       </header>
 
-      {/* Bottom Sticky Buttons - Show between 1066px and 2xl breakpoints */}
-      <div className="hidden min-[1066px]:flex 2xl:hidden fixed bottom-0 left-0 right-0 bg-[#2C3E50] z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-        <Link href={`/${locale}/own-a-house`} className="flex-1 ">
+      {/* Bottom Sticky Buttons - Show between 1066px and xl breakpoints */}
+      <div className="hidden min-[1066px]:flex xl:hidden fixed bottom-0 left-0 right-0 bg-[#2C3E50] z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <Link href={`/${locale}/own-a-house`} className="flex-1">
           <button className="w-full bg-[#ed5c3f] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#312618] transition-colors cursor-pointer">
             {t("buttons.ownAHouse")}
           </button>
@@ -452,7 +453,6 @@ const Header = () => {
       />
     </>
   );
-  
 };
 
 export default Header;
