@@ -141,7 +141,7 @@ export default function ContactPopup() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed bottom-24 right-6 z-40"
+            className="fixed bottom-30 right-6 z-40"
           >
             <div className="bg-white/20 backdrop-blur-lg border-2 border-white shadow-2xl overflow-hidden w-64 md:w-72">
               {contactOptions.map((option, index) => {
