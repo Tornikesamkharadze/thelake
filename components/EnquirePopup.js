@@ -76,8 +76,8 @@ export default function EnquirePopup({ isOpen, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
+      className="fixed inset-0 flex items-center justify-center p-4"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.75)", zIndex: 9999 }}
       onClick={onClose}
     >
       <div
@@ -144,7 +144,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
             {/* Phone with Country Flag Dropdown */}
             <div className="w-full flex gap-3">
               {/* Flag Dropdown */}
-              <div className="relative" style={{ width: "90px" }}>
+              <div className="relative shrink-0" style={{ width: "90px" }}>
                 <button
                   type="button"
                   onClick={() => setShowCountryDropdown(!showCountryDropdown)}
@@ -165,11 +165,12 @@ export default function EnquirePopup({ isOpen, onClose }) {
                 {/* Country Dropdown with Scroll */}
                 {showCountryDropdown && (
                   <div
-                    className="absolute top-full left-0 mt-1 border shadow-lg z-10 min-w-[260px] max-h-[300px] overflow-y-auto"
+                    className="absolute top-full left-0 mt-1 border shadow-lg min-w-[260px] max-h-[300px] overflow-y-auto"
                     style={{
                       borderRadius: 0,
                       borderColor: "#312618",
                       backgroundColor: "#F7EAD7",
+                      zIndex: 10,
                     }}
                   >
                     {countryCodes.map((country) => (
@@ -215,7 +216,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
                 placeholder={t("form.phoneNumber")}
                 value={formData.phone}
                 onChange={handleChange}
-                className="flex-1 h-[50px] px-4 border focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                className="flex-1 min-w-0 h-[50px] px-4 border focus:outline-none focus:ring-2 focus:ring-opacity-50"
                 style={{
                   borderRadius: 0,
                   borderColor: "#312618",
