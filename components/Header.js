@@ -81,7 +81,7 @@ const Header = () => {
         if (isMobile) {
           const topHeader = document.querySelector("header > div:first-child");
           const mainHeader = document.querySelector(
-            "header > div:nth-child(2)"
+            "header > div:nth-child(2)",
           );
           const topHeight = topHeader ? topHeader.offsetHeight : 44;
           const mainHeight = mainHeader ? mainHeader.offsetHeight : 104;
@@ -154,18 +154,19 @@ const Header = () => {
 
         {/* Main Header */}
         <div className="bg-[#C2B49B] h-26 px-4 md:px-8 flex items-center justify-between shadow-md">
-          <div className="shrink-0">
-            <Link href={`/${locale}`}>
-              <Image
-                src="/img/logo.png"
-                alt="The Lake Logo"
-                width={177}
-                height={60}
-                className="h-auto object-contain"
-                priority
-              />
-            </Link>
-          </div>
+          <Link
+            href={`/${locale}`}
+            className="shrink-0 relative block w-[177px] h-[60px]"
+          >
+            <Image
+              src="/img/logo.webp"
+              alt="The Lake Logo"
+              fill
+              sizes="177px"
+              className="object-contain"
+              priority
+            />
+          </Link>
 
           <nav className="hidden min-[1066px]:flex items-center gap-4 xl:gap-6 flex-1 justify-center">
             {/* ყველა ლინკი რჩება იგივე */}

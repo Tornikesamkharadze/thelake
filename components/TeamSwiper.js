@@ -109,7 +109,7 @@ const TeamSwiper = ({
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.4 }}
-                      className="w-full h-full"
+                      className="w-full h-full relative"
                     >
                       <Image
                         src={member.image}

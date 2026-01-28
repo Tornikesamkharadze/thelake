@@ -14,7 +14,7 @@ const ServicesForYou = () => {
     <div>
       <Header />
       <Hero
-        image="/hero-cover.webp"
+        image="/hero-cover-op.webp"
         height="100vh"
         title={t("services.hero.title")}
         highlightWords={[t("services.hero.highlight")]}

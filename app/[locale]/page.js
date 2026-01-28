@@ -22,7 +22,7 @@ export default function Home() {
       <Header />
 
       <Hero
-        image="/hero-cover.webp"
+        image="/hero-cover-op.webp"
         height="100vh"
         title={t("hero.title")}
         highlightWords={t.raw("hero.highlightWords")}

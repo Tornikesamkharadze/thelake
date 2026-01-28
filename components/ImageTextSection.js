@@ -14,6 +14,7 @@ const ImageTextSection = ({
   textBoxColor = "#d4c4b0",
   imageAlt = "",
   centerSingle = false,
+  priority = false,
   titleColor = "#000000",
   subtitleColor = "#000000",
   descriptionColor = "#000000",
@@ -97,8 +98,8 @@ const ImageTextSection = ({
             centerSingle
               ? "justify-center"
               : isImageRight
-              ? "xl:justify-start justify-center"
-              : "xl:justify-end justify-center"
+                ? "xl:justify-start justify-center"
+                : "xl:justify-end justify-center"
           }`}
         >
           <div className="relative w-full" style={{ maxWidth: "750px" }}>
@@ -124,6 +125,7 @@ const ImageTextSection = ({
                     src={image}
                     alt={imageAlt || title}
                     fill
+                    priority={priority} 
                     className="object-cover"
                     sizes="(max-width: 1280px) 100vw, 750px"
                   />

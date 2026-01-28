@@ -20,6 +20,7 @@ const About = () => {
       <Header />
       <ImageTextSection
         image="/lake-1.png"
+        priority={true}
         title={t("about.whoAreWe.title")}
         subtitle={t("about.whoAreWe.subtitle")}
         description={t("about.whoAreWe.description")}
@@ -63,6 +64,7 @@ const About = () => {
 
       <ImageTextSection
         image="/lake-1.png"
+        priority={true}
         title={t("about.aboutProject.title")}
         subtitle={t("about.aboutProject.subtitle")}
         description={t("about.aboutProject.description")}

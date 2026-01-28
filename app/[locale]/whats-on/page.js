@@ -59,7 +59,7 @@ const WhatsOnPage = () => {
     <div>
       <Header />
       <Hero
-        image="/hero-cover.webp"
+        image="/hero-cover-op.webp"
         height="80vh"
         title="What's on"
         highlightWords={["What's on"]}

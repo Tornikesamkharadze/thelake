@@ -13,7 +13,7 @@ const Snohetta = () => {
     <div>
       <Header />
       <Hero
-        image="/hero-cover.webp"
+        image="/hero-cover-op.webp"
         height="100vh"
         title={t("snohetta.hero.title")}
         highlightWords={[t("snohetta.hero.title")]}
