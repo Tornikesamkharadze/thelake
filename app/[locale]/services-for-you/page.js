@@ -19,7 +19,6 @@ const ServicesForYou = () => {
         title={t("services.hero.title")}
         highlightWords={[t("services.hero.highlight")]}
         uppercase={true}
-        priority={true}
       />
       <TextSection
         title={t("services.intro.title")}

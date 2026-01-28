@@ -11,7 +11,6 @@ export default function Hero({
   height = "60vh",
   uppercase = false,
   highlightWords = [],
-  priority = false, // ← ახალი prop
 }) {
   const renderTitle = () => {
     if (!title) return null;
@@ -31,7 +30,7 @@ export default function Hero({
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="text-5xl font-light mb-4 leading-15"
           dangerouslySetInnerHTML={{ __html: formattedTitle }}
         />
@@ -42,7 +41,7 @@ export default function Hero({
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
         className="text-5xl font-normal mb-4"
       >
         {title}
@@ -58,9 +57,9 @@ export default function Hero({
       {/* ვიდეო ან ფოტო */}
       {video ? (
         <motion.div
-          initial={{ scale: 1.1 }}
+          initial={{ scale: 1.05 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
           className="w-full h-full"
         >
           <video
@@ -73,14 +72,13 @@ export default function Hero({
           />
         </motion.div>
       ) : (
-        // მთავარი ცვლილება
         <Image
           src={image}
           alt={title || "Hero"}
           fill
-          priority={priority}
+          priority={true}
           quality={75}
-          sizes="100vw"
+          sizes="(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px"
           className="object-cover"
         />
       )}
@@ -90,7 +88,7 @@ export default function Hero({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
           className="absolute inset-0 bg-black/40 flex items-center justify-center z-10"
         >
           <div
@@ -103,7 +101,7 @@ export default function Hero({
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-xl font-normal"
               >
                 {subtitle}
