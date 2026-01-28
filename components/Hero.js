@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Hero({
   image,
@@ -10,6 +11,7 @@ export default function Hero({
   height = "60vh",
   uppercase = false,
   highlightWords = [],
+  priority = false, // ← ახალი prop
 }) {
   const renderTitle = () => {
     if (!title) return null;
@@ -21,7 +23,7 @@ export default function Hero({
         const regex = new RegExp(`(${word})`, "gi");
         formattedTitle = formattedTitle.replace(
           regex,
-          '<strong class="font-bold">$1</strong>'
+          '<strong class="font-bold">$1</strong>',
         );
       });
 
@@ -54,13 +56,13 @@ export default function Hero({
       style={{ height: `calc(${height} - 148px)` }}
     >
       {/* ვიდეო ან ფოტო */}
-      <motion.div
-        initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-        className="w-full h-full"
-      >
-        {video ? (
+      {video ? (
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="w-full h-full"
+        >
           <video
             src={video}
             autoPlay
@@ -69,14 +71,19 @@ export default function Hero({
             playsInline
             className="w-full h-full object-cover"
           />
-        ) : (
-          <img
-            src={image}
-            alt={title || "Hero"}
-            className="w-full h-full object-cover"
-          />
-        )}
-      </motion.div>
+        </motion.div>
+      ) : (
+        // მთავარი ცვლილება
+        <Image
+          src={image}
+          alt={title || "Hero"}
+          fill
+          priority={priority}
+          quality={75}
+          sizes="100vw"
+          className="object-cover"
+        />
+      )}
 
       {/* Overlay */}
       {(title || subtitle) && (
@@ -84,7 +91,7 @@ export default function Hero({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="absolute inset-0 bg-black/40 flex items-center justify-center"
+          className="absolute inset-0 bg-black/40 flex items-center justify-center z-10"
         >
           <div
             className={`text-center text-white px-4 ${

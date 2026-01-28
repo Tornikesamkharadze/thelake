@@ -12,12 +12,13 @@
     "flag-icons": "^7.5.0",
     "framer-motion": "^12.24.10",
     "lucide-react": "^0.555.0",
-    "next": "16.0.10",
+    "next": "16.1.6",
     "next-intl": "^4.6.1",
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-icons": "^5.5.0",
     "react-scroll": "^1.9.3",
+    "sharp": "^0.34.5",
     "swiper": "^12.0.3"
   },
   "devDependencies": {
