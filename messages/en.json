@@ -204,46 +204,46 @@
   "newsData": [
     {
       "slug": "news-1",
-      "image": "/Rectangle.png",
+      "image": "/rectangle.webp",
       "title": "NEWS 1",
       "date": "28.03.25",
       "excerpt": "Set on 14 hectares by Lisi Lake, this private neighbourhood features 90 villas and houses surrounded by a private park and panoramic lake views. Just 7 km from the city centre, it offers an exclusive lifestyle shaped by international architecture and nature's calm.",
       "textBoxColor": "#F7EAD7",
       "linkColor": "#d4745a",
-      "additionalImage": "/Rectangle.png",
+      "additionalImage": "/rectangle.webp",
       "contentBottom": "This exclusive community offers residents a unique blend of tranquility and accessibility. With modern amenities and stunning natural surroundings, it represents the perfect balance between urban convenience and peaceful lakeside living."
     },
     {
       "slug": "news-2",
-      "image": "/Rectangle.png",
+      "image": "/rectangle.webp",
       "title": "NEWS 2",
       "date": "23.03.25",
       "excerpt": "Experience luxury living in a serene environment where every detail has been carefully considered. From the architectural design to the landscaping, every element reflects quality and sophistication.",
       "textBoxColor": "#F7EAD7",
       "linkColor": "#d4745a",
-      "additionalImage": "/Rectangle.png",
+      "additionalImage": "/rectangle.webp",
       "contentBottom": "Residents enjoy access to premium facilities and services, making daily life both comfortable and convenient. The community fosters a sense of belonging while respecting individual privacy."
     },
     {
       "slug": "news-3",
-      "image": "/Rectangle.png",
+      "image": "/rectangle.webp",
       "title": "NEWS 3",
       "date": "20.03.25",
       "excerpt": "Discover a lifestyle that prioritizes both comfort and connection to nature. The development seamlessly integrates modern living with the natural beauty of the lakeside location.",
       "textBoxColor": "#F7EAD7",
       "linkColor": "#d4745a",
-      "additionalImage": "/Rectangle.png",
+      "additionalImage": "/rectangle.webp",
       "contentBottom": "With carefully planned infrastructure and attention to environmental sustainability, this community sets new standards for residential development in the region."
     },
     {
       "slug": "news-4",
-      "image": "/Rectangle.png",
+      "image": "/rectangle.webp",
       "title": "NEWS 4",
       "date": "15.03.25",
       "excerpt": "A thoughtfully designed neighborhood that combines privacy with community spirit. Residents benefit from a secure environment and exceptional quality of life.",
       "textBoxColor": "#F7EAD7",
       "linkColor": "#d4745a",
-      "additionalImage": "/Rectangle.png",
+      "additionalImage": "/rectangle.webp",
       "contentBottom": "The strategic location offers the best of both worlds - peaceful surroundings with easy access to the city center and all essential services nearby."
     }
   ],

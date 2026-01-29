@@ -49,7 +49,7 @@ const NewsDetail = ({
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            className="w-full h-full"
+            className="w-full h-full relative "
           >
             <Image
               src={heroImage}

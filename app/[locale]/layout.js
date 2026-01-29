@@ -2,7 +2,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 
-const locales = ['en', 'ka'];
+const locales = ["en", "ka"];
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -13,7 +13,9 @@ export async function generateMetadata({ params }) {
   const isKa = locale === "ka";
 
   return {
-    metadataBase: new URL("http://localhost:3000"),
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_SITE_URL || "https://thelake.ge",
+    ), // ✅ შეცვალე ნამდვილი დომენით
     title: isKa
       ? "The Lake by Placemakers - ექსკლუზიური ვილები და სახლები ლისის ტბის პირას"
       : "The Lake by Placemakers - Exclusive Villas & Houses by Lisi Lake",
@@ -55,6 +57,13 @@ export async function generateMetadata({ params }) {
         ? "90 ვილა და სახლი 14 ჰექტარზე. კერძო პარკი, ტბის ხედები, საერთაშორისო არქიტექტურა. 7 კმ თბილისიდან."
         : "90 villas & houses on 14 hectares. Private park, lake views, international architecture. 7 km from Tbilisi.",
       images: ["/og-image.png"],
+    },
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        en: "/en",
+        ka: "/ka",
+      },
     },
     manifest: "/site.webmanifest",
   };
