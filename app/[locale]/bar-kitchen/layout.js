@@ -1,3 +1,4 @@
+import { getAlternateUrls } from "@/lib/metadata";
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const isKa = locale === "ka";
@@ -49,13 +50,7 @@ export async function generateMetadata({ params }) {
         : "Bakery, bar, and farm-to-table restaurant. Seasonal ingredients, signature cocktails, and warm atmosphere by Lisi Lake.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/bar-kitchen`,
-      languages: {
-        en: "/en/bar-kitchen",
-        ka: "/ka/bar-kitchen",
-      },
-    },
+    alternates: getAlternateUrls("/bar-kitchen"),
   };
 }
 

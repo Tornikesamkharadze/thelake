@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import NewsDetail from "@/components/whats-on/NewsDetail";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { getAlternateUrls } from "@/lib/metadata";
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
@@ -51,13 +52,7 @@ export async function generateMetadata({ params }) {
       description: news.excerpt.substring(0, 160),
       images: [news.image || "/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/whats-on/${slug}`,
-      languages: {
-        en: `/en/whats-on/${slug}`,
-        ka: `/ka/whats-on/${slug}`,
-      },
-    },
+    alternates: getAlternateUrls(`/whats-on/${slug}`),
   };
 }
 

@@ -1,3 +1,5 @@
+import { getAlternateUrls } from "@/lib/metadata";
+
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const isKa = locale === "ka";
@@ -49,13 +51,7 @@ export async function generateMetadata({ params }) {
         : "Chic yet grounded. Modern design meets Georgian authenticity. From morning yoga to evening cocktails by the lake.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/lake-house`,
-      languages: {
-        en: "/en/lake-house",
-        ka: "/ka/lake-house",
-      },
-    },
+    alternates: getAlternateUrls("/lake-house"),
   };
 }
 

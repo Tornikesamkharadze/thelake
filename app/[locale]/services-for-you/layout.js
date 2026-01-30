@@ -1,3 +1,5 @@
+import { getAlternateUrls } from "@/lib/metadata";
+
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const isKa = locale === "ka";
@@ -49,13 +51,7 @@ export async function generateMetadata({ params }) {
         : "Delivery, housekeeping, business lounge, kids zone, gardening & pet services. Everything you need for luxury lakeside living.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/services-for-you`,
-      languages: {
-        en: "/en/services-for-you",
-        ka: "/ka/services-for-you",
-      },
-    },
+    alternates: getAlternateUrls("/services-for-you"),
   };
 }
 

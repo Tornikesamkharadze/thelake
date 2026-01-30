@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { getAlternateUrls } from "@/lib/metadata";
 
 const locales = ["en", "ka"];
 
@@ -58,13 +59,7 @@ export async function generateMetadata({ params }) {
         : "90 villas & houses on 14 hectares. Private park, lake views, international architecture. 7 km from Tbilisi.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        en: "/en",
-        ka: "/ka",
-      },
-    },
+    alternates: getAlternateUrls(""),
     manifest: "/site.webmanifest",
   };
 }

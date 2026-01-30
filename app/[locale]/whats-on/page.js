@@ -2,6 +2,7 @@ import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import WhatsOn from "@/components/whats-on/WhatsOn";
+import { getAlternateUrls } from "@/lib/metadata";
 import React from "react";
 
 export async function generateMetadata({ params }) {
@@ -54,13 +55,7 @@ export async function generateMetadata({ params }) {
         : "Latest updates, events, and community news from The Lake by Placemakers. Your source for everything happening at Lisi Lake.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/whats-on`,
-      languages: {
-        en: "/en/whats-on",
-        ka: "/ka/whats-on",
-      },
-    },
+    alternates: getAlternateUrls("/whats-on"),
   };
 }
 

@@ -1,3 +1,5 @@
+import { getAlternateUrls } from "@/lib/metadata";
+
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const isKa = locale === "ka";
@@ -45,13 +47,7 @@ export async function generateMetadata({ params }) {
         : "Experience life by Lisi Lake: nature, sports, art, and quality education minutes from Tbilisi.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/the-lake-lifestyle`,
-      languages: {
-        en: "/en/the-lake-lifestyle",
-        ka: "/ka/the-lake-lifestyle",
-      },
-    },
+    alternates: getAlternateUrls("/the-lake-lifestyle"),
   };
 }
 

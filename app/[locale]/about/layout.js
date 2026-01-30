@@ -1,3 +1,4 @@
+import { getAlternateUrls } from "@/lib/metadata";
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const isKa = locale === "ka";
@@ -48,13 +49,7 @@ export async function generateMetadata({ params }) {
         : "90 villas and houses on 14 hectares by Lisi Lake. International architecture meets nature's calm, just 7 km from Tbilisi city centre.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/about`,
-      languages: {
-        en: "/en/about",
-        ka: "/ka/about",
-      },
-    },
+    alternates: getAlternateUrls("/about"),
   };
 }
 

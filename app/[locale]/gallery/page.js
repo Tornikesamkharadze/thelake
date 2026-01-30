@@ -1,6 +1,7 @@
 import { Footer } from "@/components/Footer";
 import Gallery from "@/components/Gallery";
 import Header from "@/components/Header";
+import { getAlternateUrls } from "@/lib/metadata";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -52,13 +53,7 @@ export async function generateMetadata({ params }) {
         : "Browse stunning photos of The Lake's interiors, exteriors, and breathtaking Lisi Lake views. Your future home awaits.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/gallery`,
-      languages: {
-        en: "/en/gallery",
-        ka: "/ka/gallery",
-      },
-    },
+    alternates: getAlternateUrls("/gallery"),
   };
 }
 

@@ -1,6 +1,7 @@
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import LocationMapSection from "@/components/LocationMapSection";
+import { getAlternateUrls } from "@/lib/metadata";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -52,13 +53,7 @@ export async function generateMetadata({ params }) {
         : "7 km from city centre, 5-minute walk to Lisi Lake. Discover our location with convenient access to schools, sports centres, and transportation.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/find-us`,
-      languages: {
-        en: "/en/find-us",
-        ka: "/ka/find-us",
-      },
-    },
+    alternates: getAlternateUrls("/find-us"),
     robots: {
       index: true,
       follow: true,

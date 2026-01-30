@@ -1,3 +1,4 @@
+import { getAlternateUrls } from "@/lib/metadata";
 export async function generateMetadata({ params }) {
   const { locale } = await params;
 
@@ -30,9 +31,7 @@ export async function generateMetadata({ params }) {
       description: "Get in touch. Phone: +995 511 55 33 33",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/contact`,
-    },
+    alternates: getAlternateUrls("/contact"),
     robots: {
       index: true,
       follow: true,

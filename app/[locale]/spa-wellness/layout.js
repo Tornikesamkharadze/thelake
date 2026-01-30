@@ -1,3 +1,5 @@
+import { getAlternateUrls } from "@/lib/metadata";
+
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const isKa = locale === "ka";
@@ -49,13 +51,7 @@ export async function generateMetadata({ params }) {
         : "Spa, pool, gym, and yoga. Complete wellness experience with lake views and natural surroundings. Balance restored daily.",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: `/${locale}/spa-wellness`,
-      languages: {
-        en: "/en/spa-wellness",
-        ka: "/ka/spa-wellness",
-      },
-    },
+    alternates: getAlternateUrls("/spa-wellness"),
   };
 }
 
