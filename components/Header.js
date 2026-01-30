@@ -99,7 +99,9 @@ const Header = () => {
         });
       }, 150);
     } else {
-      router.push(`${item.href}#${item.scrollTo}`);
+      // შევინახოთ scroll target sessionStorage-ში
+      sessionStorage.setItem("scrollTarget", item.scrollTo);
+      router.push(item.href); // hash-ის გარეშე
     }
   };
 

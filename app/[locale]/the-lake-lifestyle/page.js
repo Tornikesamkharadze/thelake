@@ -16,6 +16,39 @@ const theLakeLifeStyle = () => {
   const locale = params.locale || "ka";
 
   useEffect(() => {
+    // ჯერ ვამოწმებთ sessionStorage-ს
+    const scrollTarget = sessionStorage.getItem("scrollTarget");
+
+    if (scrollTarget) {
+      sessionStorage.removeItem("scrollTarget"); // წავშალოთ გამოყენების შემდეგ
+
+      setTimeout(() => {
+        const isMobile = window.innerWidth < 1536;
+        let headerHeight;
+
+        if (isMobile) {
+          const topHeader = document.querySelector("header > div:first-child");
+          const mainHeader = document.querySelector(
+            "header > div:nth-child(2)",
+          );
+          const topHeight = topHeader ? topHeader.offsetHeight : 44;
+          const mainHeight = mainHeader ? mainHeader.offsetHeight : 104;
+          headerHeight = topHeight + mainHeight;
+        } else {
+          const header = document.querySelector("header");
+          headerHeight = header ? header.offsetHeight : 148;
+        }
+
+        scroller.scrollTo(scrollTarget, {
+          duration: 800,
+          delay: 0,
+          smooth: "easeInOutQuart",
+          offset: -headerHeight - 20,
+        });
+      }, 300);
+    }
+
+    // თუ URL-ში hash არის (ძველი ლინკების support-ისთვის)
     const hash = window.location.hash;
     if (hash) {
       const id = hash.replace("#", "");
@@ -26,7 +59,7 @@ const theLakeLifeStyle = () => {
         if (isMobile) {
           const topHeader = document.querySelector("header > div:first-child");
           const mainHeader = document.querySelector(
-            "header > div:nth-child(2)"
+            "header > div:nth-child(2)",
           );
           const topHeight = topHeader ? topHeader.offsetHeight : 44;
           const mainHeight = mainHeader ? mainHeader.offsetHeight : 104;
@@ -42,9 +75,12 @@ const theLakeLifeStyle = () => {
           smooth: "easeInOutQuart",
           offset: -headerHeight - 20,
         });
+
+        // წავშალოთ hash URL-დან
+        window.history.replaceState(null, "", `/${locale}/the-lake-lifestyle`);
       }, 300);
     }
-  }, []);
+  }, [locale]);
 
   return (
     <div>
