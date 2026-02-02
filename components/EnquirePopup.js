@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { X, ChevronDown } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import toast from "react-hot-toast";
 import "flag-icons/css/flag-icons.min.css";
 
 const countryCodes = [
@@ -27,8 +28,10 @@ const countryCodes = [
 
 export default function EnquirePopup({ isOpen, onClose }) {
   const t = useTranslations("enquirePopup");
+  const locale = useLocale();
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(countryCodes[0]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -54,14 +57,64 @@ export default function EnquirePopup({ isOpen, onClose }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     const fullPhoneNumber = `${selectedCountry.code}${formData.phone}`;
-    console.log("Form submitted:", {
-      ...formData,
-      fullPhoneNumber,
-    });
-    onClose();
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: fullPhoneNumber,
+          message: formData.message,
+          communicationMethods: formData.communicationMethods,
+          formType: "enquire",
+        }),
+      });
+
+      if (response.ok) {
+        toast.success(
+          locale === "ka"
+            ? "მოთხოვნა წარმატებით გაიგზავნა!"
+            : "Enquiry sent successfully!",
+        );
+
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          message: "",
+          communicationMethods: ["Mail"],
+        });
+
+        // Close popup after 2 seconds
+        setTimeout(() => {
+          onClose();
+        }, 2000);
+      } else {
+        toast.error(
+          locale === "ka"
+            ? "მოთხოვნის გაგზავნა ვერ მოხერხდა. სცადეთ თავიდან."
+            : "Failed to send enquiry. Please try again.",
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(
+        locale === "ka"
+          ? "დაფიქსირდა შეცდომა. სცადეთ თავიდან."
+          : "An error occurred. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const communicationMethods = [
@@ -91,6 +144,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
           className="absolute top-4 right-4 transition-colors cursor-pointer hover:opacity-70"
           style={{ color: "#312618" }}
           aria-label="Close"
+          disabled={isSubmitting}
         >
           <X size={28} />
         </button>
@@ -122,6 +176,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
                 color: "#312618",
               }}
               required
+              disabled={isSubmitting}
             />
 
             {/* Email */}
@@ -139,6 +194,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
                 color: "#312618",
               }}
               required
+              disabled={isSubmitting}
             />
 
             {/* Phone with Country Flag Dropdown */}
@@ -154,6 +210,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
                     borderColor: "#312618",
                     backgroundColor: "transparent",
                   }}
+                  disabled={isSubmitting}
                 >
                   <span
                     className={`fi fi-${selectedCountry.flag}`}
@@ -224,6 +281,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
                   color: "#312618",
                 }}
                 required
+                disabled={isSubmitting}
               />
             </div>
 
@@ -241,6 +299,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
                 backgroundColor: "transparent",
                 color: "#312618",
               }}
+              disabled={isSubmitting}
             />
 
             {/* Communication Methods */}
@@ -264,6 +323,7 @@ export default function EnquirePopup({ isOpen, onClose }) {
                         borderColor: "#312618",
                         borderRadius: 0,
                       }}
+                      disabled={isSubmitting}
                     />
                     <span className="text-sm" style={{ color: "#312618" }}>
                       {method}
@@ -277,20 +337,31 @@ export default function EnquirePopup({ isOpen, onClose }) {
             <div className="flex justify-center pt-2">
               <button
                 type="submit"
-                className="px-16 py-3 font-medium transition-colors cursor-pointer"
+                disabled={isSubmitting}
+                className="px-16 py-3 font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 style={{
                   borderRadius: 0,
                   backgroundColor: "#ED5C3F",
                   color: "#F7EAD7",
                 }}
                 onMouseEnter={(e) =>
+                  !isSubmitting &&
                   (e.currentTarget.style.backgroundColor = "#d94f33")
                 }
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.backgroundColor = "#ED5C3F")
                 }
               >
-                {t("form.submit")}
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>
+                      {locale === "ka" ? "იგზავნება..." : "Sending..."}
+                    </span>
+                  </>
+                ) : (
+                  t("form.submit")
+                )}
               </button>
             </div>
           </form>

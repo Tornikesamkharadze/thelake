@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getAlternateUrls } from "@/lib/metadata";
 import localFont from "next/font/local";
 import Script from "next/script";
+import { Toaster } from "react-hot-toast"; // ✅ დამატება
 import "../globals.css";
 
 const tbcContractica = localFont({
@@ -155,6 +156,34 @@ export default async function LocaleLayout({ children, params }) {
       className={`${tbcContractica.variable} ${tbcContracticaCaps.variable}`}
     >
       <body>
+        {/* ✅ Toaster დამატება */}
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: "#312618",
+              color: "#ffffff",
+              padding: "16px",
+              borderRadius: "0px",
+              fontSize: "12px",
+              fontWeight: "500",
+            },
+            success: {
+              iconTheme: {
+                primary: "#10b981",
+                secondary: "#ffffff",
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: "#ef4444",
+                secondary: "#ffffff",
+              },
+            },
+          }}
+        />
+
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
         </NextIntlClientProvider>

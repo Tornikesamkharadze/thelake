@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, useInView } from "framer-motion";
+import toast from "react-hot-toast";
 
 export default function StayInTouchWithContact({
   showAddressBox = true,
@@ -23,9 +24,11 @@ export default function StayInTouchWithContact({
   onSubmit = null,
 }) {
   const t = useTranslations("contact");
+  const locale = useLocale();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [isMobile, setIsMobile] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -36,17 +39,59 @@ export default function StayInTouchWithContact({
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    if (onSubmit) {
-      onSubmit(formData);
-    } else {
-      console.log("Form submitted:", formData);
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          formType: "contact",
+        }),
+      });
+
+      if (response.ok) {
+        toast.success(
+          locale === "ka"
+            ? "შეტყობინება წარმატებით გაიგზავნა!"
+            : "Message sent successfully!",
+        );
+        setFormData({ name: "", email: "", phone: "" });
+
+        if (onSubmit) {
+          onSubmit(formData);
+        }
+      } else {
+        toast.error(
+          locale === "ka"
+            ? "შეტყობინების გაგზავნა ვერ მოხერხდა. სცადეთ თავიდან."
+            : "Failed to send message. Please try again.",
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(
+        locale === "ka"
+          ? "დაფიქსირდა შეცდომა. სცადეთ თავიდან."
+          : "An error occurred. Please try again.",
+        {
+          style: {
+            background: "#ef4444",
+            color: "#ffffff",
+          },
+        },
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -82,7 +127,10 @@ export default function StayInTouchWithContact({
   };
 
   return (
-    <div className="relative overflow-x-hidden md:overflow-x-visible" id="contact-section">
+    <div
+      className="relative overflow-x-hidden md:overflow-x-visible"
+      id="contact-section"
+    >
       <section
         ref={sectionRef}
         className="relative px-4 pt-[120px] pb-16"
@@ -163,6 +211,7 @@ export default function StayInTouchWithContact({
                   value={formData.name}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                 />
 
                 <motion.input
@@ -188,6 +237,7 @@ export default function StayInTouchWithContact({
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                 />
 
                 <motion.div
@@ -219,30 +269,37 @@ export default function StayInTouchWithContact({
                     value={formData.phone}
                     onChange={handleChange}
                     required
+                    disabled={isSubmitting}
                   />
 
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+                    whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
                     type="submit"
-                    className="text-white border-none px-6 py-4 cursor-pointer transition-colors duration-300 flex items-center justify-center w-[60px] h-14 shrink-0"
+                    disabled={isSubmitting}
+                    className="text-white border-none px-6 py-4 cursor-pointer transition-colors duration-300 flex items-center justify-center w-[60px] h-14 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: submitButtonColor,
                     }}
                     onMouseEnter={(e) =>
+                      !isSubmitting &&
                       (e.target.style.backgroundColor = submitButtonHoverColor)
                     }
                     onMouseLeave={(e) =>
                       (e.target.style.backgroundColor = submitButtonColor)
                     }
                   >
-                    <Image
-                      src="/send.svg"
-                      alt="Send"
-                      width={20}
-                      height={20}
-                      className="brightness-0 invert"
-                    />
+                    {isSubmitting ? (
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    ) : (
+                      <Image
+                        src="/send.svg"
+                        alt="Send"
+                        width={20}
+                        height={20}
+                        className="brightness-0 invert"
+                      />
+                    )}
                   </motion.button>
                 </motion.div>
               </form>
