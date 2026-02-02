@@ -18,80 +18,81 @@ export default function Home() {
   const params = useParams();
   const locale = params.locale || "ka";
   return (
-    <div>
+    <>
       <Header />
+      <main>
+        <Hero
+          image="/hero-cover-op.webp"
+          height="100vh"
+          title={t("hero.title")}
+          highlightWords={t.raw("hero.highlightWords")}
+          uppercase={true}
+        />
 
-      <Hero
-        image="/hero-cover-op.webp"
-        height="100vh"
-        title={t("hero.title")}
-        highlightWords={t.raw("hero.highlightWords")}
-        uppercase={true}
-      />
+        <TextSection
+          title={t("welcome.title")}
+          description={t("welcome.description")}
+          highlightWords={["THE LAKE"]}
+          uppercase={true}
+          bgColor="bg-[#F7EAD7]"
+          buttonPosition="bottom"
+          textColor="text-black"
+          buttons={[
+            {
+              text: t("welcome.downloadBrochure"),
+              link: "/brochure.pdf",
+              bgColor: "bg-transparent",
+              textColor: "text-black",
+              border: "border border-black",
+            },
+            {
+              text: t("welcome.enquire"),
+              link: `/${locale}/contact`,
+              bgColor: "bg-[#E85A4F]",
+              textColor: "text-black",
+            },
+          ]}
+        />
 
-      <TextSection
-        title={t("welcome.title")}
-        description={t("welcome.description")}
-        highlightWords={["THE LAKE"]}
-        uppercase={true}
-        bgColor="bg-[#F7EAD7]"
-        buttonPosition="bottom"
-        textColor="text-black"
-        buttons={[
-          {
-            text: t("welcome.downloadBrochure"),
-            link: "/brochure.pdf",
-            bgColor: "bg-transparent",
-            textColor: "text-black",
-            border: "border border-black",
-          },
-          {
-            text: t("welcome.enquire"),
-            link: `/${locale}/contact`,
-            bgColor: "bg-[#E85A4F]",
-            textColor: "text-black",
-          },
-        ]}
-      />
+        <ImageTextSection
+          image="/lake-1.png"
+          title={t("whyOwn.title")}
+          subtitle={t("whyOwn.subtitle")}
+          description={t("whyOwn.description")}
+          imagePosition="left"
+          titleColor="#000000"
+          subtitleColor="#000000"
+          descriptionColor="#000000"
+          backgroundColor="#C2B49B"
+          textBoxColor="#F7EAD7"
+          titleSize="25px"
+          subtitleSize="19px"
+          descriptionSize="19px"
+          titleWeight="400"
+          subtitleWeight="700"
+          descriptionWeight="400"
+          titleTransform="uppercase"
+          subtitleTransform="none"
+          descriptionTransform="none"
+        />
 
-      <ImageTextSection
-        image="/lake-1.png"
-        title={t("whyOwn.title")}
-        subtitle={t("whyOwn.subtitle")}
-        description={t("whyOwn.description")}
-        imagePosition="left"
-        titleColor="#000000"
-        subtitleColor="#000000"
-        descriptionColor="#000000"
-        backgroundColor="#C2B49B"
-        textBoxColor="#F7EAD7"
-        titleSize="25px"
-        subtitleSize="19px"
-        descriptionSize="19px"
-        titleWeight="400"
-        subtitleWeight="700"
-        descriptionWeight="400"
-        titleTransform="uppercase"
-        subtitleTransform="none"
-        descriptionTransform="none"
-      />
+        <Divider
+          text={t("divider.masterplan")}
+          uppercase={true}
+          bgColor="bg-[#F7EAD7]"
+          textColor="text-black"
+        />
 
-      <Divider
-        text={t("divider.masterplan")}
-        uppercase={true}
-        bgColor="bg-[#F7EAD7]"
-        textColor="text-black"
-      />
-
-      <MasterplanSection />
-      <PropertyTypesSection />
-      <StayInTouchWithContact
-        showAddressBox={true}
-        backgroundColor="#d3b473"
-        addressBoxBg="#F7EAD7"
-      />
-      <PartnersSlider />
+        <MasterplanSection />
+        <PropertyTypesSection />
+        <StayInTouchWithContact
+          showAddressBox={true}
+          backgroundColor="#d3b473"
+          addressBoxBg="#F7EAD7"
+        />
+        <PartnersSlider />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 }

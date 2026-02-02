@@ -1,7 +1,83 @@
+// app/[locale]/layout.tsx
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { getAlternateUrls } from "@/lib/metadata";
+import localFont from "next/font/local";
+import Script from "next/script";
+import "../globals.css";
+
+const tbcContractica = localFont({
+  src: [
+    {
+      path: "../../public/fonts/TBCContractica-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContractica-Book.ttf",
+      weight: "350",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContractica-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContractica-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContractica-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContractica-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-contractica",
+});
+
+const tbcContracticaCaps = localFont({
+  src: [
+    {
+      path: "../../public/fonts/TBCContracticaCAPS-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContracticaCAPS-Book.ttf",
+      weight: "350",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContracticaCAPS-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContracticaCAPS-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContracticaCAPS-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/TBCContracticaCAPS-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-contractica-caps",
+});
 
 const locales = ["en", "ka"];
 
@@ -16,7 +92,7 @@ export async function generateMetadata({ params }) {
   return {
     metadataBase: new URL(
       process.env.NEXT_PUBLIC_SITE_URL || "https://thelake.ge",
-    ), // ✅ შეცვალე ნამდვილი დომენით
+    ),
     title: isKa
       ? "The Lake by Placemakers - ექსკლუზიური ვილები და სახლები ლისის ტბის პირას"
       : "The Lake by Placemakers - Exclusive Villas & Houses by Lisi Lake",
@@ -74,8 +150,15 @@ export default async function LocaleLayout({ children, params }) {
   const messages = await getMessages({ locale });
 
   return (
-    <NextIntlClientProvider messages={messages} locale={locale}>
-      {children}
-    </NextIntlClientProvider>
+    <html
+      lang={locale}
+      className={`${tbcContractica.variable} ${tbcContracticaCaps.variable}`}
+    >
+      <body>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
   );
 }

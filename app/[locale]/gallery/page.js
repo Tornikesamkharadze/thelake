@@ -59,11 +59,13 @@ export async function generateMetadata({ params }) {
 
 const gallery = () => {
   return (
-    <div>
+    <>
       <Header />
-      <Gallery />
+      <main>
+        <Gallery />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

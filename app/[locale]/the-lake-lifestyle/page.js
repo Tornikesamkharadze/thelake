@@ -83,115 +83,115 @@ const theLakeLifeStyle = () => {
   }, [locale]);
 
   return (
-    <div>
+    <>
       <Header />
-
-      <Hero
-        image="/lifestyle-hero-bg.webp"
-        height="80vh"
-        title={t("lifestyle.title")}
-        highlightWords={[t("lifestyle.title")]}
-        uppercase={true}
-      />
-
-      <TextSection
-        title={t("lifestyle.wellbeing.title")}
-        description={t("lifestyle.wellbeing.description")}
-        highlightWords={[""]}
-        uppercase={true}
-        bgColor="bg-[#C2B49B]"
-        buttonPosition="middle"
-        textColor="text-white"
-        buttons={[
-          {
-            text: t("welcome.enquire"),
-            link: `/${locale}/contact`,
-            bgColor: "bg-[#E85A4F]",
-            textColor: "text-black",
-          },
-        ]}
-      />
-
-      <Element name="life-in-nature">
-        <TextImageSideSection
-          id="life-in-nature"
-          image="/lake-1.png"
-          title={t("lifestyle.lifeInNature.title")}
-          description={t("lifestyle.lifeInNature.description")}
-          imagePosition="right"
-          backgroundColor="#F7EAD7"
-          titleColor="#000000"
-          descriptionColor="#000000"
+      <main>
+        <Hero
+          image="/lifestyle-hero-bg.webp"
+          height="80vh"
+          title={t("lifestyle.title")}
+          highlightWords={[t("lifestyle.title")]}
+          uppercase={true}
         />
-      </Element>
 
-      <Element name="surroundings">
-        <TextImageSideSection
-          id="surroundings"
-          image="/surroundings.webp"
-          title={t("lifestyle.surroundings.title")}
-          description={t("lifestyle.surroundings.description")}
-          imagePosition="left"
-          backgroundColor="#F7EAD7"
-          titleColor="#000000"
-          descriptionColor="#000000"
+        <TextSection
+          title={t("lifestyle.wellbeing.title")}
+          description={t("lifestyle.wellbeing.description")}
+          highlightWords={[""]}
+          uppercase={true}
+          bgColor="bg-[#C2B49B]"
+          buttonPosition="middle"
+          textColor="text-white"
+          buttons={[
+            {
+              text: t("welcome.enquire"),
+              link: `/${locale}/contact`,
+              bgColor: "bg-[#E85A4F]",
+              textColor: "text-black",
+            },
+          ]}
         />
-      </Element>
 
-      <Element name="art-events">
-        <TextImageSideSection
-          id="art-events"
-          image="/art-events.webp"
-          title={t("lifestyle.artEvents.title")}
-          description={t("lifestyle.artEvents.description")}
-          imagePosition="right"
-          backgroundColor="#F7EAD7"
-          titleColor="#000000"
-          descriptionColor="#000000"
-        />
-      </Element>
+        <Element name="life-in-nature">
+          <TextImageSideSection
+            id="life-in-nature"
+            image="/lake-1.png"
+            title={t("lifestyle.lifeInNature.title")}
+            description={t("lifestyle.lifeInNature.description")}
+            imagePosition="right"
+            backgroundColor="#F7EAD7"
+            titleColor="#000000"
+            descriptionColor="#000000"
+          />
+        </Element>
 
-      <Element name="fishing">
-        <TextImageSideSection
-          id="fishing"
-          image="/fishing.webp"
-          title={t("lifestyle.fishing.title")}
-          description={t("lifestyle.fishing.description")}
-          imagePosition="left"
-          backgroundColor="#F7EAD7"
-          titleColor="#000000"
-          descriptionColor="#000000"
-        />
-      </Element>
+        <Element name="surroundings">
+          <TextImageSideSection
+            id="surroundings"
+            image="/surroundings.webp"
+            title={t("lifestyle.surroundings.title")}
+            description={t("lifestyle.surroundings.description")}
+            imagePosition="left"
+            backgroundColor="#F7EAD7"
+            titleColor="#000000"
+            descriptionColor="#000000"
+          />
+        </Element>
 
-      <Element name="sport-activities">
-        <TextImageSideSection
-          id="sport-activities"
-          image="/Sport-activities.webp"
-          title={t("lifestyle.sportActivities.title")}
-          description={t("lifestyle.sportActivities.description")}
-          imagePosition="right"
-          backgroundColor="#F7EAD7"
-          titleColor="#000000"
-          descriptionColor="#000000"
-        />
-      </Element>
+        <Element name="art-events">
+          <TextImageSideSection
+            id="art-events"
+            image="/art-events.webp"
+            title={t("lifestyle.artEvents.title")}
+            description={t("lifestyle.artEvents.description")}
+            imagePosition="right"
+            backgroundColor="#F7EAD7"
+            titleColor="#000000"
+            descriptionColor="#000000"
+          />
+        </Element>
 
-      <Element name="education">
-        <TextImageSideSection
-          id="education"
-          image="/education.webp"
-          title={t("lifestyle.education.title")}
-          description={t("lifestyle.education.description")}
-          imagePosition="left"
-          backgroundColor="#F7EAD7"
-          titleColor="#000000"
-          descriptionColor="#000000"
-        />
-      </Element>
+        <Element name="fishing">
+          <TextImageSideSection
+            id="fishing"
+            image="/fishing.webp"
+            title={t("lifestyle.fishing.title")}
+            description={t("lifestyle.fishing.description")}
+            imagePosition="left"
+            backgroundColor="#F7EAD7"
+            titleColor="#000000"
+            descriptionColor="#000000"
+          />
+        </Element>
 
+        <Element name="sport-activities">
+          <TextImageSideSection
+            id="sport-activities"
+            image="/Sport-activities.webp"
+            title={t("lifestyle.sportActivities.title")}
+            description={t("lifestyle.sportActivities.description")}
+            imagePosition="right"
+            backgroundColor="#F7EAD7"
+            titleColor="#000000"
+            descriptionColor="#000000"
+          />
+        </Element>
+
+        <Element name="education">
+          <TextImageSideSection
+            id="education"
+            image="/education.webp"
+            title={t("lifestyle.education.title")}
+            description={t("lifestyle.education.description")}
+            imagePosition="left"
+            backgroundColor="#F7EAD7"
+            titleColor="#000000"
+            descriptionColor="#000000"
+          />
+        </Element>
+      </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

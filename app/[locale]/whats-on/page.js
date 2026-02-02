@@ -61,18 +61,20 @@ export async function generateMetadata({ params }) {
 
 const WhatsOnPage = () => {
   return (
-    <div>
+    <>
       <Header />
-      <Hero
-        image="/hero-cover-op.webp"
-        height="80vh"
-        title="What's on"
-        highlightWords={["What's on"]}
-        uppercase={true}
-      />
-      <WhatsOn />
+      <main>
+        <Hero
+          image="/hero-cover-op.webp"
+          height="80vh"
+          title="What's on"
+          highlightWords={["What's on"]}
+          uppercase={true}
+        />
+        <WhatsOn />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

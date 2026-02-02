@@ -63,11 +63,13 @@ export async function generateMetadata({ params }) {
 
 const findUs = () => {
   return (
-    <div>
+    <>
       <Header />
-      <LocationMapSection />
+      <main>
+        <LocationMapSection />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

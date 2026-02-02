@@ -68,18 +68,20 @@ export default async function NewsPage({ params }) {
   }
 
   return (
-    <div>
+    <>
       <Header />
-      <NewsDetail
-        title={news.title}
-        date={news.date}
-        heroImage={news.image}
-        excerpt={news.excerpt}
-        additionalImage={news.additionalImage}
-        contentBottom={news.contentBottom}
-      />
+      <main>
+        <NewsDetail
+          title={news.title}
+          date={news.date}
+          heroImage={news.image}
+          excerpt={news.excerpt}
+          additionalImage={news.additionalImage}
+          contentBottom={news.contentBottom}
+        />
+      </main>
       <Footer />
-    </div>
+    </>
   );
 }
 
