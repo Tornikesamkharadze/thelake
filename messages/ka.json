@@ -321,6 +321,31 @@
       }
     ]
   },
+  "chooseProperty": {
+    "code": "საკადასტრო",
+    "landSize": "მიწის ფართობი",
+    "buildingSpace": "ასაშენებელი ფართობი",
+    "defaultBuildingSpace": "300 მ2",
+    "no2DPlan": "2D გეგმა არ არის",
+    "visualSelection": "ვიზუალური არჩევანი",
+    "propertyListing": "ქონების სია"
+  },
+  "propertyDetail": {
+    "view": "ხედი",
+    "sector": "სექტორი",
+    "cadastralPlotNumber": "საკადასტრო კოდი",
+    "totalLandArea": "მიწის სრული ფართობი",
+    "totalHouseArea": "სახლის სრული ფართობი",
+    "livingArea": "საცხოვრებელი ფართი",
+    "firstFloor": "პირველი სართული",
+    "secondFloor": "მეორე სართული",
+    "terraceArea": "ტერასის ფართი",
+    "ceilingHeights": "ჭერის სიმაღლე",
+    "entranceHall": "შესასვლელი ჰოლი",
+    "mainAreas": "მთავარი სივრცეები",
+    "bedrooms": "საძინებლები",
+    "reserve": "დაჯავშნა"
+  },
   "gallery": {
     "title": "გალერეა",
     "exterior": "ექსტერიერი",

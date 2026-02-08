@@ -133,7 +133,7 @@ const Header = () => {
               {t("nav.gallery")}
             </Link>
             <Link
-              href={`/${locale}/map`}
+              href={`/${locale}/choose-propertie`}
               className="hover:opacity-80 transition-opacity"
             >
               {t("nav.interactiveMap")}
@@ -251,7 +251,7 @@ const Header = () => {
           </nav>
 
           <div className="hidden xl:flex items-center gap-3 shrink-0 ml-2">
-            <Link href={`/${locale}/own-a-house`}>
+            <Link href={`/${locale}/choose-propertie`}>
               <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
                 {t("buttons.ownAHouse")}
               </button>
@@ -373,7 +373,7 @@ const Header = () => {
 
               <div className="flex flex-col gap-3 mt-4">
                 <Link
-                  href={`/${locale}/own-a-house`}
+                  href={`/${locale}/choose-propertie`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
@@ -407,7 +407,7 @@ const Header = () => {
                   {t("nav.gallery")}
                 </Link>
                 <Link
-                  href={`/${locale}/map`}
+                  href={`/${locale}/choose-propertie`}
                   className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -436,7 +436,7 @@ const Header = () => {
 
       {/* Bottom Sticky Buttons - Show between 1066px and xl breakpoints */}
       <div className="hidden min-[1066px]:flex xl:hidden fixed bottom-0 left-0 right-0 bg-[#2C3E50] z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-        <Link href={`/${locale}/own-a-house`} className="flex-1">
+        <Link href={`/${locale}/choose-propertie`} className="flex-1">
           <button className="w-full bg-[#ed5c3f] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#312618] transition-colors cursor-pointer">
             {t("buttons.ownAHouse")}
           </button>

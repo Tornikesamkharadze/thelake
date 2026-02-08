@@ -321,6 +321,31 @@
       }
     ]
   },
+  "chooseProperty": {
+    "code": "Code",
+    "landSize": "Land size",
+    "buildingSpace": "Building Space",
+    "defaultBuildingSpace": "300 m2",
+    "no2DPlan": "No 2D Plan",
+    "visualSelection": "Visual Selection",
+    "propertyListing": "Property listing"
+  },
+  "propertyDetail": {
+    "view": "view",
+    "sector": "Sector",
+    "cadastralPlotNumber": "Cadastral plot number",
+    "totalLandArea": "Total land area",
+    "totalHouseArea": "Total house area",
+    "livingArea": "Living area",
+    "firstFloor": "First floor",
+    "secondFloor": "Second floor",
+    "terraceArea": "Terrace area",
+    "ceilingHeights": "Ceiling heights",
+    "entranceHall": "Entrance hall",
+    "mainAreas": "Main areas",
+    "bedrooms": "Bedrooms",
+    "reserve": "RESERVE"
+  },
   "gallery": {
     "title": "GALLERY",
     "exterior": "Exterior",

@@ -57,7 +57,7 @@ export function Footer() {
               {t("nav.gallery")}
             </Link>
             <Link
-              href={`/${locale}/interactive-map`}
+              href={`/${locale}/choose-propertie`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
               {t("nav.interactiveMap")}
