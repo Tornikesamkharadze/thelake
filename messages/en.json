@@ -330,7 +330,25 @@
     "visualSelection": "Visual Selection",
     "propertyListing": "Property listing",
     "instructionTitle": "Choose a Plot",
-    "instructionText": "Hover over the map to select your desired plot. Click on a plot to view detailed information."
+    "instructionText": "Hover over the map to select your desired plot. Click on a plot to view detailed information.",
+    "filter": "FILTER",
+    "type": "Type",
+    "all": "All",
+    "m2": "m²",
+    "search": "Search",
+    "land": "Land",
+    "noProperties": "No properties found matching your criteria"
+  },
+  "propertyListing": {
+    "filter": "FILTER",
+    "type": "Type",
+    "landSize": "Land size",
+    "all": "All",
+    "m2": "m²",
+    "search": "Search",
+    "land": "Land",
+    "code": "Code",
+    "noProperties": "No properties found matching your criteria"
   },
   "propertyDetail": {
     "view": "view",

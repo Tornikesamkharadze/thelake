@@ -1,14 +1,50 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter, useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import EnquirePopup from "@/components/EnquirePopup";
 
 const PropertyDetail = ({ property }) => {
   const t = useTranslations();
+  const router = useRouter();
+  const params = useParams();
+  const locale = params.locale || "ka";
+
   const [isEnquirePopupOpen, setIsEnquirePopupOpen] = useState(false);
+  const [referrerInfo, setReferrerInfo] = useState(null);
+
+  // Get referrer info on component mount
+  useEffect(() => {
+    const referrer = sessionStorage.getItem("propertyListingReferrer");
+    const referrerUrl = sessionStorage.getItem("propertyListingUrl");
+
+    if (referrer && referrerUrl) {
+      setReferrerInfo({ type: referrer, url: referrerUrl });
+    }
+  }, []);
+
+  // Handle back navigation - smart back with locale awareness
+  const handleBack = () => {
+    // Clear the stored referrer info
+    sessionStorage.removeItem("propertyListingReferrer");
+    sessionStorage.removeItem("propertyListingUrl");
+
+    // If we have referrer info, navigate to the correct localized URL
+    if (referrerInfo) {
+      const targetUrl = referrerInfo.url.replace(/\/(ka|en)\//, `/${locale}/`);
+      router.push(targetUrl);
+    } else {
+      // Fallback: try to use browser history
+      if (window.history.length > 1) {
+        router.back();
+      } else {
+        // Last fallback
+        router.push(`/${locale}/choose-propertie`);
+      }
+    }
+  };
 
   // Helper function to check if value exists and is not "---"
   const hasValue = (value) => {
@@ -35,9 +71,9 @@ const PropertyDetail = ({ property }) => {
             {/* Header with Back Button and Title */}
             <div className="bg-[#F7EAD7] px-6 py-6">
               <div className="flex items-start gap-3">
-                <Link
-                  href="/ka/choose-propertie"
-                  className="text-gray-800 hover:text-gray-600 transition-colors"
+                <button
+                  onClick={handleBack}
+                  className="text-gray-800 hover:text-gray-600 transition-colors cursor-pointer"
                 >
                   <svg
                     className="w-6 h-6"
@@ -52,10 +88,10 @@ const PropertyDetail = ({ property }) => {
                       d="M15 19l-7-7 7-7"
                     />
                   </svg>
-                </Link>
+                </button>
 
                 <h1 className="text-2xl font-light text-gray-800 uppercase tracking-wide">
-                  {property?.type} N{property?.houseNo}
+                  {property?.type} - {property?.houseNo}
                 </h1>
               </div>
             </div>

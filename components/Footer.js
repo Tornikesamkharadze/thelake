@@ -56,9 +56,10 @@ export function Footer() {
             >
               {t("nav.gallery")}
             </Link>
+            {/* Interactive Map დამალულია მობაილზე */}
             <Link
               href={`/${locale}/choose-propertie`}
-              className="text-base hover:text-[#ED5C3F] transition-opacity"
+              className="hidden min-[1066px]:block text-base hover:text-[#ED5C3F] transition-opacity"
             >
               {t("nav.interactiveMap")}
             </Link>

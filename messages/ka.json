@@ -332,6 +332,18 @@
     "instructionTitle": "ინტერაქტიული რუკა",
     "instructionText": "მიიტანეთ კურსორი ნაკვეთზე ინფორმაციის სანახავად"
   },
+  "propertyListing": {
+    "filter": "ფილტრი",
+    "type": "ტიპი",
+    "landSize": "მიწა",
+    "all": "ყველა",
+    "m2": "მ²",
+    "search": "ძიება",
+    "land": "მიწა",
+    "code": "საკადასტრო",
+    "noProperties": "არ მოიძებნა თქვენი კრიტერიუმებით"
+  },
+
   "propertyDetail": {
     "view": "ხედი",
     "sector": "სექტორი",

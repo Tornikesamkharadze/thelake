@@ -114,6 +114,14 @@ const Header = () => {
     }
   };
 
+  // Determine target for "Own a House" based on screen size
+  const getOwnHouseTarget = () => {
+    if (typeof window !== "undefined" && window.innerWidth < 1066) {
+      return `/${locale}/property-listing`;
+    }
+    return `/${locale}/choose-propertie`;
+  };
+
   return (
     <>
       <header className="w-full sticky top-0 z-50">
@@ -171,7 +179,6 @@ const Header = () => {
           </Link>
 
           <nav className="hidden min-[1066px]:flex items-center gap-4 xl:gap-6 flex-1 justify-center">
-            {/* ყველა ლინკი რჩება იგივე */}
             <div
               className="relative"
               onMouseEnter={() => setIsDropdownOpen(true)}
@@ -373,7 +380,7 @@ const Header = () => {
 
               <div className="flex flex-col gap-3 mt-4">
                 <Link
-                  href={`/${locale}/choose-propertie`}
+                  href={`/${locale}/property-listing`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
@@ -391,6 +398,7 @@ const Header = () => {
                 </button>
               </div>
 
+              {/* Mobile Menu Links - Interactive Map დამალულია */}
               <div className="min-[1066px]:hidden flex flex-col gap-2 mt-4 pt-4 border-t border-[#B5A88E]">
                 <Link
                   href={`/${locale}/about`}
@@ -406,13 +414,7 @@ const Header = () => {
                 >
                   {t("nav.gallery")}
                 </Link>
-                <Link
-                  href={`/${locale}/choose-propertie`}
-                  className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {t("nav.interactiveMap")}
-                </Link>
+                {/* Interactive Map დამალულია მობაილზე */}
                 <Link
                   href={`/${locale}/contact`}
                   className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
