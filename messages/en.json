@@ -328,7 +328,9 @@
     "defaultBuildingSpace": "300 m2",
     "no2DPlan": "No 2D Plan",
     "visualSelection": "Visual Selection",
-    "propertyListing": "Property listing"
+    "propertyListing": "Property listing",
+    "instructionTitle": "Choose a Plot",
+    "instructionText": "Hover over the map to select your desired plot. Click on a plot to view detailed information."
   },
   "propertyDetail": {
     "view": "view",

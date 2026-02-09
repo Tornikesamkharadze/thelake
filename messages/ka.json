@@ -328,7 +328,9 @@
     "defaultBuildingSpace": "300 მ2",
     "no2DPlan": "2D გეგმა არ არის",
     "visualSelection": "ვიზუალური არჩევანი",
-    "propertyListing": "ქონების სია"
+    "propertyListing": "ქონების სია",
+    "instructionTitle": "ინტერაქტიული რუკა",
+    "instructionText": "მიიტანეთ კურსორი ნაკვეთზე ინფორმაციის სანახავად"
   },
   "propertyDetail": {
     "view": "ხედი",

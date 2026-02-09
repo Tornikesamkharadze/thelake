@@ -17,11 +17,21 @@ const PropertyDetail = ({ property }) => {
 
   return (
     <>
-      <div className="h-[calc(100vh-148px)] bg-white overflow-hidden">
-        {/* Main Container */}
-        <div className="flex flex-col lg:flex-row h-full">
-          {/* Left Sidebar - Property Info */}
-          <div className="lg:w-[350px] w-full bg-[#D4C4A8] flex flex-col h-full lg:h-auto overflow-y-auto">
+      <div className="h-[calc(100vh-148px)] bg-white overflow-hidden relative">
+        {/* Background Image - Full Width */}
+        <div className="absolute inset-0">
+          <Image
+            src="/land-plot.webp"
+            alt="Property Map"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+
+        {/* Property Info Box - Floating on Background */}
+        <div className="relative h-full flex items-start pt-6 pl-6 lg:pt-8 lg:pl-8">
+          <div className="w-full max-w-[350px] bg-[#D4C4A8] flex flex-col max-h-[calc(100%-48px)] overflow-y-auto">
             {/* Header with Back Button and Title */}
             <div className="bg-[#F7EAD7] px-6 py-6">
               <div className="flex items-start gap-3">
@@ -257,26 +267,13 @@ const PropertyDetail = ({ property }) => {
             </div>
 
             {/* Reserve Button */}
-            <div className="px-6 pb-6">
+            <div className="px-6 pb-6 flex justify-center">
               <button
                 onClick={() => setIsEnquirePopupOpen(true)}
-                className="w-full bg-[#ED5C3F] hover:bg-[#d94d30] text-white font-medium py-3 px-6 transition-colors uppercase tracking-wide cursor-pointer"
+                className="max-w-[200px] w-full bg-[#ED5C3F] hover:bg-[#d94d30] text-white font-medium py-3 px-6 transition-colors uppercase tracking-wide cursor-pointer"
               >
                 {t("propertyDetail.reserve")}
               </button>
-            </div>
-          </div>
-
-          {/* Right Side - Background Image */}
-          <div className="flex-1 relative h-full lg:h-full overflow-hidden">
-            <div className="relative w-full h-full flex items-center justify-center">
-              <Image
-                src="/land-plot.webp"
-                alt="Property Map"
-                fill
-                className="object-cover"
-                priority
-              />
             </div>
           </div>
         </div>
