@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, {
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import Image from "next/image";
 import { properties } from "@/lib/dummyData";
 import { useTranslations } from "next-intl";
@@ -15,14 +21,35 @@ const PropertyListing = () => {
   // Filter states
   const [selectedType, setSelectedType] = useState("All");
   const [selectedLandSize, setSelectedLandSize] = useState("All");
+  const [openDropdown, setOpenDropdown] = useState(null);
 
-  // Get unique types and land sizes for filters - filter out empty/null values
+  const dropdownRefs = useRef({});
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      setTimeout(() => {
+        if (
+          openDropdown &&
+          dropdownRefs.current[openDropdown] &&
+          !dropdownRefs.current[openDropdown].contains(event.target)
+        ) {
+          setOpenDropdown(null);
+        }
+      }, 0);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openDropdown]);
+
+  // Get unique types and land sizes for filters
   const propertyTypes = useMemo(() => {
     const types = [
       ...new Set(
         properties
-          .map((p) => p.type)
-          .filter((type) => type && type.trim() !== ""),
+          .map((p) => p.type?.trim())
+          .filter((type) => type && type !== ""),
       ),
     ];
     return ["All", ...types.sort()];
@@ -32,128 +59,157 @@ const PropertyListing = () => {
     const sizes = [
       ...new Set(
         properties
-          .map((p) => p.landSize)
-          .filter((size) => size && size.trim() !== ""),
+          .map((p) => p.landSize?.trim())
+          .filter((size) => size && size !== ""),
       ),
     ];
     return ["All", ...sizes.sort((a, b) => parseInt(a) - parseInt(b))];
   }, []);
 
-  // Filter properties - exclude sold properties (isSold === true)
+  // Filter properties
   const filteredProperties = useMemo(() => {
     return properties.filter((property) => {
-      // არ ვაჩვენოთ გაყიდული ნაკვეთები
-      if (property.isSold === true) {
-        return false;
-      }
+      if (property.isSold === true) return false;
 
-      const typeMatch =
-        selectedType === "All" || property.type === selectedType;
+      const propertyType = property.type?.trim() || "";
+      const propertyLandSize = property.landSize?.trim() || "";
+
+      const typeMatch = selectedType === "All" || propertyType === selectedType;
       const landSizeMatch =
-        selectedLandSize === "All" || property.landSize === selectedLandSize;
+        selectedLandSize === "All" || propertyLandSize === selectedLandSize;
+
       return typeMatch && landSizeMatch;
     });
   }, [selectedType, selectedLandSize]);
 
   const handlePropertyClick = (property) => {
-    // Save the current page info before navigating
     sessionStorage.setItem("propertyListingReferrer", "listing");
     sessionStorage.setItem("propertyListingUrl", window.location.pathname);
-
     router.push(`/${locale}/property/${property.houseNo}`);
   };
 
   const handleSearch = () => {
-    console.log("Searching with filters:", { selectedType, selectedLandSize });
+    setOpenDropdown(null);
+  };
+
+  const handleTypeChange = useCallback((value) => {
+    setSelectedType(value);
+    setOpenDropdown(null);
+  }, []);
+
+  const handleLandSizeChange = useCallback((value) => {
+    setSelectedLandSize(value);
+    setOpenDropdown(null);
+  }, []);
+
+  const toggleDropdown = useCallback((name) => {
+    setOpenDropdown((prev) => (prev === name ? null : name));
+  }, []);
+
+  // Custom Select Component
+  const CustomSelect = ({ name, value, options, onChange }) => {
+    const isOpen = openDropdown === name;
+
+    const getDisplayValue = () => {
+      if (value === "All") {
+        return t("propertyListing.all");
+      }
+      if (name === "landSize" && value !== "All") {
+        return `${value} ${t("propertyListing.m2")}`;
+      }
+      return value;
+    };
+
+    const handleOptionClick = (option) => {
+      onChange(option);
+    };
+
+    return (
+      <div
+        ref={(el) => (dropdownRefs.current[name] = el)}
+        className="relative w-full"
+      >
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleDropdown(name);
+          }}
+          className="w-full px-3 py-2.5 bg-[#C2B49B] text-[#312618] font-medium cursor-pointer border-b border-[rgba(49,38,24,0.3)] transition-all duration-300 flex items-center justify-between hover:bg-[#ED5C3F] hover:text-[#F7EAD7] hover:border-[#312618] focus:outline-none focus:bg-[#ED5C3F] focus:text-[#F7EAD7]"
+        >
+          <span className="text-sm">{getDisplayValue()}</span>
+          <svg
+            className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        {isOpen && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-[#C2B49B] border border-[rgba(49,38,24,0.3)] overflow-hidden z-50 max-h-[300px] overflow-y-auto shadow-lg custom-dropdown">
+            {options.map((option, index) => (
+              <button
+                key={index}
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleOptionClick(option);
+                }}
+                className={`w-full text-left px-3 py-2.5 text-sm text-[#312618] font-medium cursor-pointer transition-all duration-200 hover:bg-[#ED5C3F] hover:text-white ${
+                  value === option ? "bg-[#312618] text-[#F7EAD7]" : ""
+                }`}
+              >
+                {option === "All" ? t("propertyListing.all") : option}
+                {name === "landSize" &&
+                  option !== "All" &&
+                  ` ${t("propertyListing.m2")}`}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
     <>
       <style jsx global>{`
-        /* Custom select styling */
-        .custom-select {
-          background-color: #c2b49b;
-          border: none;
-          border-bottom: 1px solid rgba(49, 38, 24, 0.3);
-          border-radius: 0;
-          padding: 10px 32px 10px 12px;
-          font-size: 14px;
-          color: #312618;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          appearance: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
+        .custom-dropdown::-webkit-scrollbar {
+          width: 4px;
         }
 
-        .custom-select:hover {
-          background-color: #ed5c3f;
-          border-bottom-color: #312618;
-          color: #f7ead7;
-        }
-
-        .custom-select:focus {
-          outline: none;
-          background-color: #ed5c3f;
-          border-bottom: 2px solid #312618;
-          color: #f7ead7;
-        }
-
-        /* Custom scrollbar for dropdown options */
-        .custom-select option {
-          background-color: #c2b49b;
-          color: #312618;
-          padding: 10px;
-          font-weight: 500;
-        }
-
-        .custom-select option:hover {
-          background-color: #ed5c3f;
-          color: white;
-        }
-
-        .custom-select option:checked {
-          background-color: #312618;
-          color: #f7ead7;
-        }
-
-        /* Custom scrollbar */
-        select::-webkit-scrollbar {
-          width: 2px;
-        }
-
-        select::-webkit-scrollbar-track {
+        .custom-dropdown::-webkit-scrollbar-track {
           background: rgba(194, 180, 155, 0.3);
         }
 
-        select::-webkit-scrollbar-thumb {
+        .custom-dropdown::-webkit-scrollbar-thumb {
           background: #ed5c3f;
-          border-radius: 1px;
+          border-radius: 2px;
         }
 
-        select::-webkit-scrollbar-thumb:hover {
+        .custom-dropdown::-webkit-scrollbar-thumb:hover {
           background: #d44d31;
         }
 
-        /* Firefox scrollbar */
-        select {
+        .custom-dropdown {
           scrollbar-width: thin;
           scrollbar-color: #ed5c3f rgba(194, 180, 155, 0.3);
-        }
-
-        /* Mobile select fix */
-        @media (max-width: 1024px) {
-          .custom-select {
-            padding: 8px 32px 8px 10px;
-            font-size: 13px;
-          }
         }
       `}</style>
 
       <div className="bg-white overflow-hidden min-[1051px]:h-[calc(100vh-148px)]">
         <div className="flex flex-col lg:flex-row h-full relative">
-          {/* Top Navigation Buttons - ჩანს მხოლოდ 1051px-დან ზემოთ */}
+          {/* Top Navigation Buttons */}
           <div className="hidden min-[1051px]:flex absolute top-6 right-8 z-20 gap-2">
             <button
               onClick={() => router.push(`/${locale}/choose-propertie`)}
@@ -168,47 +224,26 @@ const PropertyListing = () => {
 
           {/* Filter Sidebar - Desktop */}
           <div className="hidden lg:flex lg:w-[345px] bg-[#C2B49B] flex-col">
-            {/* Filter Header */}
             <div className="bg-[#F7EAD7] px-4 py-4">
               <h2 className="text-xl text-[#000000] font-contractica-regular uppercase tracking-wide text-center">
                 {t("propertyListing.filter")}
               </h2>
             </div>
 
-            {/* Filter Content */}
             <div className="px-6 py-8 flex-1 flex flex-col">
               {/* Type Filter */}
               <div className="mb-6">
                 <div className="flex items-center gap-4">
-                  <label className="text-sm text-[#312618] font-medium w-20">
+                  <label className="text-sm text-[#312618] font-medium w-20 shrink-0">
                     {t("propertyListing.type")}
                   </label>
-                  <div className="relative flex-1">
-                    <select
+                  <div className="flex-1">
+                    <CustomSelect
+                      name="type"
                       value={selectedType}
-                      onChange={(e) => setSelectedType(e.target.value)}
-                      className="custom-select w-full"
-                      size="1"
-                    >
-                      {propertyTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {type === "All" ? t("propertyListing.all") : type}
-                        </option>
-                      ))}
-                    </select>
-                    <svg
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#312618] pointer-events-none"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                      options={propertyTypes}
+                      onChange={handleTypeChange}
+                    />
                   </div>
                 </div>
               </div>
@@ -216,37 +251,16 @@ const PropertyListing = () => {
               {/* Land Size Filter */}
               <div className="mb-6">
                 <div className="flex items-center gap-4">
-                  <label className="text-sm text-[#312618] font-medium w-20">
+                  <label className="text-sm text-[#312618] font-medium w-20 shrink-0">
                     {t("propertyListing.landSize")}
                   </label>
-                  <div className="relative flex-1">
-                    <select
+                  <div className="flex-1">
+                    <CustomSelect
+                      name="landSize"
                       value={selectedLandSize}
-                      onChange={(e) => setSelectedLandSize(e.target.value)}
-                      className="custom-select w-full"
-                      size="1"
-                    >
-                      {landSizes.map((size) => (
-                        <option key={size} value={size}>
-                          {size === "All"
-                            ? t("propertyListing.all")
-                            : `${size} ${t("propertyListing.m2")}`}
-                        </option>
-                      ))}
-                    </select>
-                    <svg
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#312618] pointer-events-none"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                      options={landSizes}
+                      onChange={handleLandSizeChange}
+                    />
                   </div>
                 </div>
               </div>
@@ -265,7 +279,6 @@ const PropertyListing = () => {
 
           {/* Mobile View */}
           <div className="lg:hidden w-full flex flex-col h-full">
-            {/* Filter Mobile */}
             <div className="bg-[#C2B49B] p-4">
               <div className="bg-[#F7EAD7] px-4 py-3 mb-4">
                 <h2 className="text-lg text-[#000000] font-contractica-regular uppercase tracking-wide text-center">
@@ -274,77 +287,34 @@ const PropertyListing = () => {
               </div>
 
               <div className="space-y-3">
-                {/* Type Filter Mobile */}
                 <div className="flex items-center gap-3">
-                  <label className="text-sm text-[#312618] font-medium w-[70px]">
+                  <label className="text-sm text-[#312618] font-medium w-[70px] shrink-0">
                     {t("propertyListing.type")}
                   </label>
-                  <div className="relative flex-1">
-                    <select
+                  <div className="flex-1">
+                    <CustomSelect
+                      name="type"
                       value={selectedType}
-                      onChange={(e) => setSelectedType(e.target.value)}
-                      className="custom-select w-full"
-                      size="1"
-                    >
-                      {propertyTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {type === "All" ? t("propertyListing.all") : type}
-                        </option>
-                      ))}
-                    </select>
-                    <svg
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#312618] pointer-events-none"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                      options={propertyTypes}
+                      onChange={handleTypeChange}
+                    />
                   </div>
                 </div>
 
-                {/* Land Size Filter Mobile */}
                 <div className="flex items-center gap-3">
-                  <label className="text-sm text-[#312618] font-medium w-[70px]">
+                  <label className="text-sm text-[#312618] font-medium w-[70px] shrink-0">
                     {t("propertyListing.landSize")}
                   </label>
-                  <div className="relative flex-1">
-                    <select
+                  <div className="flex-1">
+                    <CustomSelect
+                      name="landSize"
                       value={selectedLandSize}
-                      onChange={(e) => setSelectedLandSize(e.target.value)}
-                      className="custom-select w-full"
-                      size="1"
-                    >
-                      {landSizes.map((size) => (
-                        <option key={size} value={size}>
-                          {size === "All"
-                            ? t("propertyListing.all")
-                            : `${size} ${t("propertyListing.m2")}`}
-                        </option>
-                      ))}
-                    </select>
-                    <svg
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#312618] pointer-events-none"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                      options={landSizes}
+                      onChange={handleLandSizeChange}
+                    />
                   </div>
                 </div>
 
-                {/* Search Button Mobile */}
                 <div className="flex justify-center pt-2">
                   <button
                     onClick={handleSearch}
@@ -382,7 +352,7 @@ const PropertyListing = () => {
                     </div>
                     <div className="p-4">
                       <h3 className="text-lg font-medium text-gray-900 mb-3">
-                        {property.type} {property.houseNo}
+                        {property.type?.trim()} {property.houseNo}
                       </h3>
                       <div className="space-y-2 text-sm text-gray-700">
                         {property.landSize && (
@@ -455,7 +425,7 @@ const PropertyListing = () => {
                   </div>
                   <div className="p-4">
                     <h3 className="text-lg font-medium text-gray-900 mb-3">
-                      {property.type} {property.houseNo}
+                      {property.type?.trim()} {property.houseNo}
                     </h3>
                     <div className="space-y-2 text-sm text-gray-700">
                       {property.landSize && (

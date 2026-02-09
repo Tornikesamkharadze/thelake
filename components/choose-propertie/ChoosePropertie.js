@@ -98,6 +98,26 @@ const ChoosePropertie = () => {
                         </div>
                       </div>
                     )}
+
+                    {/* Status - always show */}
+                    <div className="py-4 border-b border-gray-800/20">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-700">
+                          {t("chooseProperty.status")}
+                        </span>
+                        <span
+                          className={`text-sm font-medium ${
+                            selectedProperty.isSold
+                              ? "text-[#ED5C3F]"
+                              : "text-gray-900"
+                          }`}
+                        >
+                          {selectedProperty.isSold
+                            ? t("chooseProperty.sold")
+                            : t("chooseProperty.available")}
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Property 2D Image */}

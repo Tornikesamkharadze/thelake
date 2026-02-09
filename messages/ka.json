@@ -330,7 +330,10 @@
     "visualSelection": "ვიზუალური არჩევანი",
     "propertyListing": "ქონების სია",
     "instructionTitle": "ინტერაქტიული რუკა",
-    "instructionText": "მიიტანეთ კურსორი ნაკვეთზე ინფორმაციის სანახავად"
+    "instructionText": "მიიტანეთ კურსორი ნაკვეთზე ინფორმაციის სანახავად",
+    "status": "სტატუსი",
+    "sold": "გაყიდული",
+    "available": "ვაკანტური"
   },
   "propertyListing": {
     "filter": "ფილტრი",

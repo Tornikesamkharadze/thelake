@@ -337,7 +337,10 @@
     "m2": "m²",
     "search": "Search",
     "land": "Land",
-    "noProperties": "No properties found matching your criteria"
+    "noProperties": "No properties found matching your criteria",
+    "status": "Status",
+    "sold": "Sold",
+    "available": "Vacant"
   },
   "propertyListing": {
     "filter": "FILTER",
