@@ -121,7 +121,7 @@ const ChoosePropertie = () => {
                   </div>
 
                   {/* Property 2D Image */}
-                  <div className="mt-[51px] px-6 pb-6">
+                  <div className="mt-[50px] px-6 pb-6">
                     {selectedProperty.twoDImg ? (
                       <div className="relative w-full aspect-4/3">
                         <Image
