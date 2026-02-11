@@ -27,7 +27,7 @@ export function Footer() {
       <ContactPopup />
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
         {/* Logo Section */}
-        <div className="flex md:justify-start">
+        <div className="flex flex-col md:items-start">
           <Image
             src={isHomePage ? "/img/footer-logo.png" : "/footer-dark-logo.webp"}
             alt="The Lake by Placemakers"
@@ -36,6 +36,14 @@ export function Footer() {
             height={120}
             className="w-auto h-auto"
           />
+          <a
+            href="https://frontnback.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-base hover:text-[#d3b473] transition-colors mt-11 inline-block"
+          >
+            {t("developedBy")}
+          </a>
         </div>
 
         {/* Explore Section */}

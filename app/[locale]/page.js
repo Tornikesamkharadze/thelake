@@ -41,6 +41,7 @@ export default function Home() {
             {
               text: t("welcome.downloadBrochure"),
               link: "/brochure.pdf",
+              download: "The-Lake-Brochure.pdf",
               bgColor: "bg-transparent",
               textColor: "text-black",
               border: "border border-black",

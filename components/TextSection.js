@@ -26,7 +26,7 @@ export default function TextSection({
         const regex = new RegExp(`(${word})`, "gi");
         formattedTitle = formattedTitle.replace(
           regex,
-          '<strong class="font-bold">$1</strong>'
+          '<strong class="font-bold">$1</strong>',
         );
       });
 
@@ -69,6 +69,7 @@ export default function TextSection({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             href={button.link || "#"}
+            {...(button.download ? { download: button.download } : {})}
             className={`
               px-8 py-3 uppercase text-sm font-medium transition-all
               ${button.bgColor || "bg-transparent"}
