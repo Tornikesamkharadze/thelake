@@ -213,11 +213,11 @@ const PropertyListing = () => {
           <div className="hidden min-[1051px]:flex absolute top-6 right-8 z-20 gap-2">
             <button
               onClick={() => router.push(`/${locale}/choose-propertie`)}
-              className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-white border border-[#312618] text-[#000000] hover:bg-[#312618]/10"
+              className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-[#F7EAD7] border border-[#312618] text-[#312618] hover:bg-[#C2B49B]"
             >
               {t("chooseProperty.visualSelection")}
             </button>
-            <button className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-[#312618] text-[#FFFFF] shadow-md">
+            <button className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-[#312618] text-[#F7EAD7] shadow-md">
               {t("chooseProperty.propertyListing")}
             </button>
           </div>

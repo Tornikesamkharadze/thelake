@@ -179,8 +179,8 @@ const ChoosePropertie = () => {
                   onClick={() => setActiveView("Visual")}
                   className={`px-6 py-2 text-sm font-medium transition-all cursor-pointer ${
                     activeView === "Visual"
-                      ? "bg-white text-gray-900 shadow-md"
-                      : "bg-white/70 text-gray-600 hover:bg-white/90"
+                      ? "bg-[#312618] text-[#F7EAD7] shadow-md"
+                      : "bg-[#F7EAD7]/90 text-[#312618] border border-[#312618] hover:bg-[#C2B49B]"
                   }`}
                 >
                   {t("chooseProperty.visualSelection")}
@@ -189,8 +189,8 @@ const ChoosePropertie = () => {
                   onClick={() => router.push(`/${locale}/property-listing`)}
                   className={`px-6 py-2 text-sm font-medium transition-all cursor-pointer ${
                     activeView === "Listing"
-                      ? "bg-white text-gray-900 shadow-md"
-                      : "bg-white/70 text-gray-600 hover:bg-white/90"
+                      ? "bg-[#312618] text-[#F7EAD7] shadow-md"
+                      : "bg-[#F7EAD7]/90 text-[#312618] border border-[#312618] hover:bg-[#C2B49B]"
                   }`}
                 >
                   {t("chooseProperty.propertyListing")}
