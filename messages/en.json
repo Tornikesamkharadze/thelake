@@ -66,9 +66,9 @@
   "contact": {
     "title": "STAY IN TOUCH",
     "contactTitle": "CONTACT",
-    "namePlaceholder": "Name and Surname",
-    "emailPlaceholder": "E-mail",
-    "phonePlaceholder": "Phone number",
+    "namePlaceholder": "Name and Surname*",
+    "emailPlaceholder": "E-mail*",
+    "phonePlaceholder": "Phone number*",
     "address": "15D Tuta Street. 0159\nTbilisi, Georgia",
     "phone": "+995 511 55 33 33",
     "email": "info@placemakers.ge",
@@ -403,9 +403,9 @@
   "enquirePopup": {
     "title": "ENQUIRE",
     "form": {
-      "fullName": "Full Name",
-      "email": "E-Mail",
-      "phoneNumber": "Phone Number",
+      "fullName": "Full Name*",
+      "email": "E-Mail*",
+      "phoneNumber": "Phone Number*",
       "message": "Your message",
       "preferredMethod": "Preferred communication method",
       "submit": "SEND"

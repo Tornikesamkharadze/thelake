@@ -94,16 +94,18 @@ export default function EnquirePopup({ isOpen, onClose }) {
           communicationMethods: ["Mail"],
         });
 
-        // Close popup after 2 seconds
         setTimeout(() => {
           onClose();
-        }, 2000);
+        }, 800);
       } else {
         toast.error(
           locale === "ka"
             ? "მოთხოვნის გაგზავნა ვერ მოხერხდა. სცადეთ თავიდან."
             : "Failed to send enquiry. Please try again.",
         );
+        setTimeout(() => {
+          onClose();
+        }, 800);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -112,6 +114,9 @@ export default function EnquirePopup({ isOpen, onClose }) {
           ? "დაფიქსირდა შეცდომა. სცადეთ თავიდან."
           : "An error occurred. Please try again.",
       );
+      setTimeout(() => {
+        onClose();
+      }, 800);
     } finally {
       setIsSubmitting(false);
     }
