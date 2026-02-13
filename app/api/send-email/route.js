@@ -1,8 +1,6 @@
 // app/api/send-email/route.js
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request) {
   try {
@@ -10,6 +8,18 @@ export async function POST(request) {
     const { name, email, phone, message, communicationMethods, formType } =
       body;
 
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT),
+      secure: process.env.SMTP_SECURE === "true",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    // Email content based on form type
     let htmlContent = "";
     let subject = "";
 
@@ -34,6 +44,7 @@ export async function POST(request) {
         </div>
       `;
     } else {
+      // Contact form
       subject = `New Contact from ${name}`;
       htmlContent = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f7ead7;">
@@ -53,23 +64,24 @@ export async function POST(request) {
       `;
     }
 
-    const { data, error } = await resend.emails.send({
-      from: "The Lake <onboarding@resend.dev>", // დროებით Resend-ის default
-      to: "info@thelake.ge",
+    // Send email
+    await transporter.sendMail({
+      from: `"The Lake Website" <${process.env.SMTP_USER}>`,
+      to: process.env.CONTACT_EMAIL,
       subject: subject,
       html: htmlContent,
       replyTo: email,
     });
 
-    if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json({ error }, { status: 500 });
-    }
-
-    console.log("Email sent successfully:", data);
-    return NextResponse.json({ success: true, data }, { status: 200 });
+    return NextResponse.json(
+      { message: "Email sent successfully" },
+      { status: 200 },
+    );
   } catch (error) {
-    console.error("Email error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Error sending email:", error);
+    return NextResponse.json(
+      { error: "Failed to send email", details: error.message },
+      { status: 500 },
+    );
   }
 }
