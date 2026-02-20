@@ -18,8 +18,23 @@ const PropertyListing = () => {
   const params = useParams();
   const locale = params.locale || "ka";
 
+  const typeTranslationMap = {
+    "Private Villa": t("propertyListing.typeVilla"),
+    "Private House": t("propertyListing.typeHouse"),
+    "Land Plot": t("propertyListing.typeLand"),
+  };
+
   // Filter states
-  const [selectedType, setSelectedType] = useState("All");
+  const [selectedType, setSelectedType] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedType = sessionStorage.getItem("propertyListingType");
+      if (savedType) {
+        sessionStorage.removeItem("propertyListingType");
+        return savedType;
+      }
+    }
+    return "All";
+  });
   const [selectedLandSize, setSelectedLandSize] = useState("All");
   const [openDropdown, setOpenDropdown] = useState(null);
 
@@ -117,7 +132,7 @@ const PropertyListing = () => {
       if (name === "landSize" && value !== "All") {
         return `${value} ${t("propertyListing.m2")}`;
       }
-      return value;
+      return typeTranslationMap[value] || value;
     };
 
     const handleOptionClick = (option) => {
@@ -169,7 +184,9 @@ const PropertyListing = () => {
                   value === option ? "bg-[#312618] text-[#F7EAD7]" : ""
                 }`}
               >
-                {option === "All" ? t("propertyListing.all") : option}
+                {option === "All"
+                  ? t("propertyListing.all")
+                  : typeTranslationMap[option] || option}
                 {name === "landSize" &&
                   option !== "All" &&
                   ` ${t("propertyListing.m2")}`}
@@ -352,7 +369,9 @@ const PropertyListing = () => {
                     </div>
                     <div className="p-4">
                       <h3 className="text-lg font-medium text-gray-900 mb-3">
-                        {property.type?.trim()} {property.houseNo}
+                        {typeTranslationMap[property.type?.trim()] ||
+                          property.type?.trim()}{" "}
+                        {property.houseNo}
                       </h3>
                       <div className="space-y-2 text-sm text-gray-700">
                         {property.landSize && (
@@ -425,7 +444,9 @@ const PropertyListing = () => {
                   </div>
                   <div className="p-4">
                     <h3 className="text-lg font-medium text-gray-900 mb-3">
-                      {property.type?.trim()} {property.houseNo}
+                      {typeTranslationMap[property.type?.trim()] ||
+                        property.type?.trim()}{" "}
+                      {property.houseNo}
                     </h3>
                     <div className="space-y-2 text-sm text-gray-700">
                       {property.landSize && (

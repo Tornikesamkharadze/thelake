@@ -281,25 +281,25 @@
         "description": ""
       },
       {
-       "image": "/team/zinka_borodkina.webp",
+        "image": "/team/zinka_borodkina.webp",
         "name": "Zinka Borodkina",
         "position": "Head of Marketing",
         "description": ""
       },
-       {
-       "image": "/team/mariam_beruchashvili.webp",
+      {
+        "image": "/team/mariam_beruchashvili.webp",
         "name": "Mariam Beruchasvili",
         "position": "Head of Sales",
         "description": ""
       },
-       {
-       "image": "/team/nino_mshvelidze.webp",
+      {
+        "image": "/team/nino_mshvelidze.webp",
         "name": "Nino Mshvelidze",
         "position": "Head of Design",
         "description": ""
       },
-       {
-       "image": "/team/marika_paliani.webp",
+      {
+        "image": "/team/marika_paliani.webp",
         "name": "Marika Paliani",
         "position": "Head of Finance",
         "description": ""
@@ -364,7 +364,10 @@
     "search": "Search",
     "land": "Land",
     "code": "Code",
-    "noProperties": "No properties found matching your criteria"
+    "noProperties": "No properties found matching your criteria",
+    "typeVilla": "Private Villa",
+    "typeHouse": "Private House",
+    "typeLand": "Land Plot"
   },
   "propertyDetail": {
     "view": "view",

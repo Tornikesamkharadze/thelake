@@ -2,10 +2,14 @@
 
 import { useRef } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter, useParams } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 
 export default function PropertyTypesSection() {
   const t = useTranslations("plot-types");
+  const router = useRouter();
+  const params = useParams();
+  const locale = params.locale || "ka";
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true });
 
@@ -23,11 +27,17 @@ export default function PropertyTypesSection() {
     }),
   };
 
+  // key-ები შეასწორე შენი dummyData-ს property.type მნიშვნელობების მიხედვით
   const propertyTypes = [
-    { key: "private-houses", label: t("private-houses") },
-    { key: "land-plots", label: t("land-plots") },
-    { key: "private-villas", label: t("private-villas") },
+    { key: "Private House", label: t("private-houses") },
+    { key: "Land Plot", label: t("land-plots") },
+    { key: "Private Villa", label: t("private-villas") },
   ];
+
+  const handleTypeClick = (typeKey) => {
+    sessionStorage.setItem("propertyListingType", typeKey);
+    router.push(`/${locale}/property-listing`);
+  };
 
   return (
     <section
@@ -64,6 +74,7 @@ export default function PropertyTypesSection() {
               animate={isInView ? "visible" : "hidden"}
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => handleTypeClick(type.key)}
               className="bg-[#F7EAD7] text-black py-4 px-8 uppercase tracking-[0.3em] text-sm hover:opacity-90 transition-opacity w-full md:w-auto cursor-pointer shadow-lg"
             >
               {type.label}
