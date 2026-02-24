@@ -257,49 +257,49 @@
     "teamTitle": "გუნდი",
     "team": [
       {
-        "image": "/team/nodar_adeishvili.webp",
+        "image": "/team/nodar_adeishvili.png",
         "name": "ნოდარ ადეიშვილი",
         "position": "გენერალური დირექტორი / პარტნიორი",
         "description": ""
       },
       {
-        "image": "/team/zura_pichkhaia.webp",
+        "image": "/team/zura_pichkhaia.png",
         "name": "ზურა ფიჩხაია",
         "position": "ფინანსური დირექტორი / პარტნიორი",
         "description": ""
       },
       {
-        "image": "/team/nikoloz_ugulava.webp",
+        "image": "/team/nikoloz_ugulava.png",
         "name": "ნიკოლოზ უგულავა",
         "position": "პროექტის დირექტორი",
         "description": ""
       },
       {
-        "image": "/team/besik_tulahsvili.webp",
+        "image": "/team/besik_tulahsvili.png",
         "name": "ბესიკ ტულაშვილი",
         "position": "მშენებლობის ხელმძღვანელი",
         "description": ""
       },
       {
-        "image": "/team/zinka_borodkina.webp",
+        "image": "/team/zinka_borodkina.png",
         "name": "ზინკა ბოროდკინა",
         "position": "მარკეტინგის ხელმძღვანელი",
         "description": ""
       },
       {
-        "image": "/team/mariam_beruchashvili.webp",
+        "image": "/team/mariam_beruchashvili.png",
         "name": "მარიამ ბერუჩაშვილი",
         "position": "გაყიდვების ხელმძღვანელი",
         "description": ""
       },
       {
-        "image": "/team/nino_mshvelidze.webp",
+        "image": "/team/nino_mshvelidze.png",
         "name": "ნინო მშველიძე",
         "position": "დიზაინის ხელმძღვანელი",
         "description": ""
       },
       {
-        "image": "/team/marika_paliani.webp",
+        "image": "/team/marika_paliani.png",
         "name": "მარიკა ფალიანი",
         "position": "ფინანსების ხელმძღვანელი",
         "description": ""

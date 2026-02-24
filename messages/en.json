@@ -257,49 +257,49 @@
     "teamTitle": "TEAM",
     "team": [
       {
-        "image": "/team/nodar_adeishvili.webp",
+        "image": "/team/nodar_adeishvili.png",
         "name": "Nodar Adeishvili",
         "position": "CEO / Partner",
         "description": ""
       },
       {
-        "image": "/team/zura_pichkhaia.webp",
+        "image": "/team/zura_pichkhaia.png",
         "name": "Zura Pichkhaia",
         "position": "CFO / Partner",
         "description": ""
       },
       {
-        "image": "/team/nikoloz_ugulava.webp",
+        "image": "/team/nikoloz_ugulava.png",
         "name": "Nikoloz Ugulava",
         "position": "Project Director",
         "description": ""
       },
       {
-        "image": "/team/besik_tulahsvili.webp",
+        "image": "/team/besik_tulahsvili.png",
         "name": "Besik Tulashvili",
         "position": "Head of Construction",
         "description": ""
       },
       {
-        "image": "/team/zinka_borodkina.webp",
+        "image": "/team/zinka_borodkina.png",
         "name": "Zinka Borodkina",
         "position": "Head of Marketing",
         "description": ""
       },
       {
-        "image": "/team/mariam_beruchashvili.webp",
+        "image": "/team/mariam_beruchashvili.png",
         "name": "Mariam Beruchasvili",
         "position": "Head of Sales",
         "description": ""
       },
       {
-        "image": "/team/nino_mshvelidze.webp",
+        "image": "/team/nino_mshvelidze.png",
         "name": "Nino Mshvelidze",
         "position": "Head of Design",
         "description": ""
       },
       {
-        "image": "/team/marika_paliani.webp",
+        "image": "/team/marika_paliani.png",
         "name": "Marika Paliani",
         "position": "Head of Finance",
         "description": ""
