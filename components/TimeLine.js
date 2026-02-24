@@ -65,6 +65,7 @@ const Timeline = ({
       style={{ backgroundColor }}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
+
         {/* DESKTOP VERSION */}
         <div className="hidden md:block relative">
           {/* ხაზი */}
@@ -72,8 +73,8 @@ const Timeline = ({
             variants={lineVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="absolute left-[2%] right-[2%] top-1/2 h-px origin-left"
-            style={{ backgroundColor: lineColor }}
+            className="absolute left-[2%] right-[2%] h-px origin-left"
+            style={{ backgroundColor: lineColor, top: "94px" }}
           />
 
           <div className="relative flex justify-between px-[2%]">
@@ -84,11 +85,11 @@ const Timeline = ({
                 variants={itemVariants}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
-                className="relative flex flex-col items-center max-w-[250px]" // ← გაზარდე 200px-დან 250px-მდე
+                className="relative flex flex-col items-center max-w-[250px] w-full"
               >
-                {/* წელი */}
+                {/* წელი — ფიქსირებული სიმაღლე */}
                 <div
-                  className="mb-10 text-center font-serif italic text-[18px] md:text-[20px] lg:text-[24px]" // ← შემცირე ფონტი
+                  className="h-20 flex items-end pb-3 text-center font-serif italic text-[18px] md:text-[20px] lg:text-[24px]"
                   style={{
                     color: yearColor,
                     fontWeight: yearWeight,
@@ -98,30 +99,31 @@ const Timeline = ({
                   {item.year}
                 </div>
 
-                {/* დოტი */}
-                <motion.div
-                  custom={i}
-                  variants={dotVariants}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                  className="absolute top-1/2 -translate-y-1/2"
-                >
-                  <span
-                    className="block rounded-full"
-                    style={{
-                      height: dotSize,
-                      width: dotSize,
-                      backgroundColor: dotColor,
-                      boxShadow: `0 0 0 2px ${dotColor}35`,
-                    }}
-                  />
-                </motion.div>
+                {/* დოტი — ფიქსირებული სიმაღლე */}
+                <div className="h-7 flex items-center justify-center">
+                  <motion.div
+                    custom={i}
+                    variants={dotVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                  >
+                    <span
+                      className="block rounded-full"
+                      style={{
+                        height: dotSize,
+                        width: dotSize,
+                        backgroundColor: dotColor,
+                        boxShadow: `0 0 0 2px ${dotColor}35`,
+                      }}
+                    />
+                  </motion.div>
+                </div>
 
                 {/* ტექსტები */}
-                <div className="mt-10 text-center space-y-2 px-2">
+                <div className="pt-3 text-center space-y-2 px-2">
                   {item.title && (
                     <h3
-                      className="leading-tight text-[13px] md:text-[14px] lg:text-[16px] wrap-break-words" // ← შეამცირე ფონტი და დაამატე break-words
+                      className="leading-tight text-[13px] md:text-[14px] lg:text-[16px]"
                       style={{
                         color: titleColor,
                         fontWeight: titleWeight,
@@ -133,7 +135,7 @@ const Timeline = ({
                   )}
                   {item.description && (
                     <p
-                      className="leading-relaxed text-[12px] md:text-[13px] wrap-break-words" // ← შეამცირე ფონტი და დაამატე break-words
+                      className="leading-relaxed text-[12px] md:text-[13px]"
                       style={{
                         color: descriptionColor,
                         fontWeight: descriptionWeight,
@@ -169,6 +171,7 @@ const Timeline = ({
                   animate={isInView ? "visible" : "hidden"}
                   className="relative flex items-center justify-center gap-4"
                 >
+                  {/* მარცხენა - წელი */}
                   <div className="w-[calc(50%-8px)] shrink-0 text-right pr-4">
                     <span
                       className="font-serif italic leading-none inline-block text-[16px] md:text-[20px]"
@@ -188,7 +191,7 @@ const Timeline = ({
                     variants={dotVariants}
                     initial="hidden"
                     animate={isInView ? "visible" : "hidden"}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" // ← დაამატე z-10
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
                   >
                     <span
                       className="block rounded-full"
@@ -233,6 +236,7 @@ const Timeline = ({
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
