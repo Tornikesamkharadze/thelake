@@ -125,9 +125,9 @@ const ImageTextSection = ({
                     src={image}
                     alt={imageAlt || title}
                     fill
-                    priority={priority} 
+                    priority={priority}
                     className="object-cover"
-                    sizes="(max-width: 1280px) 100vw, 750px"
+                    sizes="(max-width: 1280px) 100vw, 1920px"
                   />
                 </div>
               </motion.div>

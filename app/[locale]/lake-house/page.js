@@ -22,7 +22,7 @@ const Snohetta = () => {
         />
 
         <ImageTextSection
-          image="/lake-1.png"
+          image="/aerealtest.webp"
           title={t("snohetta.lakeHouse.title")}
           subtitle=""
           description={t("snohetta.lakeHouse.description")}
@@ -42,11 +42,12 @@ const Snohetta = () => {
           subtitleTransform="none"
           descriptionTransform="none"
         />
+
         <ImageTextSection
-          image="/lake-1.png"
-          title={t("snohetta.studio.title")}
+          image="/lobby.webp"
+          title={t("snohetta.nordicChoice.title")}
           subtitle=""
-          description={t("snohetta.studio.description")}
+          description={t("snohetta.nordicChoice.description")}
           imagePosition="right"
           titleColor="#000000"
           subtitleColor="#000000"
@@ -63,6 +64,72 @@ const Snohetta = () => {
           subtitleTransform="none"
           descriptionTransform="none"
         />
+
+        <ImageTextSection
+          image="/terrace.webp"
+          title={t("snohetta.facilities.title")}
+          subtitle=""
+          description={t("snohetta.facilities.description")}
+          imagePosition="left"
+          titleColor="#000000"
+          subtitleColor="#000000"
+          descriptionColor="#000000"
+          backgroundColor="#F7EAD7"
+          textBoxColor="#F7EAD7"
+          titleSize="25px"
+          subtitleSize="19px"
+          descriptionSize="19px"
+          titleWeight="400"
+          subtitleWeight="700"
+          descriptionWeight="400"
+          titleTransform="uppercase"
+          subtitleTransform="none"
+          descriptionTransform="none"
+        />
+
+    {/*     <ImageTextSection
+          image="/patio.webp"
+          title={t("snohetta.lakeHouse.title")}
+          subtitle=""
+          description={t("snohetta.lakeHouse.description")}
+          imagePosition="right"
+          titleColor="#000000"
+          subtitleColor="#000000"
+          descriptionColor="#000000"
+          backgroundColor="#F7EAD7"
+          textBoxColor="#F7EAD7"
+          titleSize="25px"
+          subtitleSize="19px"
+          descriptionSize="19px"
+          titleWeight="400"
+          subtitleWeight="700"
+          descriptionWeight="400"
+          titleTransform="uppercase"
+          subtitleTransform="none"
+          descriptionTransform="none"
+        />
+ */}
+        {/* <ImageTextSection
+          image="/restaurant1.webp"
+          title={t("snohetta.lakeHouse.title")}
+          subtitle=""
+          description={t("snohetta.lakeHouse.description")}
+          imagePosition="left"
+          titleColor="#000000"
+          subtitleColor="#000000"
+          descriptionColor="#000000"
+          backgroundColor="#F7EAD7"
+          textBoxColor="#F7EAD7"
+          titleSize="25px"
+          subtitleSize="19px"
+          descriptionSize="19px"
+          titleWeight="400"
+          subtitleWeight="700"
+          descriptionWeight="400"
+          titleTransform="uppercase"
+          subtitleTransform="none"
+          descriptionTransform="none"
+        /> */}
       </main>
       <Footer />
     </>
