@@ -107,50 +107,6 @@ const Snohetta = () => {
           subtitleTransform="none"
           descriptionTransform="none"
         />
-
-        {/*     <ImageTextSection
-          image="/patio.webp"
-          title={t("snohetta.lakeHouse.title")}
-          subtitle=""
-          description={t("snohetta.lakeHouse.description")}
-          imagePosition="right"
-          titleColor="#000000"
-          subtitleColor="#000000"
-          descriptionColor="#000000"
-          backgroundColor="#F7EAD7"
-          textBoxColor="#F7EAD7"
-          titleSize="25px"
-          subtitleSize="19px"
-          descriptionSize="19px"
-          titleWeight="400"
-          subtitleWeight="700"
-          descriptionWeight="400"
-          titleTransform="uppercase"
-          subtitleTransform="none"
-          descriptionTransform="none"
-        />
- */}
-        {/* <ImageTextSection
-          image="/restaurant1.webp"
-          title={t("snohetta.lakeHouse.title")}
-          subtitle=""
-          description={t("snohetta.lakeHouse.description")}
-          imagePosition="left"
-          titleColor="#000000"
-          subtitleColor="#000000"
-          descriptionColor="#000000"
-          backgroundColor="#F7EAD7"
-          textBoxColor="#F7EAD7"
-          titleSize="25px"
-          subtitleSize="19px"
-          descriptionSize="19px"
-          titleWeight="400"
-          subtitleWeight="700"
-          descriptionWeight="400"
-          titleTransform="uppercase"
-          subtitleTransform="none"
-          descriptionTransform="none"
-        /> */}
       </main>
       <Footer />
     </>

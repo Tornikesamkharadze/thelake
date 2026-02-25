@@ -9,7 +9,7 @@ export default function ContactPopup() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handlePhoneCall = () => {
-    window.location.href = "tel:+995511553333";
+   /*  window.location.href = "tel:+995511553333"; */
   };
 
   const handleEmail = () => {
@@ -17,7 +17,7 @@ export default function ContactPopup() {
   };
 
   const handleWhatsApp = () => {
-    const phoneNumber = "+995511553333";
+   /*  const phoneNumber = "+995511553333"; */
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     if (isMobile) {

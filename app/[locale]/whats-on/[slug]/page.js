@@ -1,15 +1,15 @@
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import NewsDetail from "@/components/whats-on/NewsDetail";
-import { getTranslations } from "next-intl/server";
+import { getNewsData } from "@/lib/newsData";
 import { notFound } from "next/navigation";
 import { getAlternateUrls } from "@/lib/metadata";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
   const isKa = locale === "ka";
-  const t = await getTranslations({ locale });
-  const newsData = t.raw("newsData");
+  const newsData = getNewsData(locale);
   const news = newsData.find((item) => item.slug === slug);
 
   if (!news) {
@@ -58,9 +58,7 @@ export async function generateMetadata({ params }) {
 
 export default async function NewsPage({ params }) {
   const { slug, locale } = await params;
-  const t = await getTranslations({ locale });
-  const newsData = t.raw("newsData");
-
+  const newsData = getNewsData(locale);
   const news = newsData.find((item) => item.slug === slug);
 
   if (!news) {
@@ -75,9 +73,8 @@ export default async function NewsPage({ params }) {
           title={news.title}
           date={news.date}
           heroImage={news.image}
+          blocks={news.blocks}
           excerpt={news.excerpt}
-          additionalImage={news.additionalImage}
-          contentBottom={news.contentBottom}
         />
       </main>
       <Footer />
@@ -89,21 +86,10 @@ export async function generateStaticParams() {
   const locales = ["en", "ka"];
   const params = [];
 
-  const enTranslations = (await import("@/messages/en.json")).default;
-  const kaTranslations = (await import("@/messages/ka.json")).default;
-
-  const translationsMap = {
-    en: enTranslations,
-    ka: kaTranslations,
-  };
-
   locales.forEach((locale) => {
-    const newsData = translationsMap[locale].newsData;
+    const newsData = getNewsData(locale);
     newsData.forEach((item) => {
-      params.push({
-        locale,
-        slug: item.slug,
-      });
+      params.push({ locale, slug: item.slug });
     });
   });
 

@@ -7,9 +7,34 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 
+// YouTube video ID-ს ამოღება URL-იდან
+const getYouTubeId = (url) => {
+  if (!url) return null;
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /youtube\.com\/shorts\/([^&\n?#]+)/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+};
+
+// blocks მასივიდან პირველი YouTube thumbnail-ის მოძებნა
+const getYouTubeThumbnail = (blocks = []) => {
+  const youtubeBlock = blocks.find((b) => b.type === "youtube");
+  if (!youtubeBlock) return null;
+  const videoId = getYouTubeId(youtubeBlock.url);
+  return videoId
+    ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+    : null;
+};
+
 const NewsCard = ({
   slug,
   image,
+  blocks = [],
   title,
   date,
   excerpt,
@@ -33,7 +58,10 @@ const NewsCard = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  if (!image) return null;
+  // image არ არის? blocks-იდან YouTube thumbnail-ი ავიღოთ
+  const displayImage = image || getYouTubeThumbnail(blocks);
+
+  if (!displayImage) return null;
 
   return (
     <motion.div
@@ -50,7 +78,7 @@ const NewsCard = ({
             className="relative w-full aspect-4/3 overflow-hidden ml-[10%]"
           >
             <Image
-              src={image}
+              src={displayImage}
               alt={title}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -66,7 +94,7 @@ const NewsCard = ({
             style={{ backgroundColor: textBoxColor }}
           >
             <h3
-              className="text-base md:text-lg font-normal mb-2 uppercase tracking-wide"
+              className="text-base md:text-lg font-normal mb-2 uppercase tracking-wide line-clamp-4"
               style={{ color: titleColor }}
             >
               {title}
@@ -126,6 +154,7 @@ const NewsGrid = ({
               key={item.slug || index}
               slug={item.slug}
               image={item.image}
+              blocks={item.blocks}
               title={item.title}
               date={item.date}
               excerpt={item.excerpt}

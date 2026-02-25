@@ -1,11 +1,13 @@
-'use client';
+"use client";
 
-import NewsGrid from './NewsGrid';
-import { useTranslations } from 'next-intl';
+import { useParams } from "next/navigation";
+import { getNewsData } from "@/lib/newsData";
+import NewsGrid from "./NewsGrid";
 
 const WhatsOn = () => {
-  const t = useTranslations();
-  const newsData = t.raw('newsData');
+  const params = useParams();
+  const locale = params.locale || "ka";
+  const newsData = getNewsData(locale);
 
   return <NewsGrid newsItems={newsData} backgroundColor="#ffffff" />;
 };
