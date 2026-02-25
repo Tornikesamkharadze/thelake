@@ -12,7 +12,6 @@ import { useTranslations } from "next-intl";
 const YouTubeBlock = ({ url, caption }) => {
   const [playing, setPlaying] = useState(false);
 
-  // Extract video ID from various YouTube URL formats
   const getVideoId = (url) => {
     if (!url) return null;
     const patterns = [
@@ -36,7 +35,6 @@ const YouTubeBlock = ({ url, caption }) => {
     <div className="w-full mb-8 md:mb-12">
       <div className="relative w-full aspect-video overflow-hidden bg-black">
         {!playing ? (
-          // Thumbnail + Play Button
           <div
             className="relative w-full h-full cursor-pointer group"
             onClick={() => setPlaying(true)}
@@ -48,9 +46,7 @@ const YouTubeBlock = ({ url, caption }) => {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="100vw"
             />
-            {/* Dark overlay */}
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300" />
-            {/* Play button */}
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
                 whileHover={{ scale: 1.1 }}
@@ -68,7 +64,6 @@ const YouTubeBlock = ({ url, caption }) => {
             </div>
           </div>
         ) : (
-          // Actual embed
           <iframe
             src={embedUrl}
             className="absolute inset-0 w-full h-full"
@@ -153,39 +148,104 @@ const TextBlock = ({ content, contentColor, contentSize }) => {
   );
 };
 
+// ─── Heading Block ────────────────────────────────────────────────────────────
+/**
+ * level:  "h2" | "h3" | "h4"                      (default: "h2")
+ * style:  "default" | "underline" | "highlight"    (default: "default")
+ * color:  ნებისმიერი hex ფერი                       (default: contentColor)
+ *
+ * "default"   → ჩვეულებრივი სათაური
+ * "underline" → ქვეხაზიანი სათაური
+ * "highlight" → მარცხნივ ვერტიკალური ხაზით გამოყოფილი
+ */
+const HeadingBlock = ({
+  content,
+  level = "h2",
+  style = "default",
+  color = "#000000",
+}) => {
+  const Tag = level;
+
+  const sizeMap = {
+    h2: "text-xl md:text-2xl lg:text-3xl",
+    h3: "text-lg md:text-xl lg:text-2xl",
+    h4: "text-base md:text-lg lg:text-xl",
+  };
+
+  const baseClass = `${sizeMap[level] || sizeMap.h2} font-normal uppercase tracking-wide`;
+
+  const wrapperMap = {
+    default: "mb-4 mt-10",
+    underline: "mb-6 mt-10 pb-3 border-b",
+    highlight: "mb-6 mt-10 pl-4 border-l-4",
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6 }}
+      className={wrapperMap[style] || wrapperMap.default}
+      style={
+        style === "underline" || style === "highlight"
+          ? { borderColor: color }
+          : {}
+      }
+    >
+      <Tag className={baseClass} style={{ color }}>
+        {content}
+      </Tag>
+    </motion.div>
+  );
+};
+
+// ─── Divider Block ────────────────────────────────────────────────────────────
+/**
+ * style: "line" | "dots" | "space"
+ *
+ * "line"  → ჰორიზონტალური ხაზი
+ * "dots"  → სამი წერტილი
+ * "space" → ცარიელი სივრცე (მხოლოდ დაშორება)
+ */
+const DividerBlock = ({ color = "#d4745a", style = "line" }) => {
+  if (style === "dots") {
+    return (
+      <div className="flex items-center justify-center gap-2 my-10">
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            className="w-1.5 h-1.5 rounded-full inline-block"
+            style={{ backgroundColor: color }}
+          />
+        ))}
+      </div>
+    );
+  }
+  if (style === "space") {
+    return <div className="my-10" />;
+  }
+  return <hr className="my-10 border-t" style={{ borderColor: color }} />;
+};
+
 // ─── Main NewsDetail Component ────────────────────────────────────────────────
 /**
- * BLOCKS SYSTEM:
- * Pass an array of block objects as the `blocks` prop.
- * Each block has a `type` field:
+ * BLOCKS — ყველა ბლოკის ტიპი:
  *
- * { type: "text",    content: "პარაგრაფი..." }
- * { type: "image",   src: "/images/photo.jpg", alt: "...", caption: "...", size: "full|large|medium|small" }
+ * { type: "text",    content: "..." }
+ * { type: "heading", content: "სათაური", level: "h2"|"h3"|"h4", style: "default"|"underline"|"highlight", color: "#000" }
+ * { type: "divider", style: "line"|"dots"|"space", color: "#d4745a" }
+ * { type: "image",   src: "/img.jpg", size: "full"|"large"|"medium"|"small", caption: "..." }
  * { type: "youtube", url: "https://youtu.be/xxx", caption: "..." }
- *
- * Example blocks array in your translations JSON (newsData):
- * "blocks": [
- *   { "type": "text", "content": "პირველი პარაგრაფი" },
- *   { "type": "image", "src": "/img/photo1.jpg", "size": "large" },
- *   { "type": "youtube", "url": "https://youtu.be/VIDEO_ID" },
- *   { "type": "text", "content": "მეორე პარაგრაფი" },
- *   { "type": "image", "src": "/img/photo2.jpg", "size": "medium" }
- * ]
- *
- * Legacy props (excerpt, additionalImage, contentBottom) still work
- * if blocks is not provided.
  */
 const NewsDetail = ({
   title,
   date,
   heroImage,
-  // Legacy single-content props (still supported)
   excerpt,
   additionalImage,
   contentBottom,
-  // New flexible blocks system
   blocks,
-  // Styling props
   backgroundColor = "#ffffff",
   contentBackgroundColor = "#f5f0e8",
   titleColor = "#000000",
@@ -212,7 +272,6 @@ const NewsDetail = ({
     }px + 1vw, ${sizeObj.desktop})`;
   };
 
-  // Build legacy blocks if blocks prop not provided
   const resolvedBlocks =
     blocks ||
     [
@@ -230,6 +289,24 @@ const NewsDetail = ({
             content={block.content}
             contentColor={contentColor}
             contentSize={contentSize}
+          />
+        );
+      case "heading":
+        return (
+          <HeadingBlock
+            key={index}
+            content={block.content}
+            level={block.level}
+            style={block.style}
+            color={block.color || contentColor}
+          />
+        );
+      case "divider":
+        return (
+          <DividerBlock
+            key={index}
+            style={block.style}
+            color={block.color || "#d4745a"}
           />
         );
       case "image":
@@ -253,8 +330,7 @@ const NewsDetail = ({
 
   return (
     <section style={{ backgroundColor }}>
-      {/* Hero Image */}
-      {/*     {heroImage && (
+     {/*  {heroImage && (
         <div className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] overflow-hidden">
           <motion.div
             initial={{ scale: 1.1 }}
@@ -294,14 +370,12 @@ const NewsDetail = ({
         </div>
       )} */}
 
-      {/* Content Area */}
       <div
         ref={sectionRef}
         className="px-4 py-12 md:py-16"
         style={{ backgroundColor: contentBackgroundColor }}
       >
         <div className="max-w-[1400px] mx-auto">
-          {/* Breadcrumb + Date */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -325,10 +399,8 @@ const NewsDetail = ({
             )}
           </motion.div>
 
-          {/* Dynamic content blocks — in whatever order you define */}
           {resolvedBlocks.map((block, index) => renderBlock(block, index))}
 
-          {/* Back button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
