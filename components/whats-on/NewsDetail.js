@@ -84,10 +84,37 @@ const YouTubeBlock = ({ url, caption }) => {
 const ImageBlock = ({ src, alt, caption, size = "full" }) => {
   const sizeClasses = {
     full: "w-full",
+    natural: "w-full max-w-[768px]",
+    custom: "w-full max-w-[768px]",
     large: "w-full max-w-[900px]",
     medium: "w-full max-w-[600px]",
     small: "w-full max-w-[400px]",
   };
+
+  // natural ზომისთვის fill გამოვრთოთ და სურათი თავისი height-ით გამოჩნდეს
+  if (size === "natural") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7 }}
+        className={`${sizeClasses.natural} mb-8 md:mb-12`}
+      >
+        <Image
+          src={src}
+          alt={alt || ""}
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-full h-auto object-top"
+        />
+        {caption && (
+          <p className="text-xs text-gray-500 mt-2 italic">{caption}</p>
+        )}
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -102,7 +129,7 @@ const ImageBlock = ({ src, alt, caption, size = "full" }) => {
           src={src}
           alt={alt || ""}
           fill
-          className="object-cover"
+          className="object-cover object-top"
           sizes="(max-width: 768px) 100vw, 900px"
         />
       </div>
@@ -330,7 +357,7 @@ const NewsDetail = ({
 
   return (
     <section style={{ backgroundColor }}>
-     {/*  {heroImage && (
+      {/*  {heroImage && (
         <div className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] overflow-hidden">
           <motion.div
             initial={{ scale: 1.1 }}
