@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, MessageCircle, X } from "lucide-react";
 import { FaWhatsapp, FaFacebookMessenger } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -27,7 +27,7 @@ export default function ContactPopup() {
       // Desktop - open web version directly
       window.open(
         `https://web.whatsapp.com/send?phone=${phoneNumber}`,
-        "_blank"
+        "_blank",
       );
     }
   };
@@ -119,7 +119,7 @@ export default function ContactPopup() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-15 right-6 z-50 focus:outline-none cursor-pointer bg-transparent border-none p-0"
+        className="fixed bottom-15 right-6 z-50 w-14 h-14 bg-[#ed5c3f] rounded-full flex items-center justify-center shadow-xl cursor-pointer border-none focus:outline-none"
         aria-label={isOpen ? "Close contact menu" : "Open contact menu"}
       >
         <motion.img
@@ -127,9 +127,9 @@ export default function ContactPopup() {
           transition={{ duration: 0.3 }}
           src={isOpen ? "/close.png" : "/open.png"}
           alt={isOpen ? "Close" : "Open"}
-          width={50}
-          height={50}
-          className="object-contain drop-shadow-lg"
+          width={28}
+          height={28}
+          className="object-contain"
         />
       </motion.button>
 
@@ -143,7 +143,7 @@ export default function ContactPopup() {
             exit="exit"
             className="fixed bottom-30 right-6 z-40"
           >
-            <div className="bg-white/20 backdrop-blur-lg border-2 border-white shadow-2xl overflow-hidden w-64 md:w-72">
+            <div className="bg-black/70 backdrop-blur-lg border border-white/20 shadow-2xl overflow-hidden w-64 md:w-72">
               {contactOptions.map((option, index) => {
                 const Icon = option.icon;
                 return (
