@@ -65,7 +65,7 @@ const WhatsOnPage = () => {
       <Header />
       <main>
         <Hero
-          video="/opt_withoutLogo.mp4"
+          video="/whatson-opt.mp4"
           height="80vh"
           title="What's on"
           highlightWords={["What's on"]}

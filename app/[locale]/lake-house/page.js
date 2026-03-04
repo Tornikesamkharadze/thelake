@@ -14,7 +14,7 @@ const Snohetta = () => {
       <Header />
       <main>
         <Hero
-          video="/opt_withoutLogo.mp4"
+          video="/lake-house-opt.mp4"
           height="100vh"
           title={t("snohetta.hero.title")}
           highlightWords={[t("snohetta.hero.title")]}

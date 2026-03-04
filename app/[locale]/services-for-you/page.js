@@ -15,7 +15,7 @@ const ServicesForYou = () => {
       <Header />
       <main>
         <Hero
-          video="/opt_withoutLogo.mp4"
+          video="/services-for-you-opt.mp4"
           height="100vh"
           title={t("services.hero.title")}
           highlightWords={[t("services.hero.highlight")]}
