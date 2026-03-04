@@ -65,7 +65,7 @@ const WhatsOnPage = () => {
       <Header />
       <main>
         <Hero
-          image="/hero-cover-op.webp"
+          video="/opt_withoutLogo.mp4"
           height="80vh"
           title="What's on"
           highlightWords={["What's on"]}

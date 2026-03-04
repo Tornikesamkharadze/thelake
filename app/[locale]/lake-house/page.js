@@ -14,7 +14,7 @@ const Snohetta = () => {
       <Header />
       <main>
         <Hero
-          image="/hero-cover-op.webp"
+          video="/opt_withoutLogo.mp4"
           height="100vh"
           title={t("snohetta.hero.title")}
           highlightWords={[t("snohetta.hero.title")]}
