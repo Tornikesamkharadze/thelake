@@ -1,5 +1,3 @@
-"use client";
-
 import StayInTouchWithContact from "@/components/StayInTouchWithContact";
 import Divider from "@/components/Divider";
 import { Footer } from "@/components/Footer";
@@ -10,13 +8,12 @@ import MasterplanSection from "@/components/MasterplanSection";
 import PartnersSlider from "@/components/Partnersslider";
 import PropertyTypesSection from "@/components/PropertyTypesSection";
 import TextSection from "@/components/TextSection";
-import { useTranslations, useLocale } from "next-intl";
-import { useParams } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
-export default function Home() {
-  const t = useTranslations();
-  const params = useParams();
-  const locale = params.locale || "ka";
+export default async function Home({ params }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+
   return (
     <>
       <Header />
