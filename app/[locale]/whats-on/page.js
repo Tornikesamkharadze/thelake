@@ -72,7 +72,7 @@ export default async function WhatsOnPage({ params }) {
       <Header />
       <main>
         <Hero
-          image="/hero-cover-op.webp"
+          video="/whatson-opt.mp4"
           height="80vh"
           title="What's on"
           highlightWords={["What's on"]}

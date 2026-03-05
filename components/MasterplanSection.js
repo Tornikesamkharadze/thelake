@@ -17,9 +17,9 @@ export default function MasterplanSection() {
         animate={isInView ? { opacity: 1, scale: 1 } : {}}
         transition={{ duration: 1.2, ease: "easeOut" }}
         whileHover={{ scale: 1.02 }}
-        src="/masterplan.webp"
+        src="/akr.webp"
         alt="Masterplan"
-        className="w-full h-[80vh] object-cover"
+        className="w-full h-screen object-fill"
       />
     </section>
   );

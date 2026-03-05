@@ -169,7 +169,7 @@ const Header = () => {
             className="shrink-0 relative block w-[177px] h-[60px]"
           >
             <Image
-              src="/img/logo.webp"
+              src="/img/lake-logo.svg"
               alt="The Lake Logo"
               fill
               sizes="177px"

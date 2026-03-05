@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { getAlternateUrls } from "@/lib/metadata";
 import localFont from "next/font/local";
 import Script from "next/script";
-import { Toaster } from "react-hot-toast"; // ✅ დამატება
+import { Toaster } from "react-hot-toast";
 import "../globals.css";
 
 const tbcContractica = localFont({
@@ -100,13 +100,11 @@ export async function generateMetadata({ params }) {
     description: isKa
       ? "მშვიდი, ექსკლუზიური საცხოვრებელი კომპლექსი ვრცელი ვილებით (500–800 კვ.მ) და კერძო სახლებით (200–400 კვ.მ) ლისის ტბის პირას. 90 სახლი 14 ჰექტარზე კერძო პარკით, პანორამული ხედებით და საერთაშორისო არქიტექტურით. მხოლოდ 7 კმ თბილისის ცენტრიდან."
       : "A quiet, exclusive community of spacious villas (500–800 sq.m) and private houses (200–400 sq.m) by Lisi Lake. 90 homes on 14 hectares with private park, panoramic lake views, and international architecture. Just 7 km from Tbilisi city centre.",
-
     verification: {
       other: {
         "facebook-domain-verification": "1kcivi3ctuhxyj6xl864o6yfs8ffmo",
       },
     },
-
     keywords: [
       "The Lake by Placemakers",
       "Lisi Lake villas",
@@ -162,8 +160,57 @@ export default async function LocaleLayout({ children, params }) {
       lang={locale}
       className={`${tbcContractica.variable} ${tbcContracticaCaps.variable}`}
     >
+      <head>
+        <link
+          rel="preload"
+          as="video"
+          href="/opt_withoutLogo.mp4"
+          type="video/mp4"
+        />
+      </head>
+
+      {/* Google Analytics */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-QYR584Q2K1"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QYR584Q2K1');
+        `}
+      </Script>
+
+      {/* Meta Pixel */}
+      <Script id="meta-pixel" strategy="afterInteractive">
+        {`
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '1202701308028295');
+          fbq('track', 'PageView');
+        `}
+      </Script>
+
       <body>
-        {/* ✅ Toaster დამატება */}
+        {/* Meta Pixel noscript fallback */}
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=1202701308028295&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
+
         <Toaster
           position="top-center"
           toastOptions={{

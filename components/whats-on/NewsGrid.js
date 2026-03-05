@@ -8,7 +8,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 
-// YouTube video ID-ს ამოღება URL-იდან
 const getYouTubeId = (url) => {
   if (!url) return null;
   const patterns = [
@@ -22,7 +21,6 @@ const getYouTubeId = (url) => {
   return null;
 };
 
-// blocks მასივიდან პირველი YouTube thumbnail-ის მოძებნა
 const getYouTubeThumbnail = (blocks = []) => {
   const youtubeBlock = blocks.find((b) => b.type === "youtube");
   if (!youtubeBlock) return null;
@@ -59,7 +57,6 @@ const NewsCard = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // image არ არის? blocks-იდან YouTube thumbnail-ი ავიღოთ
   const displayImage = image || getYouTubeThumbnail(blocks);
 
   if (!displayImage) return null;
@@ -137,6 +134,14 @@ const NewsGrid = ({
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
 
+  const sortedNewsItems = [...newsItems].sort((a, b) => {
+    const parseDate = (dateStr) => {
+      const [day, month, year] = dateStr.trim().split(".").map(Number);
+      return new Date(year, month - 1, day);
+    };
+    return parseDate(b.date) - parseDate(a.date);
+  });
+
   return (
     <section
       ref={sectionRef}
@@ -151,7 +156,7 @@ const NewsGrid = ({
           className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16"
           style={{ gap: gridGap }}
         >
-          {newsItems.map((item, index) => (
+          {sortedNewsItems.map((item, index) => (
             <NewsCard
               key={item.slug || index}
               slug={item.slug}

@@ -1,6 +1,5 @@
 import createNextIntlPlugin from "next-intl/plugin";
 
-// ✅ სწორი path - i18n/request.js
 const withNextIntl = createNextIntlPlugin("./i18n/request.js");
 
 /** @type {import('next').NextConfig} */
@@ -54,6 +53,23 @@ const nextConfig = {
       {
         source: "/storage/:path*",
         destination: "/api/storage/:path*",
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*.mp4",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+          {
+            key: "Accept-Ranges",
+            value: "bytes",
+          },
+        ],
       },
     ];
   },

@@ -95,7 +95,7 @@ export function Footer() {
           <div className="flex flex-col mb-6">
             <p className="text-base">{t("address")}</p>
             <a
-              /* href="tel:+995511553333" */
+              href="tel:+995511553333"
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
               +995 511 55 33 33
