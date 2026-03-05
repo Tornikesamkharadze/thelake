@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:export-news": "node scripts/export-news-for-strapi.js"
   },
   "dependencies": {
     "flag-icons": "^7.5.0",

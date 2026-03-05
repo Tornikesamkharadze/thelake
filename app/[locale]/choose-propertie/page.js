@@ -1,25 +1,24 @@
-"use client";
-
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 import ChoosePropertie from "@/components/choose-propertie/ChoosePropertie";
-import TextImageSideSection from "@/components/TextImageSideSection";
-import TextSection from "@/components/TextSection";
-import { useTranslations } from "next-intl";
+import { getProperties, STRAPI_URL } from "@/lib/strapi";
+import { mapStrapiPropertyToFrontend } from "@/lib/adapters/property";
 
-const ServicesForYou = () => {
-  const t = useTranslations();
+export default async function ChoosePropertiePage() {
+  // Fetch all properties for the map (Strapi default pageSize is 25; map needs every plot)
+  const { data } = await getProperties({ pagination: { pageSize: 100 } });
+  console.log("data", data);
+  const list = Array.isArray(data) ? data : [];
+  console.log("list", list);
+  const properties = list.map((raw) => mapStrapiPropertyToFrontend(raw, STRAPI_URL)).filter(Boolean);
 
   return (
     <>
       <Header />
       <main>
-        <ChoosePropertie />
+        <ChoosePropertie properties={properties} />
       </main>
       <Footer />
     </>
   );
-};
-
-export default ServicesForYou;
+}

@@ -37,13 +37,21 @@ const STATIC_IMAGES = {
   ],
 };
 
-export default function Gallery() {
+export default function Gallery({ images: imagesProp }) {
   const t = useTranslations();
   const [activeFilter, setActiveFilter] = useState("Exterior");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState(null);
-  const [images] = useState(STATIC_IMAGES);
+  const hasStrapiImages =
+    imagesProp &&
+    (imagesProp.Interior?.length > 0 || imagesProp.Exterior?.length > 0);
+  const images = hasStrapiImages
+    ? {
+        Interior: imagesProp.Interior || [],
+        Exterior: imagesProp.Exterior || [],
+      }
+    : STATIC_IMAGES;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

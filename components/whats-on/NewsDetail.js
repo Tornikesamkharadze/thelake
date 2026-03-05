@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { isLocalhostImage } from "@/lib/imageUtils";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
@@ -114,7 +115,7 @@ const ImageBlock = ({ src, alt, caption, size = "full" }) => {
 };
 
 // ─── Text Block ───────────────────────────────────────────────────────────────
-const TextBlock = ({ content, contentColor, contentSize }) => {
+const TextBlock = ({ content, contentColor, contentSize, allowHtml }) => {
   const getResponsiveSize = (sizes) => {
     const sizeObj =
       typeof sizes === "string"
@@ -127,6 +128,11 @@ const TextBlock = ({ content, contentColor, contentSize }) => {
     }px + 1vw, ${sizeObj.desktop})`;
   };
 
+  const style = {
+    color: contentColor,
+    fontSize: getResponsiveSize(contentSize),
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -135,15 +141,17 @@ const TextBlock = ({ content, contentColor, contentSize }) => {
       transition={{ duration: 0.7 }}
       className="mb-8 md:mb-12"
     >
-      <p
-        className="leading-relaxed whitespace-pre-line"
-        style={{
-          color: contentColor,
-          fontSize: getResponsiveSize(contentSize),
-        }}
-      >
-        {content}
-      </p>
+      {allowHtml && content && /<[a-z][\s\S]*>/i.test(content) ? (
+        <div
+          className="leading-relaxed prose prose-p:mb-4 prose-headings:uppercase prose-headings:tracking-wide max-w-none"
+          style={style}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      ) : (
+        <p className="leading-relaxed whitespace-pre-line" style={style}>
+          {content}
+        </p>
+      )}
     </motion.div>
   );
 };
@@ -277,7 +285,7 @@ const NewsDetail = ({
     [
       excerpt && { type: "text", content: excerpt },
       additionalImage && { type: "image", src: additionalImage, alt: title },
-      contentBottom && { type: "text", content: contentBottom },
+      contentBottom && { type: "text", content: contentBottom, allowHtml: true },
     ].filter(Boolean);
 
   const renderBlock = (block, index) => {
@@ -289,6 +297,7 @@ const NewsDetail = ({
             content={block.content}
             contentColor={contentColor}
             contentSize={contentSize}
+            allowHtml={block.allowHtml}
           />
         );
       case "heading":
@@ -345,6 +354,7 @@ const NewsDetail = ({
               className="object-cover"
               sizes="100vw"
               priority
+              unoptimized={isLocalhostImage(heroImage)}
             />
           </motion.div>
 

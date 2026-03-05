@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Divider from "@/components/Divider";
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
@@ -8,12 +9,41 @@ import PartnersSlider from "@/components/Partnersslider";
 import TeamSwiper from "@/components/TeamSwiper";
 import Timeline from "@/components/TimeLine";
 import { useTranslations } from "next-intl";
+import { getPartners, STRAPI_URL } from "@/lib/strapi";
+
+function mapStrapiPartnersToSlider(partners, strapiUrl) {
+  const base = (strapiUrl || "").replace(/\/$/, "");
+  const mediaUrl = (media) => {
+    if (!media) return null;
+    const url = media.url ?? media.data?.attributes?.url;
+    return url ? (url.startsWith("http") ? url : `${base}${url}`) : null;
+  };
+  const list = Array.isArray(partners) ? partners : [];
+  return list
+    .map((p) => {
+      const src = mediaUrl(p.image);
+      if (!src) return null;
+      return {
+        src,
+        alt: p.name ?? "Partner",
+        url: p.url || null,
+      };
+    })
+    .filter(Boolean);
+}
 
 const About = () => {
   const t = useTranslations();
+  const [partners, setPartners] = useState([]);
 
   const timelineData = t.raw("about.timeline");
   const teamMembers = t.raw("about.team");
+
+  useEffect(() => {
+    getPartners()
+      .then(({ data }) => setPartners(mapStrapiPartnersToSlider(data, STRAPI_URL)))
+      .catch(() => {});
+  }, []);
 
   return (
     <>
@@ -109,7 +139,7 @@ const About = () => {
           descriptionTransform="none"
           dotSize="14px"
         />
-        <PartnersSlider />
+        <PartnersSlider partners={partners} />
       </main>
       <Footer />
     </>

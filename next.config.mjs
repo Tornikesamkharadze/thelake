@@ -7,6 +7,8 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.js");
 const nextConfig = {
   output: "standalone",
   images: {
+    qualities: [75, 95],
+    dangerouslyAllowLocalIP: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -27,6 +29,23 @@ const nextConfig = {
         protocol: "https",
         hostname: "youtu.be",
         pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        pathname: "/uploads/**",
+        port: "1338",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        pathname: "/uploads/**",
+        port: "13385",
+      },
+      {
+        protocol: "https",
+        hostname: "thelake.ge",
+        pathname: "/uploads/**",
       },
     ],
   },

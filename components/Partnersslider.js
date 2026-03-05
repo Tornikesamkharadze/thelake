@@ -4,7 +4,14 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
-export default function PartnersSlider() {
+const DEFAULT_PARTNERS = [
+  { src: "/img/partners/snoh.webp", alt: "snoh logo" },
+  { src: "/img/partners/tbc.webp", alt: "tbc logo" },
+  { src: "/img/partners/samrt.webp", alt: "samrt logo" },
+  { src: "/img/partners/salt.webp", alt: "salt logo" },
+];
+
+export default function PartnersSlider({ partners: partnersProp }) {
   const trackRef = useRef(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true });
@@ -30,13 +37,10 @@ export default function PartnersSlider() {
     };
   }, []);
 
-  const partners = [
-    { src: "/img/partners/snoh.webp", alt: "snoh logo" },
-    { src: "/img/partners/tbc.webp", alt: "tbc logo" },
-    { src: "/img/partners/samrt.webp", alt: "samrt logo" },
-    { src: "/img/partners/salt.webp", alt: "salt logo" },
-  ];
-
+  const partners =
+    Array.isArray(partnersProp) && partnersProp.length > 0
+      ? partnersProp
+      : DEFAULT_PARTNERS;
   const repeatedPartners = Array(5).fill(partners).flat();
 
   return (
@@ -79,22 +83,38 @@ export default function PartnersSlider() {
               className="flex animate-scroll w-fit hover:animation-paused"
               ref={trackRef}
             >
-              {repeatedPartners.map((partner, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-white max-w-[300px] px-[60px] max-md:px-[30px] max-[480px]:px-5 whitespace-nowrap flex items-center justify-center shrink-0 transition-colors duration-300 hover:text-[#d3b473]"
-                >
+              {repeatedPartners.map((partner, index) => {
+                const content = (
                   <Image
                     src={partner.src}
-                    alt={partner.alt}
+                    alt={partner.alt ?? "Partner"}
                     width={200}
                     height={80}
                     className="object-contain w-auto h-auto"
                   />
-                </motion.div>
-              ))}
+                );
+                return (
+                  <motion.div
+                    key={`${partner.src}-${index}`}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-white max-w-[300px] px-[60px] max-md:px-[30px] max-[480px]:px-5 whitespace-nowrap flex items-center justify-center shrink-0 transition-colors duration-300 hover:text-[#d3b473]"
+                  >
+                    {partner.url ? (
+                      <a
+                        href={partner.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      content
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         </div>

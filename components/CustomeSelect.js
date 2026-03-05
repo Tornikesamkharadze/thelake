@@ -17,23 +17,8 @@ const PropertyListing = ({ properties = [] }) => {
   const params = useParams();
   const locale = params.locale || "ka";
 
-  const typeTranslationMap = {
-    "Private Villa": t("propertyListing.typeVilla"),
-    "Private House": t("propertyListing.typeHouse"),
-    "Land Plot": t("propertyListing.typeLand"),
-  };
-
   // Filter states
-  const [selectedType, setSelectedType] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedType = sessionStorage.getItem("propertyListingType");
-      if (savedType) {
-        sessionStorage.removeItem("propertyListingType");
-        return savedType;
-      }
-    }
-    return "All";
-  });
+  const [selectedType, setSelectedType] = useState("All");
   const [selectedLandSize, setSelectedLandSize] = useState("All");
   const [openDropdown, setOpenDropdown] = useState(null);
 
@@ -42,15 +27,13 @@ const PropertyListing = ({ properties = [] }) => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      setTimeout(() => {
-        if (
-          openDropdown &&
-          dropdownRefs.current[openDropdown] &&
-          !dropdownRefs.current[openDropdown].contains(event.target)
-        ) {
-          setOpenDropdown(null);
-        }
-      }, 0);
+      if (
+        openDropdown &&
+        dropdownRefs.current[openDropdown] &&
+        !dropdownRefs.current[openDropdown].contains(event.target)
+      ) {
+        setOpenDropdown(null);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -103,15 +86,18 @@ const PropertyListing = ({ properties = [] }) => {
   };
 
   const handleSearch = () => {
-    setOpenDropdown(null);
+    console.log("Searching with filters:", { selectedType, selectedLandSize });
   };
 
+  // Use useCallback to memoize handlers
   const handleTypeChange = useCallback((value) => {
+    console.log("Type changing to:", value);
     setSelectedType(value);
     setOpenDropdown(null);
   }, []);
 
   const handleLandSizeChange = useCallback((value) => {
+    console.log("Land size changing to:", value);
     setSelectedLandSize(value);
     setOpenDropdown(null);
   }, []);
@@ -131,11 +117,7 @@ const PropertyListing = ({ properties = [] }) => {
       if (name === "landSize" && value !== "All") {
         return `${value} ${t("propertyListing.m2")}`;
       }
-      return typeTranslationMap[value] || value;
-    };
-
-    const handleOptionClick = (option) => {
-      onChange(option);
+      return value;
     };
 
     return (
@@ -145,16 +127,12 @@ const PropertyListing = ({ properties = [] }) => {
       >
         <button
           type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleDropdown(name);
-          }}
-          className="w-full px-3 py-2.5 bg-[#C2B49B] text-[#312618] font-medium cursor-pointer border-b border-[rgba(49,38,24,0.3)] transition-all duration-300 flex items-center justify-between hover:bg-[#ED5C3F] hover:text-[#F7EAD7] hover:border-[#312618] focus:outline-none focus:bg-[#ED5C3F] focus:text-[#F7EAD7]"
+          onClick={() => toggleDropdown(name)}
+          className="w-full px-3 py-2.5 bg-[#C2B49B] text-[#312618] font-medium cursor-pointer border-b border-[rgba(49,38,24,0.3)] transition-all duration-300 flex items-center justify-between hover:bg-[#ED5C3F] hover:text-[#F7EAD7] hover:border-[#312618]"
         >
           <span className="text-sm">{getDisplayValue()}</span>
           <svg
-            className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+            className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -169,23 +147,20 @@ const PropertyListing = ({ properties = [] }) => {
         </button>
 
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-[#C2B49B] border border-[rgba(49,38,24,0.3)] overflow-hidden z-50 max-h-[300px] overflow-y-auto shadow-lg custom-dropdown">
+          <div className="absolute top-full left-0 right-0 mt-1 bg-[#C2B49B] border border-[rgba(49,38,24,0.3)] overflow-hidden z-9999 max-h-[300px] overflow-y-auto shadow-lg custom-dropdown">
             {options.map((option, index) => (
               <button
                 key={index}
                 type="button"
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleOptionClick(option);
+                onClick={() => {
+                  console.log("Option clicked:", option);
+                  onChange(option);
                 }}
                 className={`w-full text-left px-3 py-2.5 text-sm text-[#312618] font-medium cursor-pointer transition-all duration-200 hover:bg-[#ED5C3F] hover:text-white ${
                   value === option ? "bg-[#312618] text-[#F7EAD7]" : ""
                 }`}
               >
-                {option === "All"
-                  ? t("propertyListing.all")
-                  : typeTranslationMap[option] || option}
+                {option === "All" ? t("propertyListing.all") : option}
                 {name === "landSize" &&
                   option !== "All" &&
                   ` ${t("propertyListing.m2")}`}
@@ -229,11 +204,11 @@ const PropertyListing = ({ properties = [] }) => {
           <div className="hidden min-[1051px]:flex absolute top-6 right-8 z-20 gap-2">
             <button
               onClick={() => router.push(`/${locale}/choose-propertie`)}
-              className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-[#F7EAD7] border border-[#312618] text-[#312618] hover:bg-[#C2B49B]"
+              className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-white border border-[#312618] text-[#000000] hover:bg-[#312618]/10"
             >
               {t("chooseProperty.visualSelection")}
             </button>
-            <button className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-[#312618] text-[#F7EAD7] shadow-md">
+            <button className="px-4 py-2 text-sm font-medium transition-all cursor-pointer bg-[#312618] text-[#FFFFF] shadow-md">
               {t("chooseProperty.propertyListing")}
             </button>
           </div>
@@ -250,7 +225,7 @@ const PropertyListing = ({ properties = [] }) => {
               {/* Type Filter */}
               <div className="mb-6">
                 <div className="flex items-center gap-4">
-                  <label className="text-sm text-[#312618] font-medium w-20 shrink-0">
+                  <label className="text-sm text-[#312618] font-medium w-20">
                     {t("propertyListing.type")}
                   </label>
                   <div className="flex-1">
@@ -267,7 +242,7 @@ const PropertyListing = ({ properties = [] }) => {
               {/* Land Size Filter */}
               <div className="mb-6">
                 <div className="flex items-center gap-4">
-                  <label className="text-sm text-[#312618] font-medium w-20 shrink-0">
+                  <label className="text-sm text-[#312618] font-medium w-20">
                     {t("propertyListing.landSize")}
                   </label>
                   <div className="flex-1">
@@ -304,7 +279,7 @@ const PropertyListing = ({ properties = [] }) => {
 
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <label className="text-sm text-[#312618] font-medium w-[70px] shrink-0">
+                  <label className="text-sm text-[#312618] font-medium w-[70px]">
                     {t("propertyListing.type")}
                   </label>
                   <div className="flex-1">
@@ -318,7 +293,7 @@ const PropertyListing = ({ properties = [] }) => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <label className="text-sm text-[#312618] font-medium w-[70px] shrink-0">
+                  <label className="text-sm text-[#312618] font-medium w-[70px]">
                     {t("propertyListing.landSize")}
                   </label>
                   <div className="flex-1">
@@ -368,9 +343,7 @@ const PropertyListing = ({ properties = [] }) => {
                     </div>
                     <div className="p-4">
                       <h3 className="text-lg font-medium text-gray-900 mb-3">
-                        {typeTranslationMap[property.type?.trim()] ||
-                          property.type?.trim()}{" "}
-                        {property.houseNo}
+                        {property.type?.trim()} {property.houseNo}
                       </h3>
                       <div className="space-y-2 text-sm text-gray-700">
                         {property.landSize && (
@@ -443,9 +416,7 @@ const PropertyListing = ({ properties = [] }) => {
                   </div>
                   <div className="p-4">
                     <h3 className="text-lg font-medium text-gray-900 mb-3">
-                      {typeTranslationMap[property.type?.trim()] ||
-                        property.type?.trim()}{" "}
-                      {property.houseNo}
+                      {property.type?.trim()} {property.houseNo}
                     </h3>
                     <div className="space-y-2 text-sm text-gray-700">
                       {property.landSize && (

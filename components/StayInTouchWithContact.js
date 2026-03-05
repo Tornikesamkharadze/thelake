@@ -22,8 +22,16 @@ export default function StayInTouchWithContact({
   linkColor = "#6b7280",
   linkHoverColor = "#ed5c3f",
   onSubmit = null,
+  address,
+  phone,
+  email,
+  website,
 }) {
   const t = useTranslations("contact");
+  const displayAddress = address ?? t("address");
+  const displayPhone = phone ?? t("phone");
+  const displayEmail = email ?? t("email");
+  const displayWebsite = website ?? t("website");
   const locale = useLocale();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -346,7 +354,7 @@ export default function StayInTouchWithContact({
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
                       <p className="text-base mb-0 whitespace-pre-line">
-                        {t("address")}
+                        {displayAddress}
                       </p>
                     </motion.a>
                   </motion.div>
@@ -363,6 +371,7 @@ export default function StayInTouchWithContact({
                     <motion.a
                       whileHover={{ scale: 1.02 }}
                      /*  href="https://web.whatsapp.com/send?phone=+995511553333" */
+                      href={displayPhone ? `tel:${displayPhone.replace(/\s/g, "")}` : undefined}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="no-underline transition-colors duration-300 tbc-regular"
@@ -372,7 +381,7 @@ export default function StayInTouchWithContact({
                       }
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
-                      <p className="text-base mb-0">{t("phone")}</p>
+                      <p className="text-base mb-0">{displayPhone}</p>
                     </motion.a>
                   </motion.div>
 
@@ -388,7 +397,7 @@ export default function StayInTouchWithContact({
                   >
                     <motion.a
                       whileHover={{ scale: 1.02 }}
-                      href={`mailto:${t("email")}`}
+                      href={displayEmail ? `mailto:${displayEmail}` : undefined}
                       className="no-underline transition-colors duration-300 tbc-regular"
                       style={{ color: linkColor }}
                       onMouseEnter={(e) =>
@@ -396,7 +405,7 @@ export default function StayInTouchWithContact({
                       }
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
-                      <p className="text-base mb-0">{t("email")}</p>
+                      <p className="text-base mb-0">{displayEmail}</p>
                     </motion.a>
 
                     <motion.a
@@ -411,7 +420,7 @@ export default function StayInTouchWithContact({
                       }
                       onMouseLeave={(e) => (e.target.style.color = linkColor)}
                     >
-                      <p className="text-base mb-0">{t("website")}</p>
+                      <p className="text-base mb-0">{displayWebsite}</p>
                     </motion.a>
                   </motion.div>
                 </div>

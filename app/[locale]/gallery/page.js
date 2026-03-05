@@ -2,6 +2,8 @@ import { Footer } from "@/components/Footer";
 import Gallery from "@/components/Gallery";
 import Header from "@/components/Header";
 import { getAlternateUrls } from "@/lib/metadata";
+import { getGalleries, STRAPI_URL } from "@/lib/strapi";
+import { mapStrapiGalleriesToFrontend } from "@/lib/adapters/gallery";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -57,16 +59,26 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const gallery = () => {
+export default async function GalleryPage({ params }) {
+  const { locale } = await params;
+  let galleryImages = null;
+  try {
+    const { data } = await getGalleries({ populate: "*", pagination: { pageSize: 100 } });
+    console.log("data", data);
+    const list = Array.isArray(data) ? data : [];
+    galleryImages = mapStrapiGalleriesToFrontend(list, STRAPI_URL);
+    console.log("galleryImages", galleryImages);
+  } catch {
+    galleryImages = null;
+  }
+
   return (
     <>
       <Header />
       <main>
-        <Gallery />
+        <Gallery images={galleryImages} />
       </main>
       <Footer />
     </>
   );
-};
-
-export default gallery;
+}

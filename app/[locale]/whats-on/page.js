@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import WhatsOn from "@/components/whats-on/WhatsOn";
 import { getAlternateUrls } from "@/lib/metadata";
+import { getAllNews, STRAPI_URL } from "@/lib/strapi";
+import { mapStrapiNewsToFrontend } from "@/lib/adapters/news";
 import React from "react";
 
 export async function generateMetadata({ params }) {
@@ -59,7 +61,12 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const WhatsOnPage = () => {
+export default async function WhatsOnPage({ params }) {
+  const { locale } = await params;
+  const { data } = await getAllNews({ locale: locale === "ka" ? "ka" : "en" });
+  const list = Array.isArray(data) ? data : [];
+  const newsItems = list.map((raw) => mapStrapiNewsToFrontend(raw, STRAPI_URL)).filter(Boolean);
+
   return (
     <>
       <Header />
@@ -71,11 +78,9 @@ const WhatsOnPage = () => {
           highlightWords={["What's on"]}
           uppercase={true}
         />
-        <WhatsOn />
+        <WhatsOn newsItems={newsItems} />
       </main>
       <Footer />
     </>
   );
-};
-
-export default WhatsOnPage;
+}

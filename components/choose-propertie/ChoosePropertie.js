@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { properties } from "@/lib/dummyData";
 import { useTranslations } from "next-intl";
 import { useRouter, useParams } from "next/navigation";
 
-const ChoosePropertie = () => {
+const MAP_SVG_URL = "/map.svg";
+
+const ChoosePropertie = ({ properties = [] }) => {
   const t = useTranslations();
   const router = useRouter();
   const params = useParams();
@@ -14,25 +15,103 @@ const ChoosePropertie = () => {
 
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [hoveredProperty, setHoveredProperty] = useState(null);
+  const [svgContent, setSvgContent] = useState("");
+  const mapContainerRef = useRef(null);
+  const handlersRef = useRef({});
 
   const hasValue = (value) => {
     return value && value.trim() !== "";
   };
 
   const handlePolygonHover = (property, event) => {
-    setSelectedProperty(property);
-    setHoveredProperty(property);
+    console.log("property", property);
+    setSelectedProperty(property ?? null);
+    setHoveredProperty(property ?? null);
+    if (event?.target) {
+      event.target.style.fill = "#C7B299";
+      event.target.style.opacity = "0.75";
+    }
   };
 
-  const handlePolygonLeave = () => {
+  const handlePolygonLeave = (event) => {
     setHoveredProperty(null);
+    if (event?.target) {
+      event.target.style.fill = "";
+      event.target.style.opacity = "";
+    }
   };
 
   const handlePolygonClick = (property) => {
     sessionStorage.setItem("propertyListingReferrer", "visual");
     sessionStorage.setItem("propertyListingUrl", window.location.pathname);
-    router.push(`/${locale}/property/${property.houseNo}`);
+    router.push(`/${locale}/property/${(property.houseNo || "").toUpperCase()}`);
   };
+
+  handlersRef.current = {
+    handlePolygonClick,
+    handlePolygonHover,
+    handlePolygonLeave,
+  };
+
+  // Load map SVG once and inject into container (so re-renders don't replace DOM and kill listeners)
+  useEffect(() => {
+    fetch(MAP_SVG_URL)
+      .then((r) => r.text())
+      .then((html) =>
+        setSvgContent(html.replace(/<\?xml[^?]*\?>\s*/i, "").trim())
+      )
+      .catch(() => setSvgContent(""));
+  }, []);
+
+  // Inject SVG into container once (never from render – avoids replacing nodes and losing listeners)
+  useEffect(() => {
+    if (!mapContainerRef.current || !svgContent) return;
+    if (mapContainerRef.current.hasChildNodes()) return;
+    mapContainerRef.current.innerHTML = svgContent;
+  }, [svgContent]);
+
+  // Attach click/hover to SVG shape elements (polygon + path) whose id matches a property (by houseNo, uppercase)
+  useEffect(() => {
+    console.log("properties", properties);
+    if (!mapContainerRef.current || !svgContent || !properties.length) return;
+    const svg = mapContainerRef.current.querySelector("svg");
+    if (!svg) return;
+
+    const byId = new Map(
+      properties.map((p) => [(p.houseNo || "").toUpperCase(), p])
+    );
+    const cleanup = [];
+
+    // All shape elements with id (polygon + path); use tagName so SVG-in-HTML / namespace doesn’t skip polygons
+    const polygons = [...svg.querySelectorAll("polygon[id]")];
+    const paths = [...svg.querySelectorAll("path[id]")];
+    const shapes = [...polygons, ...paths];
+
+    shapes.forEach((el) => {
+      console.log("el", el.id);
+      const id = (el.id || "").toUpperCase();
+      const prop = byId.get(id);
+      console.log("prop", prop);
+      const onEnter = (e) => handlersRef.current.handlePolygonHover(prop, e);
+      const onLeave = (e) => handlersRef.current.handlePolygonLeave(e);
+      const onClick = () => {
+        if (prop) handlersRef.current.handlePolygonClick(prop);
+      };
+
+      el.style.cursor = "pointer";
+      el.style.pointerEvents = "auto";
+      el.addEventListener("click", onClick);
+      el.addEventListener("mouseenter", onEnter);
+      el.addEventListener("mouseleave", onLeave);
+      cleanup.push(() => {
+        el.removeEventListener("click", onClick);
+        el.removeEventListener("mouseenter", onEnter);
+        el.removeEventListener("mouseleave", onLeave);
+      });
+    });
+
+    return () => cleanup.forEach((fn) => fn());
+  }, [svgContent, properties]);
 
   return (
     <div className="h-[calc(100vh-148px)] bg-white overflow-hidden">
@@ -160,7 +239,7 @@ const ChoosePropertie = () => {
         </div>
 
         {/* Map Container - Right Side */}
-        <div className="flex-1 relative h-full lg:h-full overflow-hidden">
+        <div className="flex-1 bg-[#ed5c3f] relative h-full lg:h-full overflow-hidden">
           {/* Top Buttons */}
           <div className="absolute top-4 right-4 z-10 flex gap-2">
             <button className="px-6 py-2 text-sm font-medium transition-all cursor-pointer bg-[#312618] text-[#F7EAD7] shadow-md">
@@ -174,45 +253,20 @@ const ChoosePropertie = () => {
             </button>
           </div>
 
-          {/* Background Map Image */}
-          <div className="relative w-full h-full flex items-center justify-center">
-            <Image
-              src="/akr.webp"
-              alt="Property Map"
-              width={1641}
-              height={1082}
-              className="w-full h-full object-fill"
-              priority
+          {/* Map from main.svg – injected once in effect so paths stay clickable; territory.png as bg, SVG overlays on top */}
+          <div
+            className="relative w-full h-full flex items-center justify-center bg-contain bg-center bg-no-repeat"
+            style={{ backgroundImage: "url(/territory.png)" }}
+          >
+            <div
+              ref={mapContainerRef}
+              className="relative z-10 w-full h-full [&_svg]:w-full [&_svg]:h-full [&_svg]:object-contain"
             />
-
-            {/* SVG Overlay with Polygons */}
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 1641 1082"
-              preserveAspectRatio="none"
-            >
-              {properties.map((property) =>
-                property.coords ? (
-                  <polygon
-                    key={property.id}
-                    points={property.coords}
-                    className={`
-                      transition-all duration-300 cursor-pointer
-                      ${property.isSold ? "fill-red-500/50" : "fill-transparent"}
-                      hover:fill-[#C7B299]/70
-                      ${selectedProperty?.id === property.id ? "fill-[#C7B299]/70" : ""}
-                    `}
-                    onMouseEnter={(e) => handlePolygonHover(property, e)}
-                    onMouseLeave={handlePolygonLeave}
-                    onClick={() => handlePolygonClick(property)}
-                    style={{
-                      stroke: "#2D1810",
-                      strokeWidth: 1,
-                    }}
-                  />
-                ) : null,
-              )}
-            </svg>
+            {!svgContent && (
+              <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+                {t("chooseProperty.loadingMap") || "Loading map…"}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -2,6 +2,8 @@ import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import LocationMapSection from "@/components/LocationMapSection";
 import { getAlternateUrls } from "@/lib/metadata";
+import { getContact, STRAPI_URL } from "@/lib/strapi";
+import { mapStrapiContactToFrontend } from "@/lib/adapters/contact";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -61,16 +63,34 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const findUs = () => {
+export default async function FindUsPage({ params }) {
+  const { locale } = await params;
+  let contact = null;
+  try {
+    const { data } = await getContact({ locale, populate: "*" });
+    contact = mapStrapiContactToFrontend(data, STRAPI_URL);
+  } catch {
+    contact = null;
+  }
+
+  const mapEmbedUrl = contact?.googleMaps?.trim().startsWith("http")
+    ? contact.googleMaps.trim()
+    : null;
+  const distanceTitle = contact?.distanceTitle || null;
+  const distances =
+    contact?.distanceItems?.length > 0 ? contact.distanceItems : null;
+
   return (
     <>
       <Header />
       <main>
-        <LocationMapSection />
+        <LocationMapSection
+          mapEmbedUrl={mapEmbedUrl}
+          distanceTitle={distanceTitle}
+          distances={distances}
+        />
       </main>
       <Footer />
     </>
   );
-};
-
-export default findUs;
+}

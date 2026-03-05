@@ -320,7 +320,8 @@
     "noProperties": "No properties found matching your criteria",
     "status": "Status",
     "sold": "Sold",
-    "available": "Vacant"
+    "available": "Vacant",
+    "loadingMap": "Loading map…"
   },
   "propertyListing": {
     "filter": "FILTER",

@@ -1,17 +1,18 @@
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import PropertyDetail from "@/components/PropertyDetail";
-import { properties } from "@/lib/dummyData";
+import { getPropertyByName, getProperties, STRAPI_URL } from "@/lib/strapi";
+import { mapStrapiPropertyToFrontend } from "@/lib/adapters/property";
 import { notFound } from "next/navigation";
 
 export default async function PropertyPage({ params }) {
-  // Await params for Next.js 15+
   const { id } = await params;
+  const slug = (id || "").toUpperCase();
 
-  // Find property by houseNo
-  const property = properties.find((p) => p.houseNo === id);
+  const { data } = await getPropertyByName(slug);
+  const raw = data?.[0];
+  const property = raw ? mapStrapiPropertyToFrontend(raw, STRAPI_URL) : null;
 
-  // If property not found, show 404
   if (!property) {
     notFound();
   }
@@ -27,9 +28,18 @@ export default async function PropertyPage({ params }) {
   );
 }
 
-// Optional: Generate static params for all properties
 export async function generateStaticParams() {
-  return properties.map((property) => ({
-    id: property.houseNo,
-  }));
+  const locales = ["en", "ka"];
+  const { data } = await getProperties({ pagination: { pageSize: 100 } });
+  const list = Array.isArray(data) ? data : [];
+  const params = [];
+  for (const locale of locales) {
+    for (const raw of list) {
+      const mapped = mapStrapiPropertyToFrontend(raw, STRAPI_URL);
+      if (mapped?.houseNo) {
+        params.push({ locale, id: (mapped.houseNo || "").toUpperCase() });
+      }
+    }
+  }
+  return params;
 }

@@ -1,35 +1,24 @@
-"use client";
-
-import StayInTouchWithContact from "@/components/StayInTouchWithContact";
-import ContactWithImage from "@/components/ContactWithImage";
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
-import { useTranslations } from "next-intl";
+import ContactPageContent from "@/components/contact/ContactPageContent";
+import { getContact, STRAPI_URL } from "@/lib/strapi";
+import { mapStrapiContactToFrontend } from "@/lib/adapters/contact";
 
-export default function ContactPage() {
-  const t = useTranslations("contact");
+export default async function ContactPage({ params }) {
+  const { locale } = await params;
+  let contact = null;
+  try {
+    const { data } = await getContact({ locale, populate: "*" });
+    contact = mapStrapiContactToFrontend(data, STRAPI_URL);
+  } catch {
+    contact = null;
+  }
 
   return (
     <>
       <Header />
       <main>
-        <ContactWithImage
-          image="/lake-1.png"
-          title={t("contactTitle")}
-          location={t("address")}
-          locationUrl="https://maps.app.goo.gl/LQaNV2GhVjdXhmJ88"
-          phone={t("phone")}
-          email={t("email")}
-          imagePosition="left"
-          backgroundColor="#D3B473"
-          textBoxColor="#F7EAD7"
-        />
-
-        <StayInTouchWithContact
-          showAddressBox={false}
-          backgroundImage="/lake-1.png"
-          contactBoxBackgroundColor="#F7EAD7"
-        />
+        <ContactPageContent contact={contact} />
       </main>
       <Footer />
     </>

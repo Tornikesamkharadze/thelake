@@ -313,7 +313,8 @@
     "instructionText": "მიიტანეთ კურსორი ნაკვეთზე ინფორმაციის სანახავად",
     "status": "სტატუსი",
     "sold": "გაყიდული",
-    "available": "ვაკანტური"
+    "available": "ვაკანტური",
+    "loadingMap": "რუკა იტვირთება…"
   },
   "propertyListing": {
     "filter": "ფილტრი",
