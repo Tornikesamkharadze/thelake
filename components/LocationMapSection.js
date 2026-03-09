@@ -51,6 +51,16 @@ export default function LocationMapSection() {
             referrerPolicy="no-referrer-when-downgrade"
             title={t("findUs.mapTitle")}
           />
+
+          {/* მობილზე overlay — Maps-ს destination-ით ხსნის */}
+          {isMobile && (
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=41.752377,44.731145"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute inset-0 z-10"
+            />
+          )}
         </div>
       </motion.div>
 
