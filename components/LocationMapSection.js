@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslations } from "next-intl";
 
@@ -8,19 +8,11 @@ export default function LocationMapSection() {
   const t = useTranslations();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const distances = t.raw("findUs.distances");
 
   const itemVariants = {
-    hidden: { opacity: 0, x: isMobile ? 0 : -30 },
+    hidden: { opacity: 0, x: -30 },
     visible: (i) => ({
       opacity: 1,
       x: 0,
@@ -52,15 +44,13 @@ export default function LocationMapSection() {
             title={t("findUs.mapTitle")}
           />
 
-          {/* მობილზე overlay — Maps-ს destination-ით ხსნის */}
-          {isMobile && (
-            <a
-              href="https://www.google.com/maps/dir/?api=1&destination=41.752377,44.731145"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="absolute inset-0 z-10"
-            />
-          )}
+          {/* Overlay — ყველა მოწყობილობაზე Google Maps-ს ხსნის */}
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=41.752377,44.731145"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 z-10"
+          />
         </div>
       </motion.div>
 
