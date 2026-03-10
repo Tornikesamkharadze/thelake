@@ -7,12 +7,10 @@ import { useRouter, usePathname, useParams } from "next/navigation";
 import { scroller } from "react-scroll";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
-import EnquirePopup from "./EnquirePopup";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isEnquirePopupOpen, setIsEnquirePopupOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -28,7 +26,6 @@ const Header = () => {
       document.body.style.overflow = "unset";
     }
 
-    // Cleanup function
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -99,9 +96,8 @@ const Header = () => {
         });
       }, 150);
     } else {
-      // შევინახოთ scroll target sessionStorage-ში
       sessionStorage.setItem("scrollTarget", item.scrollTo);
-      router.push(item.href); // hash-ის გარეშე
+      router.push(item.href);
     }
   };
 
@@ -112,14 +108,6 @@ const Header = () => {
     } else {
       setIsDropdownOpen(true);
     }
-  };
-
-  // Determine target for "Own a House" based on screen size
-  const getOwnHouseTarget = () => {
-    if (typeof window !== "undefined" && window.innerWidth < 1066) {
-      return `/${locale}/property-listing`;
-    }
-    return `/${locale}/choose-propertie`;
   };
 
   return (
@@ -263,12 +251,11 @@ const Header = () => {
                 {t("buttons.ownAHouse")}
               </button>
             </Link>
-            <button
-              onClick={() => setIsEnquirePopupOpen(true)}
-              className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer"
-            >
-              {t("buttons.enquire")}
-            </button>
+            <Link href={`/${locale}/enquire`}>
+              <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
+                {t("buttons.enquire")}
+              </button>
+            </Link>
           </div>
 
           <button
@@ -387,18 +374,17 @@ const Header = () => {
                     {t("buttons.ownAHouse")}
                   </button>
                 </Link>
-                <button
-                  onClick={() => {
-                    setIsEnquirePopupOpen(true);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer"
+                <Link
+                  href={`/${locale}/enquire`}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {t("buttons.enquire")}
-                </button>
+                  <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
+                    {t("buttons.enquire")}
+                  </button>
+                </Link>
               </div>
 
-              {/* Mobile Menu Links - Interactive Map დამალულია */}
+              {/* Mobile Menu Bottom Links */}
               <div className="min-[1066px]:hidden flex flex-col gap-2 mt-4 pt-4 border-t border-[#B5A88E]">
                 <Link
                   href={`/${locale}/about`}
@@ -414,7 +400,6 @@ const Header = () => {
                 >
                   {t("nav.gallery")}
                 </Link>
-                {/* Interactive Map დამალულია მობაილზე */}
                 <Link
                   href={`/${locale}/contact`}
                   className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
@@ -443,19 +428,12 @@ const Header = () => {
             {t("buttons.ownAHouse")}
           </button>
         </Link>
-        <button
-          onClick={() => setIsEnquirePopupOpen(true)}
-          className="flex-1 w-full bg-[#C2B49B] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#2C3E50] transition-colors cursor-pointer"
-        >
-          {t("buttons.enquire")}
-        </button>
+        <Link href={`/${locale}/enquire`} className="flex-1">
+          <button className="w-full bg-[#C2B49B] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#2C3E50] transition-colors cursor-pointer">
+            {t("buttons.enquire")}
+          </button>
+        </Link>
       </div>
-
-      {/* EnquirePopup */}
-      <EnquirePopup
-        isOpen={isEnquirePopupOpen}
-        onClose={() => setIsEnquirePopupOpen(false)}
-      />
     </>
   );
 };
