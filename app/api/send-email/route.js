@@ -1,6 +1,8 @@
 // app/api/send-email/route.js
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { NextResponse } from "next/server";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request) {
   try {
@@ -8,18 +10,6 @@ export async function POST(request) {
     const { name, email, phone, message, communicationMethods, formType } =
       body;
 
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === "true",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-
-    // Email content based on form type
     let htmlContent = "";
     let subject = "";
 
@@ -44,7 +34,6 @@ export async function POST(request) {
         </div>
       `;
     } else {
-      // Contact form
       subject = `New Contact from ${name}`;
       htmlContent = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f7ead7;">
@@ -64,13 +53,12 @@ export async function POST(request) {
       `;
     }
 
-    // Send email
-    await transporter.sendMail({
-      from: `"The Lake Website" <${process.env.SMTP_USER}>`,
+    await resend.emails.send({
+      from: "The Lake Website <info@thelake.ge>",
       to: process.env.CONTACT_EMAIL,
-      subject: subject,
-      html: htmlContent,
       replyTo: email,
+      subject,
+      html: htmlContent,
     });
 
     return NextResponse.json(
