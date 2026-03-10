@@ -101,6 +101,7 @@ export async function generateMetadata({ params }) {
       ? "მშვიდი, ექსკლუზიური საცხოვრებელი კომპლექსი ვრცელი ვილებით (500–800 კვ.მ) და კერძო სახლებით (200–400 კვ.მ) ლისის ტბის პირას. 90 სახლი 14 ჰექტარზე კერძო პარკით, პანორამული ხედებით და საერთაშორისო არქიტექტურით. მხოლოდ 7 კმ თბილისის ცენტრიდან."
       : "A quiet, exclusive community of spacious villas (500–800 sq.m) and private houses (200–400 sq.m) by Lisi Lake. 90 homes on 14 hectares with private park, panoramic lake views, and international architecture. Just 7 km from Tbilisi city centre.",
     verification: {
+      google: "uNGX89obPbBnvZ_BKr7vXkP019bQ9LKJ129sCSg00c0",
       other: {
         "facebook-domain-verification": "1kcivi3ctuhxyj6xl864o6yfs8ffmo",
       },
