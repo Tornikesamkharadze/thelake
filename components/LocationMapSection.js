@@ -1,39 +1,18 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslations } from "next-intl";
 
-const DEFAULT_MAP_EMBED =
-  "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d11906.092585991995!2d44.731145373586095!3d41.752377321808375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDQ1JzA4LjQiTiA0NMKwNDMnNTMuOSJF!5e0!3m2!1sen!2sge!4v1765798200035!5m2!1sen!2sge";
-
-export default function LocationMapSection({
-  mapEmbedUrl,
-  distanceTitle,
-  distances: distancesProp,
-} = {}) {
+export default function LocationMapSection() {
   const t = useTranslations();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  const mapSrc =
-    mapEmbedUrl?.trim().startsWith("http") ? mapEmbedUrl.trim() : DEFAULT_MAP_EMBED;
-  const title = distanceTitle ?? t("findUs.distanceTitle");
-  const distances =
-    Array.isArray(distancesProp) && distancesProp.length > 0
-      ? distancesProp
-      : t.raw("findUs.distances");
+  const distances = t.raw("findUs.distances");
 
   const itemVariants = {
-    hidden: { opacity: 0, x: isMobile ? 0 : -30 },
+    hidden: { opacity: 0, x: -30 },
     visible: (i) => ({
       opacity: 1,
       x: 0,
@@ -55,7 +34,7 @@ export default function LocationMapSection({
       >
         <div className="relative w-full h-[calc(85vh-148px)] min-h-[500px]">
           <iframe
-            src={mapSrc}
+            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d11906.092585991995!2d44.731145373586095!3d41.752377321808375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDHCsDQ1JzA4LjQiTiA0NMKwNDMnNTMuOSJF!5e0!3m2!1sen!2sge!4v1765798200035!5m2!1sen!2sge"
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -63,6 +42,14 @@ export default function LocationMapSection({
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title={t("findUs.mapTitle")}
+          />
+
+          {/* Overlay — ყველა მოწყობილობაზე Google Maps-ს ხსნის */}
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=41.752377,44.731145"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 z-10"
           />
         </div>
       </motion.div>
@@ -77,7 +64,7 @@ export default function LocationMapSection({
             transition={{ duration: 0.8 }}
             className="text-[28px] md:text-[36px] lg:text-[48px] font-bold text-black text-center mb-10 md:mb-16 lg:mb-12 tracking-wide tbc-bold"
           >
-            {title}
+            {t("findUs.distanceTitle")}
           </motion.h2>
 
           {/* Distance List */}

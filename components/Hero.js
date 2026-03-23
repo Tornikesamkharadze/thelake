@@ -58,12 +58,7 @@ export default function Hero({
     >
       {/* ვიდეო ან ფოტო */}
       {video ? (
-        <motion.div
-          initial={{ scale: 1.05 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full h-full"
-        >
+        <div className="w-full h-full">
           <video
             src={video}
             poster={poster || undefined}
@@ -74,7 +69,7 @@ export default function Hero({
             preload="auto"
             className="w-full h-full object-cover"
           />
-        </motion.div>
+        </div>
       ) : (
         <Image
           src={image}

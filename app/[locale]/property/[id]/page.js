@@ -30,3 +30,23 @@ export default async function PropertyPage({ params }) {
     </>
   );
 }
+
+export async function generateStaticParams() {
+  try {
+    const locales = ["en", "ka"];
+    const { data } = await getProperties({ pagination: { pageSize: 100 } });
+    const list = Array.isArray(data) ? data : [];
+    const params = [];
+    for (const locale of locales) {
+      for (const raw of list) {
+        const mapped = mapStrapiPropertyToFrontend(raw, STRAPI_URL);
+        if (mapped?.houseNo) {
+          params.push({ locale, id: (mapped.houseNo || "").toUpperCase() });
+        }
+      }
+    }
+    return params;
+  } catch (e) {
+    return [];
+  }
+}
