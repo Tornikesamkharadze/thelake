@@ -11,16 +11,8 @@ export const PAGE_SLUGS = [
   "the-lake-lifestyle",
 ];
 
-export async function generateStaticParams() {
-  const locales = ["en", "ka"];
-  const params = [];
-  for (const locale of locales) {
-    for (const pageSlug of PAGE_SLUGS) {
-      params.push({ locale, pageSlug });
-    }
-  }
-  return params;
-}
+/** SSR only — no SSG; avoids pre-rendering CMS pages at build time. */
+export const dynamic = "force-dynamic";
 
 export default async function StrapiPage({ params }) {
   const { locale, pageSlug } = await params;

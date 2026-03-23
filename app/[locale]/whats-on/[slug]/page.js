@@ -2,9 +2,11 @@ import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import NewsDetail from "@/components/whats-on/NewsDetail";
 import { getAlternateUrls } from "@/lib/metadata";
-import { getNewsById, getAllNews, STRAPI_URL } from "@/lib/strapi";
+import { getNewsById, STRAPI_URL } from "@/lib/strapi";
 import { mapStrapiNewsToFrontend } from "@/lib/adapters/news";
 import { notFound } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
@@ -96,22 +98,4 @@ export default async function NewsPage({ params }) {
       <Footer />
     </>
   );
-}
-
-export async function generateStaticParams() {
-  const locales = ["en", "ka"];
-  const params = [];
-  try {
-    const { data } = await getAllNews({ locale: "en" });
-    const list = Array.isArray(data) ? data : [];
-    for (const locale of locales) {
-      for (const raw of list) {
-        const mapped = mapStrapiNewsToFrontend(raw, STRAPI_URL);
-        if (mapped?.slug) params.push({ locale, slug: mapped.slug });
-      }
-    }
-  } catch {
-    // no static params if API unavailable
-  }
-  return params;
 }

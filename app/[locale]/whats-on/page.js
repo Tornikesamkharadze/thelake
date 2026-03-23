@@ -61,6 +61,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function WhatsOnPage({ params }) {
   const { locale } = await params;
   const { data } = await getAllNews({ locale: locale === "ka" ? "ka" : "en" });

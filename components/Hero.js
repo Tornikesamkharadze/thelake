@@ -6,6 +6,8 @@ import Image from "next/image";
 export default function Hero({
   image,
   video,
+  /** Optional poster while video loads (e.g. hero still from CMS) */
+  poster,
   title,
   subtitle,
   height = "60vh",
@@ -64,6 +66,7 @@ export default function Hero({
         >
           <video
             src={video}
+            poster={poster || undefined}
             autoPlay
             loop
             muted

@@ -1,9 +1,12 @@
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import PropertyDetail from "@/components/PropertyDetail";
-import { getPropertyByName, getProperties, STRAPI_URL } from "@/lib/strapi";
+import { getPropertyByName, STRAPI_URL } from "@/lib/strapi";
 import { mapStrapiPropertyToFrontend } from "@/lib/adapters/property";
 import { notFound } from "next/navigation";
+
+/** SSR only — no SSG; avoids Strapi fetch during `next build`. */
+export const dynamic = "force-dynamic";
 
 export default async function PropertyPage({ params }) {
   const { id } = await params;
@@ -26,20 +29,4 @@ export default async function PropertyPage({ params }) {
       <Footer />
     </>
   );
-}
-
-export async function generateStaticParams() {
-  const locales = ["en", "ka"];
-  const { data } = await getProperties({ pagination: { pageSize: 100 } });
-  const list = Array.isArray(data) ? data : [];
-  const params = [];
-  for (const locale of locales) {
-    for (const raw of list) {
-      const mapped = mapStrapiPropertyToFrontend(raw, STRAPI_URL);
-      if (mapped?.houseNo) {
-        params.push({ locale, id: (mapped.houseNo || "").toUpperCase() });
-      }
-    }
-  }
-  return params;
 }

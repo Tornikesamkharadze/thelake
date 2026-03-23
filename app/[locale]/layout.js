@@ -82,9 +82,8 @@ const tbcContracticaCaps = localFont({
 
 const locales = ["en", "ka"];
 
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
+/** Whole `[locale]` tree is server-rendered on demand (no locale SSG at build). */
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;

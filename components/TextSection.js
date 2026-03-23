@@ -12,12 +12,29 @@ export default function TextSection({
   uppercase = false,
   bgColor = "bg-[#E8DCC8]",
   textColor = "text-black",
+  /** { backgroundColor?, backgroundImage? } — when set, overrides bgColor for section background */
+  sectionBackground,
+  titleColor,
+  descriptionColor,
 }) {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
+  const sectionStyle = {};
+  if (sectionBackground?.backgroundColor) {
+    sectionStyle.backgroundColor = sectionBackground.backgroundColor;
+  }
+  if (sectionBackground?.backgroundImage) {
+    sectionStyle.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${sectionBackground.backgroundImage})`;
+    sectionStyle.backgroundSize = "cover";
+    sectionStyle.backgroundPosition = "center";
+  }
+  const hasCustomSectionBg = Object.keys(sectionStyle).length > 0;
+
   const renderTitle = () => {
     if (!title) return null;
+
+    const titleStyle = titleColor ? { color: titleColor } : undefined;
 
     if (highlightWords.length > 0) {
       let formattedTitle = title;
@@ -36,6 +53,7 @@ export default function TextSection({
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
           className={`text-4xl font-light mb-6 ${uppercase ? "uppercase" : ""}`}
+          style={titleStyle}
           dangerouslySetInnerHTML={{ __html: formattedTitle }}
         />
       );
@@ -47,6 +65,7 @@ export default function TextSection({
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
         className={`text-4xl font-light mb-6 ${uppercase ? "uppercase" : ""}`}
+        style={titleStyle}
       >
         {title}
       </motion.h2>
@@ -85,8 +104,14 @@ export default function TextSection({
     );
   };
 
+  const descStyle = descriptionColor ? { color: descriptionColor } : undefined;
+
   return (
-    <section ref={sectionRef} className={`${bgColor} ${textColor} py-16 px-6`}>
+    <section
+      ref={sectionRef}
+      className={`py-16 px-6 ${hasCustomSectionBg ? "" : bgColor} ${hasCustomSectionBg ? "" : textColor}`}
+      style={hasCustomSectionBg ? sectionStyle : undefined}
+    >
       <div className="max-w-4xl mx-auto text-center">
         {buttonPosition === "top" && renderButtons()}
 
@@ -100,6 +125,7 @@ export default function TextSection({
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base leading-relaxed mb-8 max-w-2xl mx-auto"
+            style={descStyle}
           >
             {description}
           </motion.p>

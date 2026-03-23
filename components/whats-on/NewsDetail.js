@@ -170,7 +170,7 @@ const TextBlock = ({ content, contentColor, contentSize, allowHtml }) => {
     >
       {allowHtml && content && /<[a-z][\s\S]*>/i.test(content) ? (
         <div
-          className="leading-relaxed prose prose-p:mb-4 prose-headings:uppercase prose-headings:tracking-wide max-w-none"
+          className="news-wysiwyg leading-relaxed prose prose-p:mb-4 prose-headings:uppercase prose-headings:tracking-wide max-w-none"
           style={style}
           dangerouslySetInnerHTML={{ __html: content }}
         />

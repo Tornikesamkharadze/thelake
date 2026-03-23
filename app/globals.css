@@ -320,3 +320,26 @@ body {
 .gallery-swiper .swiper-button-prev:hover {
   opacity: 0.8 !important;
 }
+
+/* News WYSIWYG (CKEditor): Block image = full-width crop; Side/Inline = natural height */
+.news-wysiwyg figure.image {
+  margin: 2rem 0;
+}
+.news-wysiwyg figure.image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.news-wysiwyg figure.image.image-style-block img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top;
+}
+.news-wysiwyg figure.image.image-style-inline img,
+.news-wysiwyg figure.image.image-style-side img {
+  width: auto;
+  max-width: min(100%, 768px);
+  aspect-ratio: unset;
+  object-fit: unset;
+}

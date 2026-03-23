@@ -59,15 +59,15 @@ export async function generateMetadata({ params }) {
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function GalleryPage({ params }) {
   const { locale } = await params;
   let galleryImages = null;
   try {
     const { data } = await getGalleries({ populate: "*", pagination: { pageSize: 100 } });
-    console.log("data", data);
     const list = Array.isArray(data) ? data : [];
     galleryImages = mapStrapiGalleriesToFrontend(list, STRAPI_URL);
-    console.log("galleryImages", galleryImages);
   } catch {
     galleryImages = null;
   }
