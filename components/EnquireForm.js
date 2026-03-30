@@ -80,6 +80,8 @@ export default function EnquireForm() {
             ? "მოთხოვნა წარმატებით გაიგზავნა!"
             : "Enquiry sent successfully!",
         );
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "enquiry_submitted" });
         setFormData({
           fullName: "",
           email: "",
