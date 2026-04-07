@@ -17,43 +17,51 @@ export default function Home() {
   const t = useTranslations();
   const params = useParams();
   const locale = params.locale || "ka";
+
   return (
     <>
       <Header />
       <main>
-        <Hero
-          video="/opt_withoutLogo.mp4"
-          height="100vh"
-          title={t("hero.title")}
-          highlightWords={t.raw("hero.highlightWords")}
-          uppercase={true}
-        />
+        <div className="flex flex-col">
+          <div className="order-2 md:order-1">
+            <Hero
+              video="/opt_withoutLogo.mp4"
+              poster="/videocover.webp"
+              height="100vh"
+              title={t("hero.title")}
+              highlightWords={t.raw("hero.highlightWords")}
+              uppercase={true}
+            />
+          </div>
 
-        <TextSection
-          title={t("welcome.title")}
-          description={t("welcome.description")}
-          highlightWords={["THE LAKE"]}
-          uppercase={true}
-          bgColor="bg-[#F7EAD7]"
-          buttonPosition="bottom"
-          textColor="text-black"
-          buttons={[
-            {
-              text: t("welcome.downloadBrochure"),
-              link: "/brochure.pdf",
-              download: "The-Lake-Brochure.pdf",
-              bgColor: "bg-transparent",
-              textColor: "text-black",
-              border: "border border-black",
-            },
-            {
-              text: t("welcome.enquire"),
-              link: `/${locale}/contact`,
-              bgColor: "bg-[#E85A4F]",
-              textColor: "text-black",
-            },
-          ]}
-        />
+          <div className="order-1 md:order-2">
+            <TextSection
+              title={t("welcome.title")}
+              description={t("welcome.description")}
+              highlightWords={["THE LAKE"]}
+              uppercase={true}
+              bgColor="bg-[#F7EAD7]"
+              buttonPosition="bottom"
+              textColor="text-black"
+              buttons={[
+                {
+                  text: t("welcome.downloadBrochure"),
+                  link: "/brochure.pdf",
+                  download: "The-Lake-Brochure.pdf",
+                  bgColor: "bg-transparent",
+                  textColor: "text-black",
+                  border: "border border-black",
+                },
+                {
+                  text: t("welcome.enquire"),
+                  link: `/${locale}/contact`,
+                  bgColor: "bg-[#E85A4F]",
+                  textColor: "text-black",
+                },
+              ]}
+            />
+          </div>
+        </div>
 
         <ImageTextSection
           image="/lake-1.png"
