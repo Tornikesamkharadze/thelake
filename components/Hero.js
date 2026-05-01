@@ -56,7 +56,6 @@ export default function Hero({
       className="relative w-full overflow-hidden"
       style={{ height: `calc(${height} - 148px)` }}
     >
-      {/* ვიდეო ან ფოტო */}
       {video ? (
         <div className="w-full h-full">
           <video
@@ -66,7 +65,7 @@ export default function Hero({
             loop
             muted
             playsInline
-            preload="auto"
+            preload="none"
             className="w-full h-full object-cover"
           />
         </div>
@@ -82,7 +81,6 @@ export default function Hero({
         />
       )}
 
-      {/* Overlay */}
       {(title || subtitle) && (
         <motion.div
           initial={{ opacity: 0 }}

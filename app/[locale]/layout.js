@@ -100,6 +100,7 @@ export async function generateMetadata({ params }) {
       ? "მშვიდი, ექსკლუზიური საცხოვრებელი კომპლექსი ვრცელი ვილებით (500–800 კვ.მ) და კერძო სახლებით (200–400 კვ.მ) ლისის ტბის პირას. 90 სახლი 14 ჰექტარზე კერძო პარკით, პანორამული ხედებით და საერთაშორისო არქიტექტურით. მხოლოდ 7 კმ თბილისის ცენტრიდან."
       : "A quiet, exclusive community of spacious villas (500–800 sq.m) and private houses (200–400 sq.m) by Lisi Lake. 90 homes on 14 hectares with private park, panoramic lake views, and international architecture. Just 7 km from Tbilisi city centre.",
     verification: {
+      google: "uNGX89obPbBnvZ_BKr7vXkP019bQ9LKJ129sCSg00c0",
       other: {
         "facebook-domain-verification": "1kcivi3ctuhxyj6xl864o6yfs8ffmo",
       },
@@ -168,18 +169,13 @@ export default async function LocaleLayout({ children, params }) {
         />
       </head>
 
-      {/* Google Analytics */}
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-QYR584Q2K1"
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-QYR584Q2K1');
-        `}
+      {/* Google Tag Manager */}
+      <Script id="gtm" strategy="afterInteractive">
+        {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KM8VGBC6');`}
       </Script>
 
       {/* Meta Pixel */}
@@ -199,6 +195,16 @@ export default async function LocaleLayout({ children, params }) {
       </Script>
 
       <body>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KM8VGBC6"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
         {/* Meta Pixel noscript fallback */}
         <noscript>
           <img

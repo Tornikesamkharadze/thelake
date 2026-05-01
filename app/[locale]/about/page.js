@@ -8,42 +8,52 @@ import ImageTextSection from "@/components/ImageTextSection";
 import PartnersSlider from "@/components/Partnersslider";
 import TeamSwiper from "@/components/TeamSwiper";
 import Timeline from "@/components/TimeLine";
-import { useTranslations } from "next-intl";
-import { getPartners, STRAPI_URL } from "@/lib/strapi";
+import { useTranslations, useLocale } from "next-intl";
+import { getPartners, getTeamMembers, STRAPI_URL } from "@/lib/strapi";
+
+function mediaUrl(media, base) {
+  if (!media) return null;
+  const url = media.url ?? media.data?.attributes?.url;
+  return url ? (url.startsWith("http") ? url : `${base}${url}`) : null;
+}
 
 function mapStrapiPartnersToSlider(partners, strapiUrl) {
   const base = (strapiUrl || "").replace(/\/$/, "");
-  const mediaUrl = (media) => {
-    if (!media) return null;
-    const url = media.url ?? media.data?.attributes?.url;
-    return url ? (url.startsWith("http") ? url : `${base}${url}`) : null;
-  };
-  const list = Array.isArray(partners) ? partners : [];
-  return list
+  return (Array.isArray(partners) ? partners : [])
     .map((p) => {
-      const src = mediaUrl(p.image);
+      const src = mediaUrl(p.image, base);
       if (!src) return null;
-      return {
-        src,
-        alt: p.name ?? "Partner",
-        url: p.url || null,
-      };
+      return { src, alt: p.name ?? "Partner", url: p.url || null };
     })
     .filter(Boolean);
 }
 
+function mapStrapiTeamMembers(members, strapiUrl) {
+  const base = (strapiUrl || "").replace(/\/$/, "");
+  return (Array.isArray(members) ? members : []).map((m) => ({
+    image: mediaUrl(m.image, base),
+    name: m.name || "",
+    position: m.position || "",
+    description: m.description || "",
+  }));
+}
+
 const About = () => {
   const t = useTranslations();
+  const locale = useLocale();
   const [partners, setPartners] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
 
   const timelineData = t.raw("about.timeline");
-  const teamMembers = t.raw("about.team");
 
   useEffect(() => {
     getPartners()
       .then(({ data }) => setPartners(mapStrapiPartnersToSlider(data, STRAPI_URL)))
       .catch(() => {});
-  }, []);
+    getTeamMembers({ locale, sort: 'order:asc' })
+      .then(({ data }) => setTeamMembers(mapStrapiTeamMembers(data, STRAPI_URL)))
+      .catch(() => {});
+  }, [locale]);
 
   return (
     <>

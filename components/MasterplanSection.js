@@ -19,7 +19,7 @@ export default function MasterplanSection() {
         whileHover={{ scale: 1.02 }}
         src="/akr.webp"
         alt="Masterplan"
-        className="w-full h-screen object-fill"
+        className="w-full aspect-video md:aspect-auto md:h-screen object-fill"
       />
     </section>
   );
