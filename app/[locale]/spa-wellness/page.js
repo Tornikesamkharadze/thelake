@@ -44,7 +44,7 @@ const SpaWellness = () => {
         />
 
         <ImageTextSection
-          image="/pool.webp"
+          image="/poolnew.webp"
           title={t("spaWellness.pool.title")}
           subtitle=""
           description={t("spaWellness.pool.description")}
