@@ -34,12 +34,13 @@ function parseDate(dateStr) {
 function blocksToContent(blocks) {
   if (!Array.isArray(blocks) || blocks.length === 0) return '';
   const parts = blocks.map((b) => {
-    if (b.type === 'text' && b.content) return b.content;
-    if (b.type === 'youtube' && b.url) return `\n[Video: ${b.url}]\n`;
-    if (b.type === 'image' && b.src) return `\n[Image: ${b.src}]\n`;
+    if (b.type === 'text' && b.content) return `<p>${b.content}</p>`;
+    if (b.type === 'heading' && b.content) return `<${b.level || 'h2'}>${b.content}</${b.level || 'h2'}>`;
+    if (b.type === 'youtube' && b.url) return `<figure class="media"><oembed url="${b.url}"></oembed></figure>`;
+    if (b.type === 'image' && b.src) return `<figure class="image"><img src="${b.src}"/></figure>`;
     return '';
   });
-  return parts.filter(Boolean).join('\n\n');
+  return parts.filter(Boolean).join('\n');
 }
 
 function imagePathToFilename(image) {
