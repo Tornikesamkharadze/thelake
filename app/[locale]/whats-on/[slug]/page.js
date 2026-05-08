@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import NewsDetail from "@/components/whats-on/NewsDetail";
 import { getAlternateUrls } from "@/lib/metadata";
 import { getNewsById, STRAPI_URL } from "@/lib/strapi";
@@ -82,20 +80,16 @@ export default async function NewsPage({ params }) {
   }
 
   return (
-    <>
-      <Header />
-      <main>
-        <NewsDetail
-          title={news.title}
-          date={news.date}
-          heroImage={news.image}
-          blocks={news.blocks}
-          excerpt={news.excerpt}
-          additionalImage={news.additionalImage}
-          contentBottom={news.contentBottom}
-        />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <NewsDetail
+        title={news.title}
+        date={news.date}
+        heroImage={news.image}
+        blocks={news.blocks}
+        excerpt={news.excerpt}
+        additionalImage={news.additionalImage}
+        contentBottom={news.contentBottom}
+      />
+    </main>
   );
 }

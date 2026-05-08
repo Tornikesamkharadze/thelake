@@ -53,7 +53,7 @@ export default function TextSection({
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
           className={`text-4xl font-light mb-6 ${uppercase ? "uppercase" : ""}`}
-          style={titleStyle}
+          style={{ ...titleStyle, whiteSpace: "pre-line" }}
           dangerouslySetInnerHTML={{ __html: formattedTitle }}
         />
       );
@@ -65,7 +65,7 @@ export default function TextSection({
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
         className={`text-4xl font-light mb-6 ${uppercase ? "uppercase" : ""}`}
-        style={titleStyle}
+        style={{ ...titleStyle, whiteSpace: "pre-line" }}
       >
         {title}
       </motion.h2>

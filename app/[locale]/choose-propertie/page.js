@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import ChoosePropertie from "@/components/choose-propertie/ChoosePropertie";
 import { getProperties, STRAPI_URL } from "@/lib/strapi";
 import { mapStrapiPropertyToFrontend } from "@/lib/adapters/property";
@@ -13,12 +11,8 @@ export default async function ChoosePropertiePage() {
   const properties = list.map((raw) => mapStrapiPropertyToFrontend(raw, STRAPI_URL)).filter(Boolean);
 
   return (
-    <>
-      <Header />
-      <main>
-        <ChoosePropertie properties={properties} />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <ChoosePropertie properties={properties} />
+    </main>
   );
 }

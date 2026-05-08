@@ -6,6 +6,8 @@ import { getAlternateUrls } from "@/lib/metadata";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
+import HeaderServer from "@/components/HeaderServer";
+import FooterServer from "@/components/FooterServer";
 import "../globals.css";
 
 const tbcContractica = localFont({
@@ -244,7 +246,9 @@ export default async function LocaleLayout({ children, params }) {
         />
 
         <NextIntlClientProvider messages={messages} locale={locale}>
+          <HeaderServer locale={locale} />
           {children}
+          <FooterServer locale={locale} />
         </NextIntlClientProvider>
       </body>
     </html>

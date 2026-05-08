@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import ContactPageContent from "@/components/contact/ContactPageContent";
 import { getContact, STRAPI_URL } from "@/lib/strapi";
 import { mapStrapiContactToFrontend } from "@/lib/adapters/contact";
@@ -17,12 +15,8 @@ export default async function ContactPage({ params }) {
   }
 
   return (
-    <>
-      <Header />
-      <main>
-        <ContactPageContent contact={contact} />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <ContactPageContent contact={contact} />
+    </main>
   );
 }

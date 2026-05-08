@@ -8,13 +8,41 @@ import { usePathname, useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 
-export function Footer() {
+export function Footer({ footerData = null, contactData = null }) {
   const pathname = usePathname();
   const params = useParams();
   const t = useTranslations("footer");
   const locale = params.locale || "ka";
 
   const isHomePage = pathname === `/${locale}` || pathname === `/${locale}/`;
+
+  const phone = contactData?.phone || "+995 511 55 33 33";
+  const email = contactData?.email || "info@placemakers.ge";
+  const address = t("address");
+  const facebookUrl =
+    contactData?.facebook || "https://www.facebook.com/thelake.ge/";
+  const instagramUrl =
+    contactData?.instagram || "https://www.instagram.com/thelake_tba/";
+  const youtubeUrl =
+    contactData?.youtube || "https://www.youtube.com/@TheLakeByPlacemakers";
+
+  const navItems = footerData?.footerMenuItems?.length
+    ? footerData.footerMenuItems.map((item) => ({
+        name: item.name,
+        url: `/${locale}${item.url}`,
+        hiddenOnMobile: false,
+      }))
+    : [
+        { name: t("nav.aboutUs"), url: `/${locale}/about` },
+        { name: t("nav.gallery"), url: `/${locale}/gallery` },
+        {
+          name: t("nav.interactiveMap"),
+          url: `/${locale}/choose-propertie`,
+          hiddenOnMobile: true,
+        },
+        { name: t("nav.contactUs"), url: `/${locale}/contact` },
+        { name: t("nav.findUs"), url: `/${locale}/find-us` },
+      ];
 
   return (
     <footer
@@ -52,37 +80,15 @@ export function Footer() {
             {t("explore")}
           </h3>
           <nav className="flex flex-col">
-            <Link
-              href={`/${locale}/about`}
-              className="text-base hover:text-[#ED5C3F] transition-opacity"
-            >
-              {t("nav.aboutUs")}
-            </Link>
-            <Link
-              href={`/${locale}/gallery`}
-              className="text-base hover:text-[#ED5C3F] transition-opacity"
-            >
-              {t("nav.gallery")}
-            </Link>
-            {/* Interactive Map დამალულია მობაილზე */}
-            <Link
-              href={`/${locale}/choose-propertie`}
-              className="hidden min-[1066px]:block text-base hover:text-[#ED5C3F] transition-opacity"
-            >
-              {t("nav.interactiveMap")}
-            </Link>
-            <Link
-              href={`/${locale}/contact`}
-              className="text-base hover:text-[#ED5C3F] transition-opacity"
-            >
-              {t("nav.contactUs")}
-            </Link>
-            <Link
-              href={`/${locale}/find-us`}
-              className="text-base hover:text-[#ED5C3F] transition-opacity"
-            >
-              {t("nav.findUs")}
-            </Link>
+            {navItems.map((item, i) => (
+              <Link
+                key={i}
+                href={item.url}
+                className={`text-base hover:text-[#ED5C3F] transition-opacity${item.hiddenOnMobile ? " hidden min-[1066px]:block" : ""}`}
+              >
+                {item.name}
+              </Link>
+            ))}
             <LanguageSwitcher className="text-base mt-2" />
           </nav>
         </div>
@@ -93,25 +99,25 @@ export function Footer() {
             {t("contact")}
           </h3>
           <div className="flex flex-col mb-6">
-            <p className="text-base">{t("address")}</p>
+            <p className="text-base">{address}</p>
             <a
-              href="tel:+995511553333"
+              href={`tel:${phone.replace(/\s/g, "")}`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
-              +995 511 55 33 33
+              {phone}
             </a>
             <a
-              href="mailto:info@placemakers.ge"
+              href={`mailto:${email}`}
               className="text-base hover:text-[#ED5C3F] transition-opacity"
             >
-              info@placemakers.ge
+              {email}
             </a>
           </div>
 
           {/* Social Media Icons */}
           <div className="flex gap-3">
             <a
-              href="https://www.facebook.com/thelake.ge/"
+              href={facebookUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={`w-10 h-10 rounded-full ${
@@ -127,7 +133,7 @@ export function Footer() {
               />
             </a>
             <a
-              href="https://www.instagram.com/thelake_tba/"
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={`w-10 h-10 rounded-full ${
@@ -142,7 +148,7 @@ export function Footer() {
               />
             </a>
             <a
-              href="https://www.youtube.com/@TheLakeByPlacemakers"
+              href={youtubeUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={`w-10 h-10 rounded-full ${

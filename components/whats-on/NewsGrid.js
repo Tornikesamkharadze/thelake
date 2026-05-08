@@ -59,8 +59,6 @@ const NewsCard = ({
 
   const displayImage = image || getYouTubeThumbnail(blocks);
 
-  if (!displayImage) return null;
-
   return (
     <motion.div
       ref={cardRef}
@@ -75,14 +73,18 @@ const NewsCard = ({
             transition={{ duration: 0.3 }}
             className="relative w-full aspect-4/3 overflow-hidden ml-[10%]"
           >
-            <Image
-              src={displayImage}
-              alt={title}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              unoptimized={isLocalhostImage(image)}
-            />
+            {displayImage ? (
+              <Image
+                src={displayImage}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                unoptimized={isLocalhostImage(displayImage)}
+              />
+            ) : (
+              <div className="w-full h-full bg-[#C2B49B]" />
+            )}
           </motion.div>
 
           <motion.div

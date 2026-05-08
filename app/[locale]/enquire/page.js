@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import EnquireForm from "@/components/EnquireForm";
 import { getAlternateUrls } from "@/lib/metadata";
 
@@ -58,13 +56,9 @@ export async function generateMetadata({ params }) {
 
 const EnquirePage = () => {
   return (
-    <>
-      <Header />
-      <main>
-        <EnquireForm />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <EnquireForm />
+    </main>
   );
 };
 

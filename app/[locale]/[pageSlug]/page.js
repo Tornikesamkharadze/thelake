@@ -21,7 +21,7 @@ export default async function StrapiPage({ params }) {
   const path = `/${pageSlug}`;
   let res;
   try {
-    res = await getPageByPath(path, { locale, populate: "*" });
+    res = await getPageByPath(path, { locale });
   } catch {
     notFound();
   }

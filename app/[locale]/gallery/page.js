@@ -1,6 +1,4 @@
-import { Footer } from "@/components/Footer";
 import Gallery from "@/components/Gallery";
-import Header from "@/components/Header";
 import { getAlternateUrls } from "@/lib/metadata";
 import { getGalleries, STRAPI_URL } from "@/lib/strapi";
 import { mapStrapiGalleriesToFrontend } from "@/lib/adapters/gallery";
@@ -65,7 +63,7 @@ export default async function GalleryPage({ params }) {
   const { locale } = await params;
   let galleryImages = null;
   try {
-    const { data } = await getGalleries({ populate: "*", pagination: { pageSize: 100 } });
+    const { data } = await getGalleries({ pagination: { pageSize: 200 } });
     const list = Array.isArray(data) ? data : [];
     galleryImages = mapStrapiGalleriesToFrontend(list, STRAPI_URL);
   } catch {
@@ -73,12 +71,8 @@ export default async function GalleryPage({ params }) {
   }
 
   return (
-    <>
-      <Header />
-      <main>
-        <Gallery images={galleryImages} />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <Gallery images={galleryImages} />
+    </main>
   );
 }

@@ -24,20 +24,17 @@ const ChoosePropertie = ({ properties = [] }) => {
   };
 
   const handlePolygonHover = (property, event) => {
-    console.log("property", property);
     setSelectedProperty(property ?? null);
     setHoveredProperty(property ?? null);
     if (event?.target) {
-      event.target.style.fill = "#C7B299";
-      event.target.style.opacity = "0.75";
+      event.target.style.fill = "rgba(199,178,153,1)";
     }
   };
 
-  const handlePolygonLeave = (event) => {
+  const handlePolygonLeave = (event, baseFill = "transparent") => {
     setHoveredProperty(null);
     if (event?.target) {
-      event.target.style.fill = "";
-      event.target.style.opacity = "";
+      event.target.style.fill = baseFill;
     }
   };
 
@@ -72,7 +69,6 @@ const ChoosePropertie = ({ properties = [] }) => {
 
   // Attach click/hover to SVG shape elements (polygon + path) whose id matches a property (by houseNo, uppercase)
   useEffect(() => {
-    console.log("properties", properties);
     if (!mapContainerRef.current || !svgContent || !properties.length) return;
     const svg = mapContainerRef.current.querySelector("svg");
     if (!svg) return;
@@ -88,15 +84,22 @@ const ChoosePropertie = ({ properties = [] }) => {
     const shapes = [...polygons, ...paths];
 
     shapes.forEach((el) => {
-      console.log("el", el.id);
       const id = (el.id || "").toUpperCase();
       const prop = byId.get(id);
-      console.log("prop", prop);
+
+      if (!prop?.coords) {
+        el.style.fill = "transparent";
+        el.style.pointerEvents = "none";
+        el.style.cursor = "default";
+        return;
+      }
+
+      const baseFill = prop.isSold ? "rgba(239,68,68,1)" : "transparent";
+      el.style.fill = baseFill;
+
       const onEnter = (e) => handlersRef.current.handlePolygonHover(prop, e);
-      const onLeave = (e) => handlersRef.current.handlePolygonLeave(e);
-      const onClick = () => {
-        if (prop) handlersRef.current.handlePolygonClick(prop);
-      };
+      const onLeave = (e) => handlersRef.current.handlePolygonLeave(e, baseFill);
+      const onClick = () => handlersRef.current.handlePolygonClick(prop);
 
       el.style.cursor = "pointer";
       el.style.pointerEvents = "auto";
@@ -241,7 +244,7 @@ const ChoosePropertie = ({ properties = [] }) => {
         {/* Map Container - Right Side */}
         <div className="flex-1 bg-[#ed5c3f] relative h-full lg:h-full overflow-hidden">
           {/* Top Buttons */}
-          <div className="absolute top-4 right-4 z-10 flex gap-2">
+          <div className="absolute top-4 right-4 z-50 flex gap-2">
             <button className="px-6 py-2 text-sm font-medium transition-all cursor-pointer bg-[#312618] text-[#F7EAD7] shadow-md">
               {t("chooseProperty.visualSelection")}
             </button>

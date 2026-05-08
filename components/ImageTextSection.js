@@ -98,8 +98,8 @@ const ImageTextSection = ({
             centerSingle
               ? "justify-center"
               : isImageRight
-                ? "xl:justify-start justify-center"
-                : "xl:justify-end justify-center"
+                ? "xl:justify-end justify-center"
+                : "xl:justify-start justify-center"
           }`}
         >
           <div className="relative w-full" style={{ maxWidth: "750px" }}>
@@ -108,7 +108,7 @@ const ImageTextSection = ({
               <motion.div
                 initial={{
                   opacity: 0,
-                  x: isMobile ? 0 : isImageRight ? 50 : -50,
+                  x: isMobile ? 0 : isImageRight ? -50 : 50,
                 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8 }}
@@ -137,7 +137,7 @@ const ImageTextSection = ({
                 ref={textBoxRef}
                 initial={{
                   opacity: 0,
-                  x: isMobile ? 0 : isImageRight ? -50 : 50,
+                  x: isMobile ? 0 : isImageRight ? 50 : -50,
                 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.2 }}
@@ -148,8 +148,8 @@ const ImageTextSection = ({
                   xl:mt-0 xl:mx-0
                   ${
                     isImageRight
-                      ? "xl:right-0 xl:translate-x-[80%]"
-                      : "xl:left-0 xl:-translate-x-[80%]"
+                      ? "xl:left-0 xl:-translate-x-[80%]"
+                      : "xl:right-0 xl:translate-x-[80%]"
                   }
                   xl:top-1/2 xl:-translate-y-1/2
                   w-auto 

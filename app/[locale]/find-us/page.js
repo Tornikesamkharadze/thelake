@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import LocationMapSection from "@/components/LocationMapSection";
 import { getAlternateUrls } from "@/lib/metadata";
 import { getContact, STRAPI_URL } from "@/lib/strapi";
@@ -83,16 +81,12 @@ export default async function FindUsPage({ params }) {
     contact?.distanceItems?.length > 0 ? contact.distanceItems : null;
 
   return (
-    <>
-      <Header />
-      <main>
-        <LocationMapSection
-          mapEmbedUrl={mapEmbedUrl}
-          distanceTitle={distanceTitle}
-          distances={distances}
-        />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <LocationMapSection
+        mapEmbedUrl={mapEmbedUrl}
+        distanceTitle={distanceTitle}
+        distances={distances}
+      />
+    </main>
   );
 }

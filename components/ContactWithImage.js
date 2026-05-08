@@ -194,6 +194,7 @@ const ContactWithImage = ({
                                 color: infoColor,
                                 fontSize: getResponsiveSize(getInfoSize),
                                 fontWeight: infoWeight,
+                                whiteSpace: "pre-line",
                               }}
                             >
                               {item.content}
@@ -209,6 +210,7 @@ const ContactWithImage = ({
                                 color: infoColor,
                                 fontSize: getResponsiveSize(getInfoSize),
                                 fontWeight: infoWeight,
+                                whiteSpace: "pre-line",
                               }}
                             >
                               {item.content}

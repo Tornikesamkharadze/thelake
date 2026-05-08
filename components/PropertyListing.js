@@ -82,18 +82,30 @@ const PropertyListing = ({ properties = [] }) => {
 
   // Filter properties
   const filteredProperties = useMemo(() => {
-    return properties.filter((property) => {
-      if (property.isSold === true) return false;
+    const parseHouseNo = (houseNo) => {
+      const s = (houseNo || "").toUpperCase();
+      const letters = s.match(/^[A-Z]+/)?.[0] ?? "";
+      const num = parseInt(s.match(/\d+$/)?.[0] ?? "0", 10);
+      return { letters, num };
+    };
 
-      const propertyType = property.type?.trim() || "";
-      const propertyLandSize = property.landSize?.trim() || "";
-
-      const typeMatch = selectedType === "All" || propertyType === selectedType;
-      const landSizeMatch =
-        selectedLandSize === "All" || propertyLandSize === selectedLandSize;
-
-      return typeMatch && landSizeMatch;
-    });
+    return properties
+      .filter((property) => {
+        if (property.isSold === true) return false;
+        const propertyType = property.type?.trim() || "";
+        const propertyLandSize = property.landSize?.trim() || "";
+        const typeMatch = selectedType === "All" || propertyType === selectedType;
+        const landSizeMatch =
+          selectedLandSize === "All" || propertyLandSize === selectedLandSize;
+        return typeMatch && landSizeMatch;
+      })
+      .sort((a, b) => {
+        const pa = parseHouseNo(a.houseNo);
+        const pb = parseHouseNo(b.houseNo);
+        if (pa.letters < pb.letters) return -1;
+        if (pa.letters > pb.letters) return 1;
+        return pa.num - pb.num;
+      });
   }, [properties, selectedType, selectedLandSize]);
 
   const handlePropertyClick = (property) => {

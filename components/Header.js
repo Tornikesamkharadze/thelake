@@ -4,11 +4,10 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname, useParams } from "next/navigation";
-import { scroller } from "react-scroll";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 
-const Header = () => {
+const Header = ({ headerData = null }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
@@ -17,6 +16,30 @@ const Header = () => {
   const t = useTranslations("header");
 
   const locale = params.locale || "ka";
+
+  const navName = (url, fallback) => {
+    if (!headerData?.menu?.length) return fallback;
+    const item = headerData.menu.find((m) => m.url === url);
+    return item?.name || fallback;
+  };
+
+  const dropdownChildName = (anchor, fallback) => {
+    if (!headerData?.menu?.length) return fallback;
+    const lifestyle = headerData.menu.find(
+      (m) => m.url === "/the-lake-lifestyle"
+    );
+    if (!lifestyle?.children?.length) return fallback;
+    const child = lifestyle.children.find(
+      (c) =>
+        c.url === anchor ||
+        c.url === `#${anchor}` ||
+        c.url?.endsWith(`#${anchor}`)
+    );
+    return child?.name || fallback;
+  };
+
+  const btn1 = headerData?.button1 || t("buttons.ownAHouse");
+  const btn2 = headerData?.button2 || t("buttons.enquire");
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -33,32 +56,35 @@ const Header = () => {
 
   const dropdownItems = [
     {
-      title: t("dropdown.lifeInNature"),
+      title: dropdownChildName("life-in-nature", t("dropdown.lifeInNature")),
       href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "life-in-nature",
     },
     {
-      title: t("dropdown.surroundings"),
+      title: dropdownChildName("surroundings", t("dropdown.surroundings")),
       href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "surroundings",
     },
     {
-      title: t("dropdown.artEvents"),
+      title: dropdownChildName("art-events", t("dropdown.artEvents")),
       href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "art-events",
     },
     {
-      title: t("dropdown.fishing"),
+      title: dropdownChildName("fishing", t("dropdown.fishing")),
       href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "fishing",
     },
     {
-      title: t("dropdown.sportActivities"),
+      title: dropdownChildName(
+        "sport-activities",
+        t("dropdown.sportActivities")
+      ),
       href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "sport-activities",
     },
     {
-      title: t("dropdown.education"),
+      title: dropdownChildName("education", t("dropdown.education")),
       href: `/${locale}/the-lake-lifestyle`,
       scrollTo: "education",
     },
@@ -72,28 +98,22 @@ const Header = () => {
 
     if (pathname === `/${locale}/the-lake-lifestyle`) {
       setTimeout(() => {
+        const el = document.getElementById(item.scrollTo);
+        if (!el) return;
+
         const isMobile = window.innerWidth < 1066;
         let headerHeight;
-
         if (isMobile) {
           const topHeader = document.querySelector("header > div:first-child");
-          const mainHeader = document.querySelector(
-            "header > div:nth-child(2)",
-          );
-          const topHeight = topHeader ? topHeader.offsetHeight : 44;
-          const mainHeight = mainHeader ? mainHeader.offsetHeight : 104;
-          headerHeight = topHeight + mainHeight;
+          const mainHeader = document.querySelector("header > div:nth-child(2)");
+          headerHeight = (topHeader?.offsetHeight ?? 44) + (mainHeader?.offsetHeight ?? 104);
         } else {
           const header = document.querySelector("header");
-          headerHeight = header ? header.offsetHeight : 148;
+          headerHeight = header?.offsetHeight ?? 148;
         }
 
-        scroller.scrollTo(item.scrollTo, {
-          duration: 800,
-          delay: 0,
-          smooth: "easeInOutQuart",
-          offset: -headerHeight - 20,
-        });
+        const y = el.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+        window.scrollTo({ top: y, behavior: "smooth" });
       }, 150);
     } else {
       sessionStorage.setItem("scrollTarget", item.scrollTo);
@@ -120,31 +140,31 @@ const Header = () => {
               href={`/${locale}/about`}
               className="hover:opacity-80 transition-opacity"
             >
-              {t("nav.aboutUs")}
+              {navName("/about", t("nav.aboutUs"))}
             </Link>
             <Link
               href={`/${locale}/gallery`}
               className="hover:opacity-80 transition-opacity"
             >
-              {t("nav.gallery")}
+              {navName("/gallery", t("nav.gallery"))}
             </Link>
             <Link
               href={`/${locale}/choose-propertie`}
               className="hover:opacity-80 transition-opacity"
             >
-              {t("nav.interactiveMap")}
+              {navName("/choose-propertie", t("nav.interactiveMap"))}
             </Link>
             <Link
               href={`/${locale}/contact`}
               className="hover:opacity-80 transition-opacity"
             >
-              {t("nav.contactUs")}
+              {navName("/contact", t("nav.contactUs"))}
             </Link>
             <Link
               href={`/${locale}/find-us`}
               className="hover:opacity-80 transition-opacity"
             >
-              {t("nav.findUs")}
+              {navName("/find-us", t("nav.findUs"))}
             </Link>
             <LanguageSwitcher className="font-medium" />
           </nav>
@@ -176,7 +196,7 @@ const Header = () => {
                 href={`/${locale}/the-lake-lifestyle`}
                 className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors flex items-center gap-1"
               >
-                {t("nav.lakeLyfestyle")}
+                {navName("/the-lake-lifestyle", t("nav.lakeLyfestyle"))}
                 <svg
                   className={`w-4 h-4 transition-transform ${
                     isDropdownOpen ? "rotate-180" : ""
@@ -217,43 +237,43 @@ const Header = () => {
               href={`/${locale}/lake-house`}
               className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
             >
-              {t("nav.lakehouse")}
+              {navName("/lake-house", t("nav.lakehouse"))}
             </Link>
             <Link
               href={`/${locale}/services-for-you`}
               className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
             >
-              {t("nav.servicesForYou")}
+              {navName("/services-for-you", t("nav.servicesForYou"))}
             </Link>
             <Link
               href={`/${locale}/bar-kitchen`}
               className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
             >
-              {t("nav.barKitchen")}
+              {navName("/bar-kitchen", t("nav.barKitchen"))}
             </Link>
             <Link
               href={`/${locale}/spa-wellness`}
               className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
             >
-              {t("nav.spaWellness")}
+              {navName("/spa-wellness", t("nav.spaWellness"))}
             </Link>
             <Link
               href={`/${locale}/whats-on`}
               className="text-black uppercase tracking-wide text-[12px] font-medium hover:text-[#ED5C3F] transition-colors"
             >
-              {t("nav.whatsOn")}
+              {navName("/whats-on", t("nav.whatsOn"))}
             </Link>
           </nav>
 
           <div className="hidden xl:flex items-center gap-3 shrink-0 ml-2">
             <Link href={`/${locale}/choose-propertie`}>
               <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
-                {t("buttons.ownAHouse")}
+                {btn1}
               </button>
             </Link>
             <Link href={`/${locale}/enquire`}>
               <button className="bg-white text-black px-6 py-3 font-medium uppercase tracking-wide text-[12px] hover:bg-gray-100 transition-colors shadow-sm whitespace-nowrap cursor-pointer">
-                {t("buttons.enquire")}
+                {btn2}
               </button>
             </Link>
           </div>
@@ -297,7 +317,9 @@ const Header = () => {
                   onClick={handleMobileLifestyleClick}
                   className="w-full text-left text-black uppercase tracking-wide font-medium py-3 flex items-center justify-between gap-2 hover:text-[#ED5C3F] transition-colors"
                 >
-                  <span className="flex-1">{t("nav.lakeLyfestyle")}</span>
+                  <span className="flex-1">
+                    {navName("/the-lake-lifestyle", t("nav.lakeLyfestyle"))}
+                  </span>
                   <svg
                     className={`w-4 h-4 shrink-0 transition-transform ${
                       isDropdownOpen ? "rotate-180" : ""
@@ -334,35 +356,35 @@ const Header = () => {
                 className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("nav.lakehouse")}
+                {navName("/lake-house", t("nav.lakehouse"))}
               </Link>
               <Link
                 href={`/${locale}/services-for-you`}
                 className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("nav.servicesForYou")}
+                {navName("/services-for-you", t("nav.servicesForYou"))}
               </Link>
               <Link
                 href={`/${locale}/bar-kitchen`}
                 className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("nav.barKitchen")}
+                {navName("/bar-kitchen", t("nav.barKitchen"))}
               </Link>
               <Link
                 href={`/${locale}/spa-wellness`}
                 className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("nav.spaWellness")}
+                {navName("/spa-wellness", t("nav.spaWellness"))}
               </Link>
               <Link
                 href={`/${locale}/whats-on`}
                 className="text-black uppercase tracking-wide font-medium py-3 border-b border-[#B5A88E] hover:text-[#ED5C3F] transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {t("nav.whatsOn")}
+                {navName("/whats-on", t("nav.whatsOn"))}
               </Link>
 
               <div className="flex flex-col gap-3 mt-4">
@@ -371,7 +393,7 @@ const Header = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
-                    {t("buttons.ownAHouse")}
+                    {btn1}
                   </button>
                 </Link>
                 <Link
@@ -379,7 +401,7 @@ const Header = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <button className="w-full bg-white text-black px-6 py-3 font-medium uppercase tracking-wide hover:bg-gray-100 transition-colors shadow-sm cursor-pointer">
-                    {t("buttons.enquire")}
+                    {btn2}
                   </button>
                 </Link>
               </div>
@@ -391,28 +413,28 @@ const Header = () => {
                   className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {t("nav.aboutUs")}
+                  {navName("/about", t("nav.aboutUs"))}
                 </Link>
                 <Link
                   href={`/${locale}/gallery`}
                   className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {t("nav.gallery")}
+                  {navName("/gallery", t("nav.gallery"))}
                 </Link>
                 <Link
                   href={`/${locale}/contact`}
                   className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {t("nav.contactUs")}
+                  {navName("/contact", t("nav.contactUs"))}
                 </Link>
                 <Link
                   href={`/${locale}/find-us`}
                   className="text-black py-2 text-sm hover:text-[#ED5C3F] transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {t("nav.findUs")}
+                  {navName("/find-us", t("nav.findUs"))}
                 </Link>
                 <LanguageSwitcher className="py-2 text-sm text-left font-medium" />
               </div>
@@ -425,12 +447,12 @@ const Header = () => {
       <div className="hidden min-[1066px]:flex xl:hidden fixed bottom-0 left-0 right-0 bg-[#2C3E50] z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <Link href={`/${locale}/choose-propertie`} className="flex-1">
           <button className="w-full bg-[#ed5c3f] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#312618] transition-colors cursor-pointer">
-            {t("buttons.ownAHouse")}
+            {btn1}
           </button>
         </Link>
         <Link href={`/${locale}/enquire`} className="flex-1">
           <button className="w-full bg-[#C2B49B] text-white px-6 py-4 font-medium uppercase tracking-wide text-[12px] hover:bg-[#2C3E50] transition-colors cursor-pointer">
-            {t("buttons.enquire")}
+            {btn2}
           </button>
         </Link>
       </div>

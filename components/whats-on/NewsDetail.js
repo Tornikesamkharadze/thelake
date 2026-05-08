@@ -109,6 +109,7 @@ const ImageBlock = ({ src, alt, caption, size = "full" }) => {
           height={0}
           sizes="100vw"
           className="w-full h-auto object-top"
+          unoptimized={isLocalhostImage(src)}
         />
         {caption && (
           <p className="text-xs text-gray-500 mt-2 italic">{caption}</p>
@@ -132,6 +133,7 @@ const ImageBlock = ({ src, alt, caption, size = "full" }) => {
           fill
           className="object-cover object-top"
           sizes="(max-width: 768px) 100vw, 900px"
+          unoptimized={isLocalhostImage(src)}
         />
       </div>
       {caption && (
@@ -142,7 +144,7 @@ const ImageBlock = ({ src, alt, caption, size = "full" }) => {
 };
 
 // ─── Text Block ───────────────────────────────────────────────────────────────
-const TextBlock = ({ content, contentColor, contentSize, allowHtml }) => {
+const TextBlock = ({ content, contentColor, contentSize }) => {
   const getResponsiveSize = (sizes) => {
     const sizeObj =
       typeof sizes === "string"
@@ -155,11 +157,6 @@ const TextBlock = ({ content, contentColor, contentSize, allowHtml }) => {
     }px + 1vw, ${sizeObj.desktop})`;
   };
 
-  const style = {
-    color: contentColor,
-    fontSize: getResponsiveSize(contentSize),
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -168,17 +165,15 @@ const TextBlock = ({ content, contentColor, contentSize, allowHtml }) => {
       transition={{ duration: 0.7 }}
       className="mb-8 md:mb-12"
     >
-      {allowHtml && content && /<[a-z][\s\S]*>/i.test(content) ? (
-        <div
-          className="news-wysiwyg leading-relaxed prose prose-p:mb-4 prose-headings:uppercase prose-headings:tracking-wide max-w-none"
-          style={style}
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      ) : (
-        <p className="leading-relaxed whitespace-pre-line" style={style}>
-          {content}
-        </p>
-      )}
+      <p
+        className="leading-relaxed whitespace-pre-line"
+        style={{
+          color: contentColor,
+          fontSize: getResponsiveSize(contentSize),
+        }}
+      >
+        {content}
+      </p>
     </motion.div>
   );
 };
@@ -308,12 +303,9 @@ const NewsDetail = ({
   };
 
   const resolvedBlocks =
-    blocks ||
-    [
-      excerpt && { type: "text", content: excerpt },
-      additionalImage && { type: "image", src: additionalImage, alt: title },
-      contentBottom && { type: "text", content: contentBottom, allowHtml: true },
-    ].filter(Boolean);
+    (blocks && blocks.length > 0)
+      ? blocks
+      : [excerpt && { type: "text", content: excerpt }].filter(Boolean);
 
   const renderBlock = (block, index) => {
     switch (block.type) {
@@ -324,7 +316,6 @@ const NewsDetail = ({
             content={block.content}
             contentColor={contentColor}
             contentSize={contentSize}
-            allowHtml={block.allowHtml}
           />
         );
       case "heading":

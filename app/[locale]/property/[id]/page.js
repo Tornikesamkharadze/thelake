@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import PropertyDetail from "@/components/PropertyDetail";
 import { getPropertyByName, STRAPI_URL } from "@/lib/strapi";
 import { mapStrapiPropertyToFrontend } from "@/lib/adapters/property";
@@ -21,13 +19,9 @@ export default async function PropertyPage({ params }) {
   }
 
   return (
-    <>
-      <Header />
-      <main>
-        <PropertyDetail property={property} />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <PropertyDetail property={property} />
+    </main>
   );
 }
 

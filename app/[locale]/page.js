@@ -1,7 +1,5 @@
 import StayInTouchWithContact from "@/components/StayInTouchWithContact";
 import Divider from "@/components/Divider";
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ImageTextSection from "@/components/ImageTextSection";
 import MasterplanSection from "@/components/MasterplanSection";
@@ -9,14 +7,59 @@ import PartnersSlider from "@/components/Partnersslider";
 import PropertyTypesSection from "@/components/PropertyTypesSection";
 import TextSection from "@/components/TextSection";
 import { getTranslations } from "next-intl/server";
+import { getContact, getPageByPath, getPartners, STRAPI_URL } from "@/lib/strapi";
+import { mapStrapiPageToFrontend } from "@/lib/adapters/page";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale });
 
+  // Homepage content from Strapi (Page with path "/")
+  let homePage = null;
+  try {
+    const res = await getPageByPath("/", { locale });
+    const raw = res?.data?.[0] ?? null;
+    if (raw) homePage = mapStrapiPageToFrontend(raw, STRAPI_URL);
+  } catch {}
+
+  const heroTitle = homePage?.title || t("hero.title");
+  const heroHighlightWords = homePage?.heroHighlightWords?.length
+    ? homePage.heroHighlightWords
+    : t.raw("hero.highlightWords");
+
+  const welcomeBlock = homePage?.components?.find((c) => c.type === "cta") ?? null;
+  const whyOwnBlock = homePage?.components?.find((c) => c.type === "text-image") ?? null;
+
+  const enquireUrl = welcomeBlock?.buttonUrl
+    ? welcomeBlock.buttonUrl.startsWith("http")
+      ? welcomeBlock.buttonUrl
+      : `/${locale}${welcomeBlock.buttonUrl.startsWith("/") ? welcomeBlock.buttonUrl : `/${welcomeBlock.buttonUrl}`}`
+    : `/${locale}/contact`;
+
+  let contactData = null;
+  try {
+    const { data } = await getContact({ locale });
+    contactData = data ?? null;
+  } catch {}
+
+  let partners = [];
+  try {
+    const { data } = await getPartners();
+    const base = (STRAPI_URL || "").replace(/\/$/, "");
+    partners = (Array.isArray(data) ? data : [])
+      .map((p) => {
+        const url = p.image?.url ?? p.image?.data?.attributes?.url;
+        if (!url) return null;
+        const src = url.startsWith("http") ? url : `${base}${url}`;
+        return { src, alt: p.name ?? "Partner", url: p.url || null };
+      })
+      .filter(Boolean);
+  } catch {}
+
   return (
     <>
-      <Header />
       <main>
         <div className="flex flex-col">
           <div className="order-2 md:order-1">
@@ -24,17 +67,17 @@ export default async function Home({ params }) {
               video="/opt_withoutLogo.mp4"
               poster="/videocover.webp"
               height="100vh"
-              title={t("hero.title")}
-              highlightWords={t.raw("hero.highlightWords")}
+              title={heroTitle}
+              highlightWords={heroHighlightWords}
               uppercase={true}
             />
           </div>
 
           <div className="order-1 md:order-2">
             <TextSection
-              title={t("welcome.title")}
-              description={t("welcome.description")}
-              highlightWords={["THE LAKE"]}
+              title={welcomeBlock?.title || t("welcome.title")}
+              description={welcomeBlock?.description || t("welcome.description")}
+              highlightWords={welcomeBlock?.titleHighlightWords?.length ? welcomeBlock.titleHighlightWords : ["THE LAKE"]}
               uppercase={true}
               bgColor="bg-[#F7EAD7]"
               buttonPosition="bottom"
@@ -49,8 +92,8 @@ export default async function Home({ params }) {
                   border: "border border-black",
                 },
                 {
-                  text: t("welcome.enquire"),
-                  link: `/${locale}/contact`,
+                  text: welcomeBlock?.buttonLabel || t("welcome.enquire"),
+                  link: enquireUrl,
                   bgColor: "bg-[#E85A4F]",
                   textColor: "text-black",
                 },
@@ -60,11 +103,11 @@ export default async function Home({ params }) {
         </div>
 
         <ImageTextSection
-          image="/lake-1.png"
-          title={t("whyOwn.title")}
-          subtitle={t("whyOwn.subtitle")}
-          description={t("whyOwn.description")}
-          imagePosition="left"
+          image={whyOwnBlock?.imageUrl || "/lake-1.png"}
+          title={whyOwnBlock?.title || t("whyOwn.title")}
+          subtitle={whyOwnBlock?.subtitle || t("whyOwn.subtitle")}
+          description={whyOwnBlock?.description || t("whyOwn.description")}
+          imagePosition={whyOwnBlock?.imagePosition || "left"}
           titleColor="#000000"
           subtitleColor="#000000"
           descriptionColor="#000000"
@@ -94,10 +137,13 @@ export default async function Home({ params }) {
           showAddressBox={true}
           backgroundColor="#d3b473"
           addressBoxBg="#F7EAD7"
+          address={contactData?.address}
+          phone={contactData?.phone}
+          email={contactData?.email}
+          website={contactData?.website}
         />
-        <PartnersSlider />
+        <PartnersSlider partners={partners} />
       </main>
-      <Footer />
     </>
   );
 }

@@ -34,6 +34,7 @@ export default function Hero({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-5xl font-light mb-4 leading-15"
+          style={{ whiteSpace: "pre-line" }}
           dangerouslySetInnerHTML={{ __html: formattedTitle }}
         />
       );
@@ -45,6 +46,7 @@ export default function Hero({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="text-5xl font-normal mb-4"
+        style={{ whiteSpace: "pre-line" }}
       >
         {title}
       </motion.h1>

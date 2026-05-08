@@ -1,5 +1,3 @@
-import { Footer } from "@/components/Footer";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import WhatsOn from "@/components/whats-on/WhatsOn";
 import { getAlternateUrls } from "@/lib/metadata";
@@ -70,19 +68,15 @@ export default async function WhatsOnPage({ params }) {
   const newsItems = list.map((raw) => mapStrapiNewsToFrontend(raw, STRAPI_URL)).filter(Boolean);
 
   return (
-    <>
-      <Header />
-      <main>
-        <Hero
-          video="/whatson-opt.mp4"
-          height="80vh"
-          title="What's on"
-          highlightWords={["What's on"]}
-          uppercase={true}
-        />
-        <WhatsOn newsItems={newsItems} />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <Hero
+        video="/whatson-opt.mp4"
+        height="80vh"
+        title="What's on"
+        highlightWords={["What's on"]}
+        uppercase={true}
+      />
+      <WhatsOn newsItems={newsItems} />
+    </main>
   );
 }
