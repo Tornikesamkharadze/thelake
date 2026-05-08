@@ -63,9 +63,19 @@ export const dynamic = "force-dynamic";
 
 export default async function WhatsOnPage({ params }) {
   const { locale } = await params;
-  const { data } = await getAllNews({ locale: locale === "ka" ? "ka" : "en" });
+  const strapiLocale = locale === "ka" ? "ka" : "en";
+  const { data } = await getAllNews({ locale: strapiLocale });
   const list = Array.isArray(data) ? data : [];
-  const newsItems = list.map((raw) => mapStrapiNewsToFrontend(raw, STRAPI_URL)).filter(Boolean);
+  const seen = new Set();
+  const newsItems = list
+    .map((raw) => mapStrapiNewsToFrontend(raw, STRAPI_URL))
+    .filter(Boolean)
+    .filter((item) => {
+      const key = item.slug;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 
   return (
     <main>
