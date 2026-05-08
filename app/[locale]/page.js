@@ -64,8 +64,8 @@ export default async function Home({ params }) {
         <div className="flex flex-col">
           <div className="order-2 md:order-1">
             <Hero
-              video="/opt_withoutLogo.mp4"
-              poster="/videocover.webp"
+              video={homePage?.heroVideoUrl || "/opt_withoutLogo.mp4"}
+              poster={homePage?.heroImageUrl || "/videocover.webp"}
               height="100vh"
               title={heroTitle}
               highlightWords={heroHighlightWords}
