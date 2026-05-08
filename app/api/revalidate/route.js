@@ -8,6 +8,6 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Invalid secret' }, { status: 401 });
   }
 
-  revalidateTag('strapi');
+  revalidateTag('strapi', 'max');
   return NextResponse.json({ revalidated: true });
 }
