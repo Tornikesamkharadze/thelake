@@ -244,7 +244,7 @@ const ChoosePropertie = ({ properties = [] }) => {
         {/* Map Container - Right Side */}
         <div className="flex-1 bg-[#ed5c3f] relative h-full lg:h-full overflow-hidden">
           {/* Top Buttons */}
-          <div className="absolute top-4 right-4 z-50 flex gap-2">
+          <div className="absolute top-4 right-4 z-45 flex gap-2">
             <button className="px-6 py-2 text-sm font-medium transition-all cursor-pointer bg-[#312618] text-[#F7EAD7] shadow-md">
               {t("chooseProperty.visualSelection")}
             </button>
