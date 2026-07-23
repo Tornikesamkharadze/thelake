@@ -17,6 +17,7 @@ export default function sitemap() {
     "/choose-propertie",
     "/property-listing",
     "/enquire",
+    "/privacy-policy",
   ];
 
   const urls = [];
