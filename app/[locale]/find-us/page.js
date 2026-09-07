@@ -53,7 +53,7 @@ export async function generateMetadata({ params }) {
         : "7 km from city centre, 5-minute walk to Lisi Lake. Discover our location with convenient access to schools, sports centres, and transportation.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/find-us"),
+    alternates: getAlternateUrls("/find-us", locale),
     robots: {
       index: true,
       follow: true,

@@ -46,7 +46,7 @@ export async function generateMetadata({ params }) {
         : "Fill in the enquiry form and our team will be in contact with you shortly.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/enquire"),
+    alternates: getAlternateUrls("/enquire", locale),
     robots: {
       index: true,
       follow: true,

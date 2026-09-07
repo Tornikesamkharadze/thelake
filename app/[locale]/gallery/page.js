@@ -53,7 +53,7 @@ export async function generateMetadata({ params }) {
         : "Browse stunning photos of The Lake's interiors, exteriors, and breathtaking Lisi Lake views. Your future home awaits.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/gallery"),
+    alternates: getAlternateUrls("/gallery", locale),
   };
 }
 

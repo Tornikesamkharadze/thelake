@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
@@ -12,23 +12,15 @@ const PropertyDetail = ({ property }) => {
   const params = useParams();
   const locale = params.locale || "ka";
 
-  const [referrerInfo, setReferrerInfo] = useState(null);
-
-  useEffect(() => {
+  const handleBack = () => {
     const referrer = sessionStorage.getItem("propertyListingReferrer");
     const referrerUrl = sessionStorage.getItem("propertyListingUrl");
 
-    if (referrer && referrerUrl) {
-      setReferrerInfo({ type: referrer, url: referrerUrl });
-    }
-  }, []);
-
-  const handleBack = () => {
     sessionStorage.removeItem("propertyListingReferrer");
     sessionStorage.removeItem("propertyListingUrl");
 
-    if (referrerInfo) {
-      const targetUrl = referrerInfo.url.replace(/\/(ka|en)\//, `/${locale}/`);
+    if (referrer && referrerUrl) {
+      const targetUrl = referrerUrl.replace(/\/(ka|en)\//, `/${locale}/`);
       router.push(targetUrl);
     } else {
       if (window.history.length > 1) {
@@ -58,7 +50,7 @@ const PropertyDetail = ({ property }) => {
 
       {/* Property Info Box - Floating on Background */}
       <div className="relative h-full flex items-start pt-6 pl-6 lg:pt-8 lg:pl-8">
-        <div className="w-full max-w-[350px] bg-[#D4C4A8] flex flex-col max-h-[calc(100%-48px)] overflow-y-auto">
+        <div className="w-full max-w-87.5 bg-[#D4C4A8] flex flex-col max-h-[calc(100%-48px)] overflow-y-auto">
           {/* Header with Back Button and Title */}
           <div className="bg-[#F7EAD7] px-6 py-6">
             <div className="flex items-start gap-3">
@@ -291,7 +283,7 @@ const PropertyDetail = ({ property }) => {
 
           {/* Reserve Button */}
           <div className="px-6 pb-6 flex justify-center">
-            <Link href={`/${locale}/enquire`} className="max-w-[200px] w-full">
+            <Link href={`/${locale}/enquire`} className="max-w-50 w-full">
               <button className="w-full bg-[#ED5C3F] hover:bg-[#d94d30] text-white font-medium py-3 px-6 transition-colors uppercase tracking-wide cursor-pointer">
                 {t("propertyDetail.reserve")}
               </button>

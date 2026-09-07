@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
         : "Browse available villas and houses by Lisi Lake.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/property-listing"),
+    alternates: getAlternateUrls("/property-listing", locale),
   };
 }
 

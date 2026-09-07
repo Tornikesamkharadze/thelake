@@ -55,7 +55,7 @@ export async function generateMetadata({ params }) {
         : "Latest updates, events, and community news from The Lake by Placemakers. Your source for everything happening at Lisi Lake.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/whats-on"),
+    alternates: getAlternateUrls("/whats-on", locale),
   };
 }
 

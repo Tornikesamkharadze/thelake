@@ -59,7 +59,7 @@ export async function generateMetadata({ params }) {
       description: news.excerpt ? news.excerpt.substring(0, 160) : undefined,
       images: [news.image || "/og-image.png"],
     },
-    alternates: getAlternateUrls(`/whats-on/${slug}`),
+    alternates: getAlternateUrls(`/whats-on/${slug}`, locale),
   };
 }
 

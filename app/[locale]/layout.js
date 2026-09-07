@@ -143,7 +143,7 @@ export async function generateMetadata({ params }) {
         : "90 villas & houses on 14 hectares. Private park, lake views, international architecture. 7 km from Tbilisi.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls(""),
+    alternates: getAlternateUrls("", locale),
     manifest: "/site.webmanifest",
   };
 }

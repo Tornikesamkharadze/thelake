@@ -57,7 +57,7 @@ export async function generateMetadata({ params }) {
       description,
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls(`/${pageSlug}`),
+    alternates: getAlternateUrls(`/${pageSlug}`, locale),
   };
 }
 

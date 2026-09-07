@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
         : "Choose your plot with our interactive map by Lisi Lake.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/choose-propertie"),
+    alternates: getAlternateUrls("/choose-propertie", locale),
   };
 }
 

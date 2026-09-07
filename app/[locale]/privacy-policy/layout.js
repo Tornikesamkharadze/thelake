@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
       siteName: "The Lake",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/privacy-policy"),
+    alternates: getAlternateUrls("/privacy-policy", locale),
   };
 }
 

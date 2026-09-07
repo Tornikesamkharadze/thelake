@@ -49,7 +49,7 @@ export async function generateMetadata({ params }) {
         : "90 villas and houses on 14 hectares by Lisi Lake. International architecture meets nature's calm, just 7 km from Tbilisi city centre.",
       images: ["/og-image.png"],
     },
-    alternates: getAlternateUrls("/about"),
+    alternates: getAlternateUrls("/about", locale),
   };
 }
 
