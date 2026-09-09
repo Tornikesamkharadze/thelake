@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
 
   let news = null;
   try {
-    const res = await getNewsById(slug);
+    const res = await getNewsById(slug, { locale });
     const raw = res?.data;
     news = raw ? mapStrapiNewsToFrontend(raw, STRAPI_URL) : null;
   } catch {
@@ -68,7 +68,7 @@ export default async function NewsPage({ params }) {
 
   let news = null;
   try {
-    const res = await getNewsById(slug);
+    const res = await getNewsById(slug, { locale });
     const raw = res?.data;
     news = raw ? mapStrapiNewsToFrontend(raw, STRAPI_URL) : null;
   } catch {
