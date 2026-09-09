@@ -416,8 +416,8 @@ const NewsDetail = ({
               </Link>
             </p>
             <h1
-              className="mt-2 font-normal uppercase tracking-wide"
-              style={{ color: titleColor, fontSize: getResponsiveSize(titleSize) }}
+              className="mt-2 text-sm md:text-base font-normal"
+              style={{ color: dateColor }}
             >
               {title}
             </h1>
