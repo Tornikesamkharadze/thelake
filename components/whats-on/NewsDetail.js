@@ -403,7 +403,7 @@ const NewsDetail = ({
         className="px-4 py-12 md:py-16"
         style={{ backgroundColor: contentBackgroundColor }}
       >
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-350 mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -414,9 +414,13 @@ const NewsDetail = ({
               <Link href={`/${locale}/whats-on`} className="hover:underline">
                 {t("whatsOn.news")}
               </Link>
-              {" / "}
-              {title}
             </p>
+            <h1
+              className="mt-2 font-normal uppercase tracking-wide"
+              style={{ color: titleColor, fontSize: getResponsiveSize(titleSize) }}
+            >
+              {title}
+            </h1>
             {date && (
               <p
                 className="text-xs md:text-sm mt-2"
