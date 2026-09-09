@@ -178,6 +178,43 @@ const TextBlock = ({ content, contentColor, contentSize }) => {
   );
 };
 
+// ─── Table Block ──────────────────────────────────────────────────────────────
+const TableBlock = ({ rows, contentColor = "#000000" }) => {
+  if (!rows || rows.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6 }}
+      className="my-8 md:my-10 overflow-x-auto"
+    >
+      <table className="w-full border-collapse text-sm md:text-base">
+        <tbody>
+          {rows.map((cells, i) => (
+            <tr
+              key={i}
+              className="border-b"
+              style={{ borderColor: `${contentColor}33` }}
+            >
+              {cells.map((cell, j) => (
+                <td
+                  key={j}
+                  className={`py-3 pr-6 align-top ${j === 0 ? "font-bold whitespace-nowrap" : ""}`}
+                  style={{ color: contentColor }}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </motion.div>
+  );
+};
+
 // ─── Heading Block ────────────────────────────────────────────────────────────
 /**
  * level:  "h2" | "h3" | "h4"                      (default: "h2")
@@ -267,6 +304,7 @@ const DividerBlock = ({ color = "#d4745a", style = "line" }) => {
  * { type: "divider", style: "line"|"dots"|"space", color: "#d4745a" }
  * { type: "image",   src: "/img.jpg", size: "full"|"large"|"medium"|"small", caption: "..." }
  * { type: "youtube", url: "https://youtu.be/xxx", caption: "..." }
+ * { type: "table",   rows: [["Georgian name", "ლისის ტბა"], ["Location", "..."]] }
  */
 const NewsDetail = ({
   title,
@@ -349,6 +387,10 @@ const NewsDetail = ({
       case "youtube":
         return (
           <YouTubeBlock key={index} url={block.url} caption={block.caption} />
+        );
+      case "table":
+        return (
+          <TableBlock key={index} rows={block.rows} contentColor={contentColor} />
         );
       default:
         return null;
