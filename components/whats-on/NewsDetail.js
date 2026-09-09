@@ -181,6 +181,7 @@ const TextBlock = ({ content, contentColor, contentSize }) => {
 // ─── Table Block ──────────────────────────────────────────────────────────────
 const TableBlock = ({ rows, contentColor = "#000000" }) => {
   if (!rows || rows.length === 0) return null;
+  const borderColor = `${contentColor}4d`;
 
   return (
     <motion.div
@@ -188,21 +189,20 @@ const TableBlock = ({ rows, contentColor = "#000000" }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6 }}
-      className="my-8 md:my-10 overflow-x-auto"
+      className="my-8 md:my-10 overflow-x-auto flex justify-center"
     >
-      <table className="w-full border-collapse text-sm md:text-base">
+      <table
+        className="border-collapse text-sm md:text-base"
+        style={{ border: `1px solid ${borderColor}` }}
+      >
         <tbody>
-          {rows.map((cells, i) => (
-            <tr
-              key={i}
-              className="border-b"
-              style={{ borderColor: `${contentColor}33` }}
-            >
+          {rows.map(({ cells, isHeader }, i) => (
+            <tr key={i} style={isHeader ? { backgroundColor: `${contentColor}14` } : undefined}>
               {cells.map((cell, j) => (
                 <td
                   key={j}
-                  className={`py-3 pr-6 align-top ${j === 0 ? "font-bold whitespace-nowrap" : ""}`}
-                  style={{ color: contentColor }}
+                  className={`py-3 px-4 align-top ${isHeader || j === 0 ? "font-bold" : ""}`}
+                  style={{ color: contentColor, border: `1px solid ${borderColor}` }}
                 >
                   {cell}
                 </td>
@@ -304,7 +304,7 @@ const DividerBlock = ({ color = "#d4745a", style = "line" }) => {
  * { type: "divider", style: "line"|"dots"|"space", color: "#d4745a" }
  * { type: "image",   src: "/img.jpg", size: "full"|"large"|"medium"|"small", caption: "..." }
  * { type: "youtube", url: "https://youtu.be/xxx", caption: "..." }
- * { type: "table",   rows: [["Georgian name", "ლისის ტბა"], ["Location", "..."]] }
+ * { type: "table",   rows: [{ cells: ["Georgian name", "ლისის ტბა"], isHeader: false }, ...] }
  */
 const NewsDetail = ({
   title,
