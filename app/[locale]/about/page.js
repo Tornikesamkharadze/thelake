@@ -2,7 +2,7 @@ import Divider from "@/components/Divider";
 import ImageTextSection from "@/components/ImageTextSection";
 import ImageTextOverlaySection from "@/components/ImageTextOverlaySection";
 import TextImageSideSection from "@/components/TextImageSideSection";
-import PartnersSlider from "@/components/Partnersslider";
+import PartnerProjectsSlider from "@/components/PartnerProjectsSlider";
 import TeamSwiper from "@/components/TeamSwiper";
 import Timeline from "@/components/TimeLine";
 import { getTranslations } from "next-intl/server";
@@ -10,10 +10,12 @@ import {
   getPageByPath,
   getTeamMembers,
   getTimelineItems,
-  getPartners,
+  getPartnerProjects,
+  getPartnersSection,
   STRAPI_URL,
 } from "@/lib/strapi";
 import { mapStrapiPageToFrontend } from "@/lib/adapters/page";
+import { mapStrapiPartnerProjectsToFrontend } from "@/lib/adapters/partnerProject";
 
 export const dynamic = "force-dynamic";
 
@@ -90,17 +92,6 @@ function mapStrapiTeamMembers(members, strapiUrl) {
   }));
 }
 
-function mapStrapiPartnersToSlider(partners, strapiUrl) {
-  const base = (strapiUrl || "").replace(/\/$/, "");
-  return (Array.isArray(partners) ? partners : [])
-    .map((p) => {
-      const src = mediaUrl(p.image, base);
-      if (!src) return null;
-      return { src, alt: p.name ?? "Partner", url: p.url || null };
-    })
-    .filter(Boolean);
-}
-
 function formatTimelineDate(dateStr, locale = "en") {
   if (!dateStr) return "";
   const d = new Date(dateStr);
@@ -122,9 +113,10 @@ export default async function About({ params }) {
     pageComponents = page?.components ?? [];
   } catch {}
 
-  // Fetch team members, partners, and timeline items
+  // Fetch team members, partner projects, and timeline items
   let teamMembers = [];
-  let partners = [];
+  let partnerProjects = [];
+  let partnersHeadline = "";
   let timelineData = t.raw("about.timeline");
 
   try {
@@ -133,8 +125,13 @@ export default async function About({ params }) {
   } catch {}
 
   try {
-    const { data } = await getPartners();
-    partners = mapStrapiPartnersToSlider(Array.isArray(data) ? data : [], STRAPI_URL);
+    const { data } = await getPartnerProjects({ locale, sort: ["order:asc"] });
+    partnerProjects = mapStrapiPartnerProjectsToFrontend(data, STRAPI_URL);
+  } catch {}
+
+  try {
+    const { data } = await getPartnersSection({ locale });
+    partnersHeadline = data?.headline ?? "";
   } catch {}
 
   try {
@@ -252,7 +249,7 @@ export default async function About({ params }) {
       />
 
       {/* PARTNERS */}
-      <PartnersSlider partners={partners} />
+      <PartnerProjectsSlider headline={partnersHeadline} projects={partnerProjects} />
     </main>
   );
 }
