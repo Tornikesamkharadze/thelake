@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -30,6 +30,7 @@ const PartnerProjectsSlider = ({
 }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   if (!projects || projects.length === 0) return null;
 
@@ -59,6 +60,7 @@ const PartnerProjectsSlider = ({
       >
         <Swiper
           modules={[Autoplay]}
+          onSwiper={setSwiperInstance}
           slidesPerView="auto"
           spaceBetween={16}
           loop
@@ -66,95 +68,94 @@ const PartnerProjectsSlider = ({
           autoplay={{
             delay: 1,
             disableOnInteraction: false,
-            pauseOnMouseEnter: true,
           }}
           breakpoints={{
             768: { spaceBetween: 24 },
             1024: { spaceBetween: 30 },
           }}
         >
-          {slides.map((project, index) => (
-            <SwiperSlide
-              key={`${project.id ?? project.name}-${index}`}
-              className="!w-[85vw] sm:!w-[400px] md:!w-[475px] !h-auto"
-            >
-              {/* Outer wrapper is NOT clipped — lets the hover panel spill below the photo */}
-              <div className="group relative w-full pb-6 md:pb-8">
-                <div
-                  className="relative w-full overflow-hidden"
-                  style={{ aspectRatio: "475 / 357" }}
-                >
-                  {(project.backgroundImage?.src || project.image?.src) && (
-                    <Image
-                      src={project.backgroundImage?.src || project.image?.src}
-                      alt={project.backgroundImage?.alt || project.name || "Partner project"}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 85vw, (max-width: 768px) 400px, 475px"
-                    />
-                  )}
+          {slides.map((project, index) => {
+            const CardTag = project.url ? "a" : "div";
+            const cardLinkProps = project.url
+              ? { href: project.url, target: "_blank", rel: "noopener noreferrer" }
+              : {};
 
-                  <div className="absolute inset-0 bg-black/20" />
-
-                  {/* Default-state label: logo if set, otherwise the name as text — centered in the whole photo */}
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    {project.image?.src ? (
-                      <div className="relative w-48 h-20 md:w-56 md:h-24">
-                        <Image
-                          src={project.image.src}
-                          alt={project.image.alt || project.name || "Logo"}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                    ) : (
-                      <span
-                        className="block font-serif text-white text-3xl md:text-4xl text-center"
-                        style={{ textShadow: "1px 1px 6px rgba(0,0,0,0.5)" }}
-                      >
-                        {project.name}
-                      </span>
+            return (
+              <SwiperSlide
+                key={`${project.id ?? project.name}-${index}`}
+                className="!w-[85vw] sm:!w-[400px] md:!w-[475px] !h-auto"
+                onMouseEnter={() => swiperInstance?.autoplay?.stop()}
+                onMouseLeave={() => swiperInstance?.autoplay?.start()}
+              >
+                {/* Outer wrapper is NOT clipped — lets the hover panel spill below the photo.
+                    The whole card is the link when a url is set (photo included, not just the label). */}
+                <CardTag {...cardLinkProps} className="group relative block w-full pb-6 md:pb-8">
+                  <div
+                    className="relative w-full overflow-hidden"
+                    style={{ aspectRatio: "475 / 357" }}
+                  >
+                    {(project.backgroundImage?.src || project.image?.src) && (
+                      <Image
+                        src={project.backgroundImage?.src || project.image?.src}
+                        alt={project.backgroundImage?.alt || project.name || "Partner project"}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 85vw, (max-width: 768px) 400px, 475px"
+                      />
                     )}
-                  </div>
-                </div>
 
-                {/* Hover panel — anchored to the photo's bottom edge but NOT clipped by it, so
-                    it overlaps the lower photo and continues past it, like ImageTextOverlaySection.
-                    Always visible on mobile, slides up over the image on hover from md up. */}
-                <div
-                  className="absolute inset-x-4 md:inset-x-6 bottom-0 p-5 md:p-6 translate-y-0 opacity-100 md:translate-y-[calc(100%-2rem)] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 ease-out"
-                  style={{ backgroundColor: hoverBackgroundColor }}
-                >
-                  {project.url ? (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 uppercase underline underline-offset-4 font-medium mb-2"
-                      style={{ color: linkColor }}
-                    >
-                      {project.name}
-                      <Image src="/Icon-arr.svg" alt="" width={14} height={14} />
-                    </a>
-                  ) : (
-                    project.name && (
-                      <p
-                        className="uppercase underline underline-offset-4 font-medium mb-2"
+                    <div className="absolute inset-0 bg-black/20" />
+
+                    {/* Default-state label: logo if set, otherwise the name as text — centered in the whole photo */}
+                    <div className="absolute inset-0 flex items-center justify-center px-6">
+                      {project.image?.src ? (
+                        <div className="relative w-48 h-20 md:w-56 md:h-24">
+                          <Image
+                            src={project.image.src}
+                            alt={project.image.alt || project.name || "Logo"}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <span
+                          className="block font-serif text-white text-3xl md:text-4xl text-center"
+                          style={{ textShadow: "1px 1px 6px rgba(0,0,0,0.5)" }}
+                        >
+                          {project.name}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Hover panel — anchored to the photo's bottom edge but NOT clipped by it, so
+                      it overlaps the lower photo and continues past it, like ImageTextOverlaySection.
+                      Always visible on mobile, slides up over the image on hover from md up. */}
+                  <div
+                    className="absolute inset-x-4 md:inset-x-6 bottom-0 p-5 md:p-6 translate-y-0 opacity-100 md:translate-y-[calc(100%-2rem)] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 ease-out"
+                    style={{ backgroundColor: hoverBackgroundColor }}
+                  >
+                    {project.name && (
+                      <span
+                        className="inline-flex items-center gap-2 uppercase underline underline-offset-4 font-medium mb-2"
                         style={{ color: linkColor }}
                       >
                         {project.name}
+                        {project.url && (
+                          <Image src="/Icon-arr.svg" alt="" width={14} height={14} />
+                        )}
+                      </span>
+                    )}
+                    {project.description && (
+                      <p className="text-sm text-black/80 leading-relaxed">
+                        {project.description}
                       </p>
-                    )
-                  )}
-                  {project.description && (
-                    <p className="text-sm text-black/80 leading-relaxed">
-                      {project.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
+                    )}
+                  </div>
+                </CardTag>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </motion.div>
     </section>
