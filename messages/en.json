@@ -56,7 +56,8 @@
     "description": "Set on 14 hectares by Lisi Lake, this private neighbourhood features 90 villas and houses surrounded by a private park and panoramic lake views. Just 7 km from the city centre, it offers an exclusive lifestyle shaped by international architecture and nature's calm"
   },
   "divider": {
-    "masterplan": "masterplan"
+    "masterplan": "masterplan",
+    "partners": "partners"
   },
   "plot-types": {
     "private-houses": "private houses",

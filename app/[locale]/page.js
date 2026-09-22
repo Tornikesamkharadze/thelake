@@ -147,6 +147,12 @@ export default async function Home({ params }) {
           email={contactData?.email}
           website={contactData?.website}
         />
+        <Divider
+          text={t("divider.partners")}
+          uppercase={true}
+          bgColor="bg-[#ED5C3F]"
+          textColor="text-white"
+        />
         <PartnerProjectsSlider headline={partnersHeadline} projects={partnerProjects} />
       </main>
     </>

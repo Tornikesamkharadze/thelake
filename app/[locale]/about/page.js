@@ -249,6 +249,12 @@ export default async function About({ params }) {
       />
 
       {/* PARTNERS */}
+      <Divider
+        text={t("divider.partners")}
+        uppercase={true}
+        bgColor="bg-[#ED5C3F]"
+        textColor="text-white"
+      />
       <PartnerProjectsSlider headline={partnersHeadline} projects={partnerProjects} />
     </main>
   );
