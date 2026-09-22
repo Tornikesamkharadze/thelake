@@ -62,8 +62,9 @@ const PartnerProjectsSlider = ({
           slidesPerView="auto"
           spaceBetween={16}
           loop
+          speed={5000}
           autoplay={{
-            delay: 2500,
+            delay: 1,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
@@ -75,48 +76,53 @@ const PartnerProjectsSlider = ({
           {slides.map((project, index) => (
             <SwiperSlide
               key={`${project.id ?? project.name}-${index}`}
-              className="!w-[85vw] sm:!w-[400px] md:!w-[475px]"
+              className="!w-[85vw] sm:!w-[400px] md:!w-[475px] !h-auto"
             >
-              <div
-                className="group relative w-full overflow-hidden"
-                style={{ aspectRatio: "475 / 357" }}
-              >
-                {(project.backgroundImage?.src || project.image?.src) && (
-                  <Image
-                    src={project.backgroundImage?.src || project.image?.src}
-                    alt={project.backgroundImage?.alt || project.name || "Partner project"}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 85vw, (max-width: 768px) 400px, 475px"
-                  />
-                )}
-
-                <div className="absolute inset-0 bg-black/20" />
-
-                {/* Default-state label: logo if set, otherwise the name as text — centered in the whole card */}
-                <div className="absolute inset-0 flex items-center justify-center px-6">
-                  {project.image?.src ? (
-                    <div className="relative w-48 h-20 md:w-56 md:h-24">
-                      <Image
-                        src={project.image.src}
-                        alt={project.image.alt || project.name || "Logo"}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  ) : (
-                    <span
-                      className="block font-serif text-white text-3xl md:text-4xl text-center"
-                      style={{ textShadow: "1px 1px 6px rgba(0,0,0,0.5)" }}
-                    >
-                      {project.name}
-                    </span>
+              {/* Outer wrapper is NOT clipped — lets the hover panel spill below the photo */}
+              <div className="group relative w-full pb-6 md:pb-8">
+                <div
+                  className="relative w-full overflow-hidden"
+                  style={{ aspectRatio: "475 / 357" }}
+                >
+                  {(project.backgroundImage?.src || project.image?.src) && (
+                    <Image
+                      src={project.backgroundImage?.src || project.image?.src}
+                      alt={project.backgroundImage?.alt || project.name || "Partner project"}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 85vw, (max-width: 768px) 400px, 475px"
+                    />
                   )}
+
+                  <div className="absolute inset-0 bg-black/20" />
+
+                  {/* Default-state label: logo if set, otherwise the name as text — centered in the whole photo */}
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    {project.image?.src ? (
+                      <div className="relative w-48 h-20 md:w-56 md:h-24">
+                        <Image
+                          src={project.image.src}
+                          alt={project.image.alt || project.name || "Logo"}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <span
+                        className="block font-serif text-white text-3xl md:text-4xl text-center"
+                        style={{ textShadow: "1px 1px 6px rgba(0,0,0,0.5)" }}
+                      >
+                        {project.name}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                {/* Hover panel — always visible on mobile, slides up over the image on hover from md up */}
+                {/* Hover panel — anchored to the photo's bottom edge but NOT clipped by it, so
+                    it overlaps the lower photo and continues past it, like ImageTextOverlaySection.
+                    Always visible on mobile, slides up over the image on hover from md up. */}
                 <div
-                  className="absolute inset-x-4 md:inset-x-6 bottom-4 md:bottom-6 p-5 md:p-6 translate-y-0 opacity-100 md:translate-y-[115%] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 ease-out"
+                  className="absolute inset-x-4 md:inset-x-6 bottom-0 p-5 md:p-6 translate-y-0 opacity-100 md:translate-y-[calc(100%-2rem)] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 ease-out"
                   style={{ backgroundColor: hoverBackgroundColor }}
                 >
                   {project.url ? (
