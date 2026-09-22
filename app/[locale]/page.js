@@ -3,12 +3,19 @@ import Divider from "@/components/Divider";
 import Hero from "@/components/Hero";
 import ImageTextSection from "@/components/ImageTextSection";
 import MasterplanSection from "@/components/MasterplanSection";
-import PartnersSlider from "@/components/Partnersslider";
+import PartnerProjectsSlider from "@/components/PartnerProjectsSlider";
 import PropertyTypesSection from "@/components/PropertyTypesSection";
 import TextSection from "@/components/TextSection";
 import { getTranslations } from "next-intl/server";
-import { getContact, getPageByPath, getPartners, STRAPI_URL } from "@/lib/strapi";
+import {
+  getContact,
+  getPageByPath,
+  getPartnerProjects,
+  getPartnersSection,
+  STRAPI_URL,
+} from "@/lib/strapi";
 import { mapStrapiPageToFrontend } from "@/lib/adapters/page";
+import { mapStrapiPartnerProjectsToFrontend } from "@/lib/adapters/partnerProject";
 
 export const dynamic = "force-dynamic";
 
@@ -44,18 +51,16 @@ export default async function Home({ params }) {
     contactData = data ?? null;
   } catch {}
 
-  let partners = [];
+  let partnerProjects = [];
   try {
-    const { data } = await getPartners();
-    const base = (STRAPI_URL || "").replace(/\/$/, "");
-    partners = (Array.isArray(data) ? data : [])
-      .map((p) => {
-        const url = p.image?.url ?? p.image?.data?.attributes?.url;
-        if (!url) return null;
-        const src = url.startsWith("http") ? url : `${base}${url}`;
-        return { src, alt: p.name ?? "Partner", url: p.url || null };
-      })
-      .filter(Boolean);
+    const { data } = await getPartnerProjects({ locale, sort: ["order:asc"] });
+    partnerProjects = mapStrapiPartnerProjectsToFrontend(data, STRAPI_URL);
+  } catch {}
+
+  let partnersHeadline = "";
+  try {
+    const { data } = await getPartnersSection({ locale });
+    partnersHeadline = data?.headline ?? "";
   } catch {}
 
   return (
@@ -142,7 +147,7 @@ export default async function Home({ params }) {
           email={contactData?.email}
           website={contactData?.website}
         />
-        <PartnersSlider partners={partners} />
+        <PartnerProjectsSlider headline={partnersHeadline} projects={partnerProjects} />
       </main>
     </>
   );
