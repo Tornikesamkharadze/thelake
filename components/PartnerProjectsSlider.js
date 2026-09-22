@@ -8,6 +8,11 @@ import { motion, useInView } from "framer-motion";
 
 import "swiper/css";
 
+// Repeat the real entries so Swiper always has comfortably more slides than
+// fit on screen — with only a handful of real partners, loop+autoplay would
+// otherwise stall/glitch (not enough slides to wrap around smoothly).
+const LOOP_REPEATS = 6;
+
 /**
  * Showcase slider for partner projects — a full-bleed photo per card with a
  * hover-reveal panel (project name/link + description). Distinct, parallel
@@ -28,10 +33,12 @@ const PartnerProjectsSlider = ({
 
   if (!projects || projects.length === 0) return null;
 
+  const slides = Array(LOOP_REPEATS).fill(projects).flat();
+
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-12 md:py-16"
+      className="relative w-full py-16 md:py-20"
       style={{ backgroundColor }}
     >
       {headline && (
@@ -39,7 +46,7 @@ const PartnerProjectsSlider = ({
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="max-w-3xl mx-auto text-center px-6 mb-8 md:mb-10 text-sm md:text-base leading-relaxed text-black"
+          className="max-w-3xl mx-auto text-center px-6 mb-12 md:mb-16 text-sm md:text-base leading-relaxed text-black"
         >
           {headline}
         </motion.p>
@@ -52,37 +59,42 @@ const PartnerProjectsSlider = ({
       >
         <Swiper
           modules={[Autoplay]}
-          spaceBetween={0}
-          slidesPerView={1.1}
-          loop={projects.length > 2}
+          slidesPerView="auto"
+          spaceBetween={16}
+          loop
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
           breakpoints={{
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-            1440: { slidesPerView: 4 },
+            768: { spaceBetween: 24 },
+            1024: { spaceBetween: 30 },
           }}
         >
-          {projects.map((project, index) => (
-            <SwiperSlide key={project.id ?? index}>
-              <div className="group relative h-[420px] md:h-[480px] overflow-hidden">
+          {slides.map((project, index) => (
+            <SwiperSlide
+              key={`${project.id ?? project.name}-${index}`}
+              className="!w-[85vw] sm:!w-[400px] md:!w-[475px]"
+            >
+              <div
+                className="group relative w-full overflow-hidden"
+                style={{ aspectRatio: "475 / 357" }}
+              >
                 {(project.backgroundImage?.src || project.image?.src) && (
                   <Image
                     src={project.backgroundImage?.src || project.image?.src}
                     alt={project.backgroundImage?.alt || project.name || "Partner project"}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 25vw"
+                    sizes="(max-width: 640px) 85vw, (max-width: 768px) 400px, 475px"
                   />
                 )}
 
-                <div className="absolute inset-0 bg-black/15" />
+                <div className="absolute inset-0 bg-black/20" />
 
-                {/* Default-state label: logo if set, otherwise the name as text — centered in the card */}
-                <div className="absolute inset-x-0 top-0 bottom-24 md:bottom-28 flex items-center justify-center px-6">
+                {/* Default-state label: logo if set, otherwise the name as text — centered in the whole card */}
+                <div className="absolute inset-0 flex items-center justify-center px-6">
                   {project.image?.src ? (
                     <div className="relative w-48 h-20 md:w-56 md:h-24">
                       <Image
@@ -102,9 +114,9 @@ const PartnerProjectsSlider = ({
                   )}
                 </div>
 
-                {/* Hover panel — always visible on mobile, reveals on hover from md up */}
+                {/* Hover panel — always visible on mobile, slides up over the image on hover from md up */}
                 <div
-                  className="absolute inset-x-0 bottom-0 p-5 md:p-6 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute inset-x-4 md:inset-x-6 bottom-4 md:bottom-6 p-5 md:p-6 translate-y-0 opacity-100 md:translate-y-[115%] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 ease-out"
                   style={{ backgroundColor: hoverBackgroundColor }}
                 >
                   {project.url ? (
