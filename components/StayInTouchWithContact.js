@@ -321,7 +321,7 @@ export default function StayInTouchWithContact({
                 initial={{ opacity: 0, x: isMobile ? 0 : 50 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="shadow-[0_10px_25px_rgba(0,0,0,0.1)] p-8 px-6 relative z-10 -mb-25 max-[1023px]:mb-0 max-w-[350px] max-[1023px]:max-w-full mx-auto mt-[70px]"
+                className="shadow-[0_10px_25px_rgba(0,0,0,0.1)] p-8 px-6 relative z-10 max-w-[350px] max-[1023px]:max-w-full mx-auto mt-[70px]"
                 style={{ backgroundColor: addressBoxBg }}
               >
                 <motion.h3
