@@ -75,19 +75,21 @@ const PartnerProjectsSlider = ({
       >
         <div className="flex animate-scroll w-fit" ref={trackRef}>
           {repeatedProjects.map((project, index) => {
-            const CardTag = project.url ? "a" : "div";
-            const cardLinkProps = project.url
+            // Only the photo and the name link navigate — the description text
+            // in the hover panel must stay non-clickable.
+            const LinkTag = project.url ? "a" : "div";
+            const linkProps = project.url
               ? { href: project.url, target: "_blank", rel: "noopener noreferrer" }
               : {};
 
             return (
-              <CardTag
+              <div
                 key={`${project.id ?? project.name}-${index}`}
-                {...cardLinkProps}
-                className="group relative block shrink-0 w-[85vw] sm:w-[400px] md:w-[475px] mr-4 md:mr-6 pb-6 md:pb-8"
+                className="group relative shrink-0 w-[85vw] sm:w-[400px] md:w-[475px] mr-4 md:mr-6 pb-6 md:pb-8"
               >
-                <div
-                  className="relative w-full overflow-hidden"
+                <LinkTag
+                  {...linkProps}
+                  className="relative block w-full overflow-hidden"
                   style={{ aspectRatio: "475 / 357" }}
                 >
                   {(project.backgroundImage?.src || project.image?.src) && (
@@ -122,17 +124,19 @@ const PartnerProjectsSlider = ({
                       </span>
                     )}
                   </div>
-                </div>
+                </LinkTag>
 
                 {/* Hover panel — anchored to the photo's bottom edge but NOT clipped by it, so
                     it overlaps the lower photo and continues past it, like ImageTextOverlaySection.
-                    Always visible on mobile, slides up over the image on hover from md up. */}
+                    Always visible on mobile, slides up over the image on hover from md up. Only the
+                    name links out; the description is plain text. */}
                 <div
                   className="absolute inset-x-4 md:inset-x-6 bottom-0 p-5 md:p-6 translate-y-0 opacity-100 md:translate-y-[calc(100%-2rem)] md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-500 ease-out"
                   style={{ backgroundColor: hoverBackgroundColor }}
                 >
                   {project.name && (
-                    <span
+                    <LinkTag
+                      {...linkProps}
                       className="inline-flex items-center gap-2 uppercase underline underline-offset-4 font-medium mb-2"
                       style={{ color: linkColor }}
                     >
@@ -140,7 +144,7 @@ const PartnerProjectsSlider = ({
                       {project.url && (
                         <Image src="/Icon-arr.svg" alt="" width={14} height={14} />
                       )}
-                    </span>
+                    </LinkTag>
                   )}
                   {project.description && (
                     <p className="text-sm text-black/80 leading-relaxed">
@@ -148,7 +152,7 @@ const PartnerProjectsSlider = ({
                     </p>
                   )}
                 </div>
-              </CardTag>
+              </div>
             );
           })}
         </div>
