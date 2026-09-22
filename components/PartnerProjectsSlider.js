@@ -81,20 +81,20 @@ const PartnerProjectsSlider = ({
 
                 <div className="absolute inset-0 bg-black/15" />
 
-                {/* Default-state label: logo if set, otherwise the name as text */}
-                <div className="absolute left-6 md:left-8 bottom-32 md:bottom-40 right-6">
+                {/* Default-state label: logo if set, otherwise the name as text — centered in the card */}
+                <div className="absolute inset-x-0 top-0 bottom-24 md:bottom-28 flex items-center justify-center px-6">
                   {project.image?.src ? (
-                    <div className="relative w-40 h-14 md:w-48 md:h-16">
+                    <div className="relative w-48 h-20 md:w-56 md:h-24">
                       <Image
                         src={project.image.src}
                         alt={project.image.alt || project.name || "Logo"}
                         fill
-                        className="object-contain object-left"
+                        className="object-contain"
                       />
                     </div>
                   ) : (
                     <span
-                      className="block font-serif text-white text-3xl md:text-4xl"
+                      className="block font-serif text-white text-3xl md:text-4xl text-center"
                       style={{ textShadow: "1px 1px 6px rgba(0,0,0,0.5)" }}
                     >
                       {project.name}
