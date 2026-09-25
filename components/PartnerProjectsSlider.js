@@ -9,8 +9,12 @@ import { motion, useInView } from "framer-motion";
 const REPEAT_COUNT = 5;
 // How long to stay paused after the pointer/finger leaves before auto-scroll resumes.
 const RESUME_DELAY_MS = 4500;
-// Auto-scroll speed, in px per animation frame (~60fps).
-const SCROLL_SPEED = 0.4;
+// Auto-scroll takes a 1px step every N animation frames (~60fps) — a whole
+// pixel, not a fraction: browsers round scrollLeft to the nearest integer,
+// so sub-pixel increments (e.g. 0.4px) get rounded away to nothing every
+// single frame and the track never visibly moves. Stepping less often
+// instead of by less distance keeps it slow without ever losing the step.
+const SCROLL_STEP_EVERY_N_FRAMES = 3;
 
 /**
  * Showcase slider for partner projects — a full-bleed photo per card with a
@@ -46,6 +50,7 @@ const PartnerProjectsSlider = ({
     let paused = false;
     let rafId;
     let resumeTimer;
+    let frame = 0;
 
     const singleCopyWidth = track.scrollWidth / REPEAT_COUNT;
     // Start in the middle copy so there's equal buffer to wrap in either direction.
@@ -53,7 +58,10 @@ const PartnerProjectsSlider = ({
 
     const step = () => {
       if (!paused) {
-        track.scrollLeft += SCROLL_SPEED;
+        frame++;
+        if (frame % SCROLL_STEP_EVERY_N_FRAMES === 0) {
+          track.scrollLeft += 1;
+        }
       }
       rafId = requestAnimationFrame(step);
     };
