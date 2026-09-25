@@ -157,8 +157,10 @@ const PartnerProjectsSlider = ({
 
           <div className="absolute inset-0 bg-black/20" />
 
-          {/* Default-state label: logo if set, otherwise the name as text — centered in the whole photo */}
-          <div className="absolute inset-0 flex items-center justify-center px-6">
+          {/* Default-state label: logo if set, otherwise the name as text — centered in the
+              whole photo on desktop (panel is hidden until hover there), but shifted up on
+              mobile so it clears the always-visible panel instead of hiding behind it. */}
+          <div className="absolute inset-x-0 top-0 bottom-32 md:inset-0 flex items-center justify-center px-6">
             {project.image?.src ? (
               <div className="relative w-48 h-20 md:w-56 md:h-24">
                 <Image
