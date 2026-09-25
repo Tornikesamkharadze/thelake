@@ -142,7 +142,19 @@ body {
   animation-play-state: paused;
 }
 
-/* მალავს ბრაუზერის ნატიურ სქროლბარს (პარტნიორების სლაიდერი და სხვა ჰორიზონტალური სქროლები) */
+/* პარტნიორების პროექტების სლაიდერი — საკუთარი, .animate-scroll-სგან დამოუკიდებელი დროით.
+   მობაილზე უფრო ნელა ტრიალებს, ვიდრე დესკტოპზე (დესკტოპის დრო უცვლელია). */
+.partner-scroll {
+  animation: scroll 55s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .partner-scroll {
+    animation: scroll 90s linear infinite;
+  }
+}
+
+/* მალავს ბრაუზერის ნატიურ სქროლბარს */
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
