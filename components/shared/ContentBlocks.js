@@ -256,9 +256,11 @@ export const TableBlock = ({ rows, contentColor = "#000000" }) => {
  */
 export const HeadingBlock = ({
   content,
+  isHtml,
   level = "h2",
   style = "default",
   color = "#000000",
+  linkColor = "#ED5C3F",
 }) => {
   const Tag = level;
 
@@ -268,7 +270,9 @@ export const HeadingBlock = ({
     h4: "text-base md:text-lg lg:text-xl",
   };
 
-  const baseClass = `${sizeMap[level] || sizeMap.h2} font-normal uppercase tracking-wide`;
+  const baseClass = `${sizeMap[level] || sizeMap.h2} font-normal uppercase tracking-wide ${
+    isHtml ? "[&_a]:underline [&_a]:underline-offset-2 [&_a]:text-[color:var(--link-color)]" : ""
+  }`;
 
   const wrapperMap = {
     default: "mb-4 mt-10",
@@ -285,13 +289,17 @@ export const HeadingBlock = ({
       className={wrapperMap[style] || wrapperMap.default}
       style={
         style === "underline" || style === "highlight"
-          ? { borderColor: color }
-          : {}
+          ? { borderColor: color, "--link-color": linkColor }
+          : { "--link-color": linkColor }
       }
     >
-      <Tag className={baseClass} style={{ color }}>
-        {content}
-      </Tag>
+      {isHtml ? (
+        <Tag className={baseClass} style={{ color }} dangerouslySetInnerHTML={{ __html: content }} />
+      ) : (
+        <Tag className={baseClass} style={{ color }}>
+          {content}
+        </Tag>
+      )}
     </motion.div>
   );
 };
@@ -343,9 +351,11 @@ export function renderContentBlock(block, index, { titleFallback, contentColor, 
         <HeadingBlock
           key={index}
           content={block.content}
+          isHtml={block.isHtml}
           level={block.level}
           style={block.style}
           color={block.color || contentColor}
+          linkColor={linkColor}
         />
       );
     case "divider":
