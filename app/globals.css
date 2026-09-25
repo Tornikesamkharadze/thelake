@@ -142,6 +142,11 @@ body {
   animation-play-state: paused;
 }
 
+/* პარტნიორების პროექტების სლაიდერი — საკუთარი, უფრო ნელი დროით, დამოუკიდებელი .animate-scroll-სგან */
+.partner-scroll {
+  animation: scroll 55s linear infinite;
+}
+
 /* გალერია */
 .gallery-swiper {
   padding: 0 0 60px 0;
