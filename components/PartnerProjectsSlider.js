@@ -9,13 +9,12 @@ import { motion, useInView } from "framer-motion";
  * hover-reveal panel (project name/link + description). Distinct, parallel
  * component to the older logo-row `Partnersslider` — that one is left as-is.
  *
- * Desktop (md+): the same continuous CSS marquee mechanism as Partnersslider
- * (a `.partner-scroll` track, own slower timing) — constant linear motion,
- * paused on hover, resumed on mouse leave.
- * Mobile: a plain natively-scrollable row (real touch swipe, no fighting
- * between a running transform animation and the user's drag) — the marquee
- * and touch scrolling don't mix well, so mobile gets its own simple track
- * instead of trying to animate and swipe the same element.
+ * Auto-scrolls continuously via a `.partner-scroll` CSS animation (own,
+ * slower timing than the old Partnersslider's `.animate-scroll`), paused
+ * while the pointer/finger is on the track and resumed on release. The
+ * track is also a native overflow-x-auto scroller, so touch-swipe still
+ * works on top of the animation — a CSS transform and native scroll offset
+ * are independent, so they don't fight each other.
  */
 const PartnerProjectsSlider = ({
   headline = "",
@@ -32,19 +31,25 @@ const PartnerProjectsSlider = ({
     const track = trackRef.current;
     if (!track) return;
 
-    const handleMouseEnter = () => {
+    const pause = () => {
       track.style.animationPlayState = "paused";
     };
-    const handleMouseLeave = () => {
+    const resume = () => {
       track.style.animationPlayState = "running";
     };
 
-    track.addEventListener("mouseenter", handleMouseEnter);
-    track.addEventListener("mouseleave", handleMouseLeave);
+    track.addEventListener("mouseenter", pause);
+    track.addEventListener("mouseleave", resume);
+    track.addEventListener("touchstart", pause, { passive: true });
+    track.addEventListener("touchend", resume);
+    track.addEventListener("touchcancel", resume);
 
     return () => {
-      track.removeEventListener("mouseenter", handleMouseEnter);
-      track.removeEventListener("mouseleave", handleMouseLeave);
+      track.removeEventListener("mouseenter", pause);
+      track.removeEventListener("mouseleave", resume);
+      track.removeEventListener("touchstart", pause);
+      track.removeEventListener("touchend", resume);
+      track.removeEventListener("touchcancel", resume);
     };
   }, []);
 
@@ -155,24 +160,13 @@ const PartnerProjectsSlider = ({
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.8, delay: 0.2 }}
+        className="w-full overflow-x-auto pb-4"
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
-        {/* Mobile: real touch-swipe, native scroll, no auto-animation */}
-        <div
-          className="flex md:hidden overflow-x-auto px-4"
-          style={{ WebkitOverflowScrolling: "touch" }}
-        >
-          {projects.map((project, index) =>
-            renderCard(project, `mobile-${project.id ?? project.name}-${index}`)
+        <div className="flex partner-scroll w-fit px-4 md:px-0" ref={trackRef}>
+          {repeatedProjects.map((project, index) =>
+            renderCard(project, `${project.id ?? project.name}-${index}`)
           )}
-        </div>
-
-        {/* Desktop: continuous auto-scroll marquee, pauses on hover */}
-        <div className="hidden md:block w-full overflow-hidden">
-          <div className="flex partner-scroll w-fit" ref={trackRef}>
-            {repeatedProjects.map((project, index) =>
-              renderCard(project, `desktop-${project.id ?? project.name}-${index}`)
-            )}
-          </div>
         </div>
       </motion.div>
     </section>
