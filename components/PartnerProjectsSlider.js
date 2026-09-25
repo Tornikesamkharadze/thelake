@@ -4,17 +4,29 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
+// How many times the real list is repeated in the track, so there's always
+// a wide buffer of identical content to silently wrap within (see below).
+const REPEAT_COUNT = 5;
+// How long to stay paused after the pointer/finger leaves before auto-scroll resumes.
+const RESUME_DELAY_MS = 4500;
+// Auto-scroll speed, in px per animation frame (~60fps).
+const SCROLL_SPEED = 0.4;
+
 /**
  * Showcase slider for partner projects — a full-bleed photo per card with a
  * hover-reveal panel (project name/link + description). Distinct, parallel
  * component to the older logo-row `Partnersslider` — that one is left as-is.
  *
- * Auto-scrolls continuously via a `.partner-scroll` CSS animation (own,
- * slower timing than the old Partnersslider's `.animate-scroll`), paused
- * while the pointer/finger is on the track and resumed on release. The
- * track is also a native overflow-x-auto scroller, so touch-swipe still
- * works on top of the animation — a CSS transform and native scroll offset
- * are independent, so they don't fight each other.
+ * Auto-scrolls continuously by driving `scrollLeft` directly (not a CSS
+ * transform animation): a CSS transform running on top of a native
+ * overflow-x-auto scroller *stacks* with the user's manual scroll position,
+ * so aggressively swiping could push the combined offset past the edge of
+ * the repeated content into blank space. Driving scrollLeft with
+ * requestAnimationFrame instead means auto-scroll and touch-swipe are the
+ * same single position — never two offsets added together — and a `scroll`
+ * listener silently snaps scrollLeft back by one repeat-width whenever it
+ * gets close to either edge of the repeated list, so it can never run out
+ * of content no matter how far or how often you drag it.
  */
 const PartnerProjectsSlider = ({
   headline = "",
@@ -31,31 +43,65 @@ const PartnerProjectsSlider = ({
     const track = trackRef.current;
     if (!track) return;
 
-    const pause = () => {
-      track.style.animationPlayState = "paused";
+    let paused = false;
+    let rafId;
+    let resumeTimer;
+
+    const singleCopyWidth = track.scrollWidth / REPEAT_COUNT;
+    // Start in the middle copy so there's equal buffer to wrap in either direction.
+    track.scrollLeft = singleCopyWidth * Math.floor(REPEAT_COUNT / 2);
+
+    const step = () => {
+      if (!paused) {
+        track.scrollLeft += SCROLL_SPEED;
+      }
+      rafId = requestAnimationFrame(step);
     };
-    const resume = () => {
-      track.style.animationPlayState = "running";
+    rafId = requestAnimationFrame(step);
+
+    // Keeps scrollLeft within the middle copies, regardless of whether the
+    // change came from the rAF loop above or the user dragging/swiping.
+    const wrapIfNeeded = () => {
+      if (track.scrollLeft < singleCopyWidth) {
+        track.scrollLeft += singleCopyWidth;
+      } else if (track.scrollLeft > singleCopyWidth * (REPEAT_COUNT - 2)) {
+        track.scrollLeft -= singleCopyWidth;
+      }
+    };
+
+    const pause = () => {
+      paused = true;
+      clearTimeout(resumeTimer);
+    };
+    const scheduleResume = () => {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        paused = false;
+      }, RESUME_DELAY_MS);
     };
 
     track.addEventListener("mouseenter", pause);
-    track.addEventListener("mouseleave", resume);
+    track.addEventListener("mouseleave", scheduleResume);
     track.addEventListener("touchstart", pause, { passive: true });
-    track.addEventListener("touchend", resume);
-    track.addEventListener("touchcancel", resume);
+    track.addEventListener("touchend", scheduleResume);
+    track.addEventListener("touchcancel", scheduleResume);
+    track.addEventListener("scroll", wrapIfNeeded, { passive: true });
 
     return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(resumeTimer);
       track.removeEventListener("mouseenter", pause);
-      track.removeEventListener("mouseleave", resume);
+      track.removeEventListener("mouseleave", scheduleResume);
       track.removeEventListener("touchstart", pause);
-      track.removeEventListener("touchend", resume);
-      track.removeEventListener("touchcancel", resume);
+      track.removeEventListener("touchend", scheduleResume);
+      track.removeEventListener("touchcancel", scheduleResume);
+      track.removeEventListener("scroll", wrapIfNeeded);
     };
   }, []);
 
   if (!projects || projects.length === 0) return null;
 
-  const repeatedProjects = Array(5).fill(projects).flat();
+  const repeatedProjects = Array(REPEAT_COUNT).fill(projects).flat();
 
   const renderCard = (project, key) => {
     // Only the photo and the name link navigate — the description text
@@ -160,10 +206,10 @@ const PartnerProjectsSlider = ({
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="w-full overflow-x-auto pb-4"
+        className="w-full overflow-x-auto no-scrollbar"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
-        <div className="flex partner-scroll w-fit px-4 md:px-0" ref={trackRef}>
+        <div className="flex w-fit px-4 md:px-0" ref={trackRef}>
           {repeatedProjects.map((project, index) =>
             renderCard(project, `${project.id ?? project.name}-${index}`)
           )}
