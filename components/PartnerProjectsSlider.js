@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 
 // How many times the real list is repeated in each track.
@@ -43,6 +45,9 @@ const PartnerProjectsSlider = ({
   const mobileTrackRef = useRef(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true });
+  const routeParams = useParams();
+  const locale = routeParams.locale || "ka";
+  const partnersHref = `/${locale}/partners`;
 
   // Desktop — untouched CSS animation pause/resume.
   useEffect(() => {
@@ -128,20 +133,17 @@ const PartnerProjectsSlider = ({
   const repeatedProjects = Array(REPEAT_COUNT).fill(projects).flat();
 
   const renderCard = (project, key) => {
-    // Only the photo and the name link navigate — the description text
-    // in the hover panel must stay non-clickable.
-    const LinkTag = project.url ? "a" : "div";
-    const linkProps = project.url
-      ? { href: project.url, target: "_blank", rel: "noopener noreferrer" }
-      : {};
-
+    // Every card links to the internal /partners listing, regardless of which
+    // partner it is (confirmed with the user — not to that partner's own page
+    // or their external url). Only the photo and the name link navigate — the
+    // description text in the hover panel must stay non-clickable.
     return (
       <div
         key={key}
         className="group relative shrink-0 w-[85vw] sm:w-100 md:w-118.75 mr-4 md:mr-6 pb-6 md:pb-8"
       >
-        <LinkTag
-          {...linkProps}
+        <Link
+          href={partnersHref}
           className="relative block w-full overflow-hidden"
           style={{ aspectRatio: "475 / 357" }}
         >
@@ -160,7 +162,7 @@ const PartnerProjectsSlider = ({
           {/* Default-state label: logo if set, otherwise the name as text — centered in the
               whole photo on desktop (panel is hidden until hover there), but shifted up on
               mobile so it clears the always-visible panel instead of hiding behind it. */}
-          <div className="absolute inset-x-0 top-0 bottom-32 md:inset-0 flex items-center justify-center px-6">
+          <div className="absolute inset-x-0 top-0 bottom-25 md:inset-0 flex items-center justify-center px-6">
             {project.image?.src ? (
               <div className="relative w-48 h-20 md:w-56 md:h-24">
                 <Image
@@ -179,7 +181,7 @@ const PartnerProjectsSlider = ({
               </span>
             )}
           </div>
-        </LinkTag>
+        </Link>
 
         {/* Hover panel — anchored to the photo's bottom edge but NOT clipped by it, so
             it overlaps the lower photo and continues past it, like ImageTextOverlaySection.
@@ -190,16 +192,14 @@ const PartnerProjectsSlider = ({
           style={{ backgroundColor: hoverBackgroundColor }}
         >
           {project.name && (
-            <LinkTag
-              {...linkProps}
+            <Link
+              href={partnersHref}
               className="inline-flex items-center gap-2 uppercase underline underline-offset-4 font-medium mb-2"
               style={{ color: linkColor }}
             >
               {project.name}
-              {project.url && (
-                <Image src="/Icon-arr.svg" alt="" width={14} height={14} />
-              )}
-            </LinkTag>
+              <Image src="/Icon-arr.svg" alt="" width={14} height={14} />
+            </Link>
           )}
           {project.description && (
             <p className="text-sm text-black/80 leading-relaxed">

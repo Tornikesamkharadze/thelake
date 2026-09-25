@@ -215,6 +215,11 @@
     "news": "სიახლეები",
     "backToNews": "უკან სიახლეებზე"
   },
+  "partners": {
+    "title": "პარტნიორები",
+    "readMore": "სრულად",
+    "backToPartners": "უკან პარტნიორებზე"
+  },
 
   "about": {
     "whoAreWe": {

@@ -215,6 +215,11 @@
     "news": "News",
     "backToNews": "Back to News"
   },
+  "partners": {
+    "title": "Partners",
+    "readMore": "Read More",
+    "backToPartners": "Back to Partners"
+  },
  
   "about": {
     "whoAreWe": {
