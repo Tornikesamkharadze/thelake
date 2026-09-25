@@ -155,7 +155,7 @@ export const ImageBlock = ({ src, alt, caption, size = "full" }) => {
 };
 
 // ─── Text Block ───────────────────────────────────────────────────────────────
-export const TextBlock = ({ content, contentColor, contentSize }) => {
+export const TextBlock = ({ content, isHtml, contentColor, contentSize, linkColor = "#ED5C3F" }) => {
   const getResponsiveSize = (sizes) => {
     const sizeObj =
       typeof sizes === "string"
@@ -168,6 +168,12 @@ export const TextBlock = ({ content, contentColor, contentSize }) => {
     }px + 1vw, ${sizeObj.desktop})`;
   };
 
+  // `content` for isHtml blocks is already sanitized by richContent.js's
+  // sanitizeInlineHtml() at parse time (pure string logic, safe on the server
+  // too — no jsdom needed for this narrow a whitelist). An excerpt/snippet
+  // fallback (isHtml false) is a plain Strapi text field and renders as a
+  // plain JSX child below, which React escapes automatically.
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -176,15 +182,27 @@ export const TextBlock = ({ content, contentColor, contentSize }) => {
       transition={{ duration: 0.7 }}
       className="mb-8 md:mb-12"
     >
-      <p
-        className="leading-relaxed whitespace-pre-line"
-        style={{
-          color: contentColor,
-          fontSize: getResponsiveSize(contentSize),
-        }}
-      >
-        {content}
-      </p>
+      {isHtml ? (
+        <p
+          className="leading-relaxed [&_a]:underline [&_a]:underline-offset-2 [&_a]:text-[color:var(--link-color)]"
+          style={{
+            color: contentColor,
+            fontSize: getResponsiveSize(contentSize),
+            "--link-color": linkColor,
+          }}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      ) : (
+        <p
+          className="leading-relaxed whitespace-pre-line"
+          style={{
+            color: contentColor,
+            fontSize: getResponsiveSize(contentSize),
+          }}
+        >
+          {content}
+        </p>
+      )}
     </motion.div>
   );
 };
@@ -307,15 +325,17 @@ export const DividerBlock = ({ color = "#d4745a", style = "line" }) => {
 };
 
 /** Renders a single content block by type. Pass the block's own props plus shared styling. */
-export function renderContentBlock(block, index, { titleFallback, contentColor } = {}) {
+export function renderContentBlock(block, index, { titleFallback, contentColor, linkColor } = {}) {
   switch (block.type) {
     case "text":
       return (
         <TextBlock
           key={index}
           content={block.content}
+          isHtml={block.isHtml}
           contentColor={contentColor}
           contentSize={{ mobile: "15px", tablet: "16px", desktop: "17px" }}
+          linkColor={linkColor}
         />
       );
     case "heading":
