@@ -103,17 +103,24 @@ const NewsDetail = ({
             transition={{ duration: 0.6 }}
             className="mb-8"
           >
-            <p className="text-sm md:text-base" style={{ color: dateColor }}>
-              <Link href={`/${locale}/whats-on`} className="hover:underline">
+            <div className="flex items-center flex-wrap gap-x-2">
+              <Link
+                href={`/${locale}/whats-on`}
+                className="text-sm md:text-base hover:underline"
+                style={{ color: dateColor }}
+              >
                 {t("whatsOn.news")}
               </Link>
-            </p>
-            <h1
-              className="mt-2 text-sm md:text-base font-normal"
-              style={{ color: dateColor }}
-            >
-              {title}
-            </h1>
+              <span className="text-sm md:text-base" style={{ color: dateColor }}>
+                /
+              </span>
+              <h1
+                className="text-sm md:text-base font-normal"
+                style={{ color: dateColor }}
+              >
+                {title}
+              </h1>
+            </div>
             {date && (
               <p
                 className="text-xs md:text-sm mt-2"

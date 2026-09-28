@@ -14,7 +14,6 @@ const PartnerCard = ({
   title,
   excerpt,
   textBoxColor = "#e8dfd0",
-  titleColor = "#000000",
   excerptColor = "#000000",
   linkColor = "#d4745a",
   locale,
@@ -61,7 +60,7 @@ const PartnerCard = ({
           >
             <h3
               className="text-base md:text-lg font-normal mb-2 uppercase tracking-wide line-clamp-4"
-              style={{ color: titleColor }}
+              style={{ color: linkColor }}
             >
               {title}
             </h3>
@@ -78,7 +77,7 @@ const PartnerCard = ({
               className="text-xs md:text-sm font-normal inline-block"
               style={{ color: linkColor }}
             >
-              {t("partners.readMore")} →
+              {t("partners.readMore")}
             </motion.span>
           </motion.div>
         </div>
@@ -92,6 +91,7 @@ const PartnersGrid = ({
   backgroundColor = "#ffffff",
   gridGap = "2rem",
 }) => {
+  const t = useTranslations();
   const params = useParams();
   const locale = params.locale || "ka";
   const sectionRef = useRef(null);
@@ -104,6 +104,7 @@ const PartnersGrid = ({
       style={{ backgroundColor }}
     >
       <div className="container mx-auto px-4">
+        <h1 className="sr-only">{t("partners.title")}</h1>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

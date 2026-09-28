@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { isLocalhostImage } from "@/lib/imageUtils";
 import { useParams } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
@@ -12,6 +14,9 @@ const PartnerDetail = ({
   name,
   excerpt,
   blocks,
+  heroImage,
+  heroImageAlt,
+  logo,
   backgroundColor = "#ffffff",
   contentBackgroundColor = "#f5f0e8",
   dateColor = "#999999",
@@ -30,6 +35,41 @@ const PartnerDetail = ({
 
   return (
     <section style={{ backgroundColor }}>
+      {heroImage && (
+        <div className="relative w-full h-[45vh] md:h-[55vh] overflow-hidden">
+          <Image
+            src={heroImage}
+            alt={heroImageAlt || name}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+            unoptimized={isLocalhostImage(heroImage)}
+          />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute inset-0 flex items-center justify-center px-6">
+            {logo?.src ? (
+              <div className="relative w-56 h-24 md:w-72 md:h-28">
+                <Image
+                  src={logo.src}
+                  alt={logo.alt || name}
+                  fill
+                  className="object-contain"
+                  unoptimized={isLocalhostImage(logo.src)}
+                />
+              </div>
+            ) : (
+              <span
+                className="font-serif text-white text-4xl md:text-6xl text-center"
+                style={{ textShadow: "1px 1px 8px rgba(0,0,0,0.5)" }}
+              >
+                {name}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
       <div
         ref={sectionRef}
         className="px-4 py-12 md:py-16"
@@ -40,15 +80,20 @@ const PartnerDetail = ({
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="mb-8"
+            className="mb-8 flex items-center flex-wrap gap-x-2"
           >
-            <p className="text-sm md:text-base" style={{ color: dateColor }}>
-              <Link href={`/${locale}/partners`} className="hover:underline">
-                {t("partners.title")}
-              </Link>
-            </p>
+            <Link
+              href={`/${locale}/partners`}
+              className="text-sm md:text-base hover:underline"
+              style={{ color: dateColor }}
+            >
+              {t("partners.title")}
+            </Link>
+            <span className="text-sm md:text-base" style={{ color: dateColor }}>
+              /
+            </span>
             <h1
-              className="mt-2 text-sm md:text-base font-normal"
+              className="text-sm md:text-base font-normal"
               style={{ color: dateColor }}
             >
               {name}
