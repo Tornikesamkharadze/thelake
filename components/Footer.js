@@ -41,6 +41,7 @@ export function Footer({ footerData = null, contactData = null }) {
           hiddenOnMobile: true,
         },
         { name: t("nav.contactUs"), url: `/${locale}/contact` },
+        { name: t("nav.partners"), url: `/${locale}/partners` },
         { name: t("nav.findUs"), url: `/${locale}/find-us` },
       ];
 

@@ -91,7 +91,6 @@ const PartnersGrid = ({
   backgroundColor = "#ffffff",
   gridGap = "2rem",
 }) => {
-  const t = useTranslations();
   const params = useParams();
   const locale = params.locale || "ka";
   const sectionRef = useRef(null);
@@ -104,7 +103,6 @@ const PartnersGrid = ({
       style={{ backgroundColor }}
     >
       <div className="container mx-auto px-4">
-        <h1 className="sr-only">{t("partners.title")}</h1>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
