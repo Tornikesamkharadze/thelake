@@ -142,16 +142,10 @@ body {
   animation-play-state: paused;
 }
 
-/* პარტნიორების პროექტების სლაიდერი — საკუთარი, .animate-scroll-სგან დამოუკიდებელი დროით.
-   მობაილზე უფრო ნელა ტრიალებს, ვიდრე დესკტოპზე (დესკტოპის დრო უცვლელია). */
+/* პარტნიორების პროექტების სლაიდერი (მხოლოდ დესკტოპი) — საკუთარი, .animate-scroll-სგან დამოუკიდებელი დროით.
+   მობაილზე JS ამოძრავებს (MOBILE_SCROLL_PX_PER_SECOND, PartnerProjectsSlider.js). */
 .partner-scroll {
-  animation: scroll 55s linear infinite;
-}
-
-@media (max-width: 768px) {
-  .partner-scroll {
-    animation: scroll 90s linear infinite;
-  }
+  animation: scroll 40s linear infinite;
 }
 
 /* მალავს ბრაუზერის ნატიურ სქროლბარს */

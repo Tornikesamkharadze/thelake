@@ -11,7 +11,7 @@ const REPEAT_COUNT = 5;
 // How long to stay paused after a finger/mouse interaction ends before auto-scroll resumes.
 const TOUCH_RESUME_DELAY_MS = 3500;
 // Mobile auto-scroll speed, time-based so it's the same on 60/90/120Hz screens.
-const MOBILE_SCROLL_PX_PER_SECOND = 20;
+const MOBILE_SCROLL_PX_PER_SECOND = 35;
 // A drag shorter than this still counts as a tap (lets the card link open).
 const TAP_MAX_MOVE_PX = 6;
 
