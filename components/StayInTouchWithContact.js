@@ -136,12 +136,12 @@ export default function StayInTouchWithContact({
 
   return (
     <div
-      className="relative overflow-x-hidden md:overflow-x-visible"
+      className="relative overflow-x-clip"
       id="contact-section"
     >
       <section
         ref={sectionRef}
-        className="relative px-4 pt-[120px] pb-16"
+        className="relative px-4 pt-30 pb-16"
         style={{
           backgroundColor: backgroundColor,
           backgroundImage: backgroundImage ? `url(${backgroundImage})` : "none",
@@ -160,7 +160,7 @@ export default function StayInTouchWithContact({
           {/* Contact Form */}
           <div
             className={`flex flex-col gap-8 ${
-              !showAddressBox ? "max-w-[700px] w-full" : ""
+              !showAddressBox ? "max-w-175 w-full" : ""
             }`}
           >
             <motion.div
@@ -183,7 +183,9 @@ export default function StayInTouchWithContact({
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className={`text-[33px] uppercase tracking-widest font-medium tbc-medium ${
-                  !showAddressBox ? "text-center mb-10 md:mb-12" : ""
+                  !showAddressBox
+                    ? "text-center mb-10 md:mb-12"
+                    : "max-lg:text-center"
                 }`}
                 style={{ color: formTitleColor }}
               >
@@ -193,7 +195,7 @@ export default function StayInTouchWithContact({
               <form
                 onSubmit={handleSubmit}
                 className={`flex flex-col gap-4 ${
-                  !showAddressBox ? "w-full" : "max-w-[400px]"
+                  !showAddressBox ? "w-full" : "w-full max-w-100 max-lg:mx-auto"
                 }`}
               >
                 <motion.input
@@ -262,7 +264,7 @@ export default function StayInTouchWithContact({
                     className={`p-4 bg-transparent border transition-colors duration-300 rounded-none h-14 font-inherit tbc-regular focus:outline-none ${
                       !showAddressBox
                         ? "flex-1"
-                        : "w-[calc(400px-76px)] max-[480px]:w-[calc(100%-76px)] flex-none"
+                        : "w-81 max-[480px]:w-[calc(100%-76px)] flex-none"
                     }`}
                     style={{
                       borderColor: inputBorderColor,
@@ -285,7 +287,7 @@ export default function StayInTouchWithContact({
                     whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
                     type="submit"
                     disabled={isSubmitting}
-                    className="text-white border-none px-6 py-4 cursor-pointer transition-colors duration-300 flex items-center justify-center w-[60px] h-14 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="text-white border-none px-6 py-4 cursor-pointer transition-colors duration-300 flex items-center justify-center w-15 h-14 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: submitButtonColor,
                     }}
@@ -321,7 +323,7 @@ export default function StayInTouchWithContact({
                 initial={{ opacity: 0, x: isMobile ? 0 : 50 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="shadow-[0_10px_25px_rgba(0,0,0,0.1)] p-8 px-6 relative z-10 max-w-[350px] max-[1023px]:max-w-full mx-auto"
+                className="shadow-[0_10px_25px_rgba(0,0,0,0.1)] p-8 px-6 relative z-10 max-w-87.5 max-[1023px]:max-w-full mx-auto"
                 style={{ backgroundColor: addressBoxBg }}
               >
                 <motion.h3

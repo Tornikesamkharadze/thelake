@@ -46,7 +46,7 @@ export default function PartnersSlider({ partners: partnersProp }) {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[200px] overflow-hidden"
+      className="relative h-50 overflow-hidden"
       id="contact-partners-section"
     >
       <motion.div
@@ -98,7 +98,7 @@ export default function PartnersSlider({ partners: partnersProp }) {
                     key={`${partner.src}-${index}`}
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.3 }}
-                    className="text-white max-w-[300px] px-[60px] max-md:px-[30px] max-[480px]:px-5 whitespace-nowrap flex items-center justify-center shrink-0 transition-colors duration-300 hover:text-[#d3b473]"
+                    className="text-white max-w-75 px-15 max-md:px-7.5 max-[480px]:px-5 whitespace-nowrap flex items-center justify-center shrink-0 transition-colors duration-300 hover:text-[#d3b473]"
                   >
                     {partner.url ? (
                       <a

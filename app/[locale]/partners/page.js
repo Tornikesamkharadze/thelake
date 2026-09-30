@@ -60,7 +60,7 @@ export default async function PartnersPage({ params }) {
   return (
     <main>
       <Hero
-        image="/lake-1.png"
+        image="/part-lake.png"
         height="80vh"
         title={title}
         highlightWords={[title]}

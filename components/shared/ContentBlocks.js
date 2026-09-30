@@ -93,7 +93,15 @@ export const YouTubeBlock = ({ url, caption }) => {
 };
 
 // ─── Image Block ──────────────────────────────────────────────────────────────
-export const ImageBlock = ({ src, alt, caption, size = "full" }) => {
+export const ImageBlock = ({ src, alt, caption, size = "full", width, align }) => {
+  // Admin-chosen size preset for natural-height images (see Editor.tsx image styles)
+  const naturalWidthClasses = {
+    small: "w-full max-w-[400px]",
+    medium: "w-full max-w-[600px]",
+    large: "w-full max-w-[1024px]",
+    full: "w-full",
+  };
+  const alignClasses = { center: "mx-auto", right: "ml-auto" };
   const sizeClasses = {
     full: "w-full",
     natural: "w-full max-w-[768px]",
@@ -111,7 +119,7 @@ export const ImageBlock = ({ src, alt, caption, size = "full" }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.7 }}
-        className={`${sizeClasses.natural} mb-8 md:mb-12`}
+        className={`${naturalWidthClasses[width] || sizeClasses.natural} ${alignClasses[align] || ""} mb-8 md:mb-12`}
       >
         <Image
           src={src}
@@ -184,7 +192,7 @@ export const TextBlock = ({ content, isHtml, contentColor, contentSize, linkColo
     >
       {isHtml ? (
         <p
-          className="leading-relaxed [&_a]:underline [&_a]:underline-offset-2 [&_a]:text-[color:var(--link-color)]"
+          className="leading-relaxed [&_a]:underline [&_a]:underline-offset-2 [&_a]:text-(--link-color)"
           style={{
             color: contentColor,
             fontSize: getResponsiveSize(contentSize),
@@ -370,6 +378,8 @@ export function renderContentBlock(block, index, { titleFallback, contentColor, 
           alt={block.alt || titleFallback}
           caption={block.caption}
           size={block.size}
+          width={block.width}
+          align={block.align}
         />
       );
     case "youtube":

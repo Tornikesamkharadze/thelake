@@ -105,7 +105,7 @@ const TeamSwiper = ({
                   className="group cursor-pointer"
                 >
                   {/* სურათი */}
-                  <div className="relative w-full h-[290px] md:h-[365px] overflow-hidden mb-0">
+                  <div className="relative w-full h-72.5 md:h-91.25 overflow-hidden mb-0">
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.4 }}

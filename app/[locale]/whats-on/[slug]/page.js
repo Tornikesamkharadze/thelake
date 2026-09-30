@@ -1,23 +1,25 @@
 import NewsDetail from "@/components/whats-on/NewsDetail";
 import { getAlternateUrls } from "@/lib/metadata";
-import { getNewsById, STRAPI_URL } from "@/lib/strapi";
+import { getNewsBySlug, STRAPI_URL } from "@/lib/strapi";
 import { mapStrapiNewsToFrontend } from "@/lib/adapters/news";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
+
+async function loadNews(slug, locale) {
+  try {
+    const res = await getNewsBySlug(slug, { locale });
+    return res?.data ? mapStrapiNewsToFrontend(res.data, STRAPI_URL) : null;
+  } catch {
+    return null;
+  }
+}
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
   const isKa = locale === "ka";
 
-  let news = null;
-  try {
-    const res = await getNewsById(slug, { locale });
-    const raw = res?.data;
-    news = raw ? mapStrapiNewsToFrontend(raw, STRAPI_URL) : null;
-  } catch {
-    news = null;
-  }
+  const news = await loadNews(slug, locale);
 
   if (!news) {
     return {
@@ -59,24 +61,22 @@ export async function generateMetadata({ params }) {
       description: news.excerpt ? news.excerpt.substring(0, 160) : undefined,
       images: [news.image || "/og-image.png"],
     },
-    alternates: getAlternateUrls(`/whats-on/${slug}`, locale),
+    alternates: getAlternateUrls(`/whats-on/${news.slug}`, locale),
   };
 }
 
 export default async function NewsPage({ params }) {
   const { slug, locale } = await params;
 
-  let news = null;
-  try {
-    const res = await getNewsById(slug, { locale });
-    const raw = res?.data;
-    news = raw ? mapStrapiNewsToFrontend(raw, STRAPI_URL) : null;
-  } catch {
-    news = null;
-  }
+  const news = await loadNews(slug, locale);
 
   if (!news) {
     notFound();
+  }
+
+  // Old documentId links → canonical readable slug URL
+  if (news.slug && news.slug !== slug) {
+    permanentRedirect(`/${locale}/whats-on/${news.slug}`);
   }
 
   return (

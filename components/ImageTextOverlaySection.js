@@ -38,7 +38,7 @@ export default function ImageTextOverlaySection({
           sizes="100vw"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20"
+          className="absolute inset-0 bg-linear-to-t from-black/85 via-black/45 to-black/20"
           aria-hidden
         />
       </div>
