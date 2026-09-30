@@ -51,8 +51,19 @@ export default async function PartnersPage({ params }) {
 
   let partners = [];
   try {
-    const { data } = await getPartnerProjects({ locale, sort: ["order:asc"] });
-    partners = mapStrapiPartnerProjectsToFrontend(data, STRAPI_URL);
+    const other = locale === "ka" ? "en" : "ka";
+    const [{ data }, fallback] = await Promise.all([
+      getPartnerProjects({ locale, sort: ["order:asc"] }),
+      getPartnerProjects({ locale: other, sort: ["order:asc"] }).catch(() => ({ data: [] })),
+    ]);
+    // Partners not translated into this locale fall back to the other language's version
+    const own = Array.isArray(data) ? data : [];
+    const ids = new Set(own.map((p) => p.documentId));
+    const missing = (fallback?.data || []).filter((p) => !ids.has(p.documentId));
+    const merged = [...own, ...missing].sort(
+      (a, b) => (a.order ?? Infinity) - (b.order ?? Infinity)
+    );
+    partners = mapStrapiPartnerProjectsToFrontend(merged, STRAPI_URL);
   } catch {}
 
   const title = t("partners.title");

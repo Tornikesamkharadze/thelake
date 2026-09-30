@@ -6,13 +6,22 @@ import { notFound, permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-async function loadPartner(slug, locale) {
+async function loadPartnerInLocale(slug, locale) {
   try {
     const res = await getPartnerProjectBySlug(slug, { locale });
     return res?.data ? mapStrapiPartnerProjectToDetail(res.data, STRAPI_URL) : null;
   } catch {
     return null;
   }
+}
+
+/** Untranslated partners fall back to the other language's version (`fallbackLocale` set). */
+async function loadPartner(slug, locale) {
+  const partner = await loadPartnerInLocale(slug, locale);
+  if (partner) return partner;
+  const other = locale === "ka" ? "en" : "ka";
+  const fallback = await loadPartnerInLocale(slug, other);
+  return fallback ? { ...fallback, fallbackLocale: other } : null;
 }
 
 /**
@@ -39,6 +48,13 @@ async function partnerAlternates(slug, locale) {
   delete alternates.languages[other];
   if (other === "en") delete alternates.languages["x-default"];
   return alternates;
+}
+
+function fallbackAlternates(slug, fallbackLocale) {
+  const { canonical, languages } = getAlternateUrls(`/partners/${slug}`, fallbackLocale);
+  const only = { [fallbackLocale]: languages[fallbackLocale] };
+  if (fallbackLocale === "en") only["x-default"] = languages["x-default"];
+  return { canonical, languages: only };
 }
 
 export async function generateMetadata({ params }) {
@@ -86,7 +102,10 @@ export async function generateMetadata({ params }) {
       description,
       images: [image],
     },
-    alternates: await partnerAlternates(partner.slug, locale),
+    // A fallback page duplicates the original language's page → canonical points there
+    alternates: partner.fallbackLocale
+      ? fallbackAlternates(partner.slug, partner.fallbackLocale)
+      : await partnerAlternates(partner.slug, locale),
   };
 }
 
