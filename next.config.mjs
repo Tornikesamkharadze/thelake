@@ -77,6 +77,18 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // Language-neutral page URLs (/gallery, /whats-on/…) were once the canonicals, so search
+      // engines know them: send them permanently to the default-locale page instead of a 404.
+      // Paths with a dot (static files), locale-prefixed, API and internal paths are left alone.
+      {
+        source: "/:path((?!(?:en|ka|api|_next|storage)(?:/|$))[^.]+)",
+        destination: "/en/:path",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
