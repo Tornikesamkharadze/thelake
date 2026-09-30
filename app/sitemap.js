@@ -1,4 +1,5 @@
 import { getAllNews, getPartnerProjects } from "@/lib/strapi";
+import { PARTNERS_NOINDEX } from "@/lib/metadata";
 
 export const revalidate = 3600;
 
@@ -18,7 +19,7 @@ export default async function sitemap() {
     "/bar-kitchen",
     "/spa-wellness",
     "/whats-on",
-    "/partners",
+    ...(PARTNERS_NOINDEX ? [] : ["/partners"]),
     "/choose-propertie",
     "/property-listing",
     "/enquire",
@@ -67,7 +68,7 @@ export default async function sitemap() {
   }
 
   // Partner projects (slug is shared between locales; only list locales that have a translation)
-  try {
+  if (!PARTNERS_NOINDEX) try {
     const params = { fields: ["slug", "updatedAt"], pagination: { pageSize: 100 } };
     const lists = await Promise.all(
       locales.map((locale) => getPartnerProjects({ ...params, locale }).catch(() => ({ data: [] })))
