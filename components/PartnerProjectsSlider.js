@@ -10,10 +10,10 @@ import { motion, useInView } from "framer-motion";
 const REPEAT_COUNT = 5;
 // How long to stay paused after a finger/mouse interaction ends before auto-scroll resumes.
 const TOUCH_RESUME_DELAY_MS = 3500;
-// A 1px step every N frames (~60fps) — a whole pixel, not a fraction:
-// browsers round scrollLeft to the nearest integer, so sub-pixel increments
-// get rounded away to nothing every frame and the track never visibly moves.
-const MOBILE_SCROLL_STEP_EVERY_N_FRAMES = 3;
+// Mobile auto-scroll speed, time-based so it's the same on 60/90/120Hz screens.
+const MOBILE_SCROLL_PX_PER_SECOND = 20;
+// A drag shorter than this still counts as a tap (lets the card link open).
+const TAP_MAX_MOVE_PX = 6;
 
 /**
  * Showcase slider for partner projects — a full-bleed photo per card with a
@@ -24,15 +24,13 @@ const MOBILE_SCROLL_STEP_EVERY_N_FRAMES = 3;
  * an overflow-hidden track — pause on mouseenter, resume immediately on
  * mouseleave, same as it's always been.
  *
- * Mobile: a *separate* track, because a running CSS transform and native
- * touch-scroll on the same element stack (two independent offsets added
- * together) — drag far/often enough and the combined position runs past the
- * edge of the finite repeated content into blank space. Instead, mobile
- * drives `scrollLeft` directly with requestAnimationFrame: auto-scroll and
- * the finger's drag are the same single position, never two offsets stacked,
- * and a `scroll` listener snaps it back by one repeat-width whenever it
- * nears either edge so it can never run out of content. Touching pauses the
- * auto-scroll; lifting the finger resumes it after TOUCH_RESUME_DELAY_MS.
+ * Mobile: a *separate* track driven by one offset in requestAnimationFrame and
+ * rendered with translate3d (GPU, sub-pixel smooth — stepping `scrollLeft`
+ * whole pixels looked jumpy). Auto-scroll and the finger's drag both move that
+ * same offset, which wraps by one repeat-width so it never runs out of
+ * content. `touch-action: pan-y` keeps vertical page scrolling native.
+ * Touching pauses the auto-scroll; lifting the finger resumes it after
+ * TOUCH_RESUME_DELAY_MS.
  */
 const PartnerProjectsSlider = ({
   headline = "",
@@ -70,42 +68,40 @@ const PartnerProjectsSlider = ({
     };
   }, []);
 
-  // Mobile — scrollLeft-driven auto-scroll that coexists with real touch-drag.
+  // Mobile — one offset shared by auto-scroll and touch-drag, rendered with translate3d.
   useEffect(() => {
     const track = mobileTrackRef.current;
     if (!track) return;
 
+    let singleCopyWidth = track.scrollWidth / REPEAT_COUNT;
+    let offset = singleCopyWidth;
     let paused = false;
+    let dragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragStartOffset = 0;
+    let moved = false;
+    let lastTime = 0;
     let rafId;
     let resumeTimer;
-    let frame = 0;
 
-    const singleCopyWidth = track.scrollWidth / REPEAT_COUNT;
-    track.scrollLeft = singleCopyWidth * Math.floor(REPEAT_COUNT / 2);
-
-    const wrapIfNeeded = () => {
-      if (track.scrollLeft < singleCopyWidth) {
-        track.scrollLeft += singleCopyWidth;
-      } else if (track.scrollLeft > singleCopyWidth * (REPEAT_COUNT - 2)) {
-        track.scrollLeft -= singleCopyWidth;
-      }
+    const wrap = (value) =>
+      singleCopyWidth > 0 ? (((value % singleCopyWidth) + singleCopyWidth) % singleCopyWidth) + singleCopyWidth : value;
+    const render = () => {
+      track.style.transform = `translate3d(${-offset}px, 0, 0)`;
     };
 
-    const step = () => {
-      if (!paused) {
-        frame++;
-        if (frame % MOBILE_SCROLL_STEP_EVERY_N_FRAMES === 0) {
-          track.scrollLeft += 1;
-        }
+    const step = (time) => {
+      const dt = lastTime ? Math.min(time - lastTime, 100) : 0;
+      lastTime = time;
+      if (!paused && !dragging) {
+        offset = wrap(offset + (MOBILE_SCROLL_PX_PER_SECOND * dt) / 1000);
+        render();
       }
       rafId = requestAnimationFrame(step);
     };
     rafId = requestAnimationFrame(step);
 
-    const pause = () => {
-      paused = true;
-      clearTimeout(resumeTimer);
-    };
     const resumeAfterDelay = () => {
       clearTimeout(resumeTimer);
       resumeTimer = setTimeout(() => {
@@ -113,18 +109,61 @@ const PartnerProjectsSlider = ({
       }, TOUCH_RESUME_DELAY_MS);
     };
 
-    track.addEventListener("touchstart", pause, { passive: true });
-    track.addEventListener("touchend", resumeAfterDelay);
-    track.addEventListener("touchcancel", resumeAfterDelay);
-    track.addEventListener("scroll", wrapIfNeeded, { passive: true });
+    const onTouchStart = (e) => {
+      const t = e.touches[0];
+      dragging = true;
+      paused = true;
+      moved = false;
+      clearTimeout(resumeTimer);
+      dragStartX = t.clientX;
+      dragStartY = t.clientY;
+      dragStartOffset = offset;
+    };
+    const onTouchMove = (e) => {
+      if (!dragging) return;
+      const t = e.touches[0];
+      const dx = t.clientX - dragStartX;
+      if (!moved && Math.abs(dx) < TAP_MAX_MOVE_PX && Math.abs(t.clientY - dragStartY) < TAP_MAX_MOVE_PX) return;
+      moved = true;
+      offset = wrap(dragStartOffset - dx);
+      render();
+    };
+    const onTouchEnd = () => {
+      dragging = false;
+      resumeAfterDelay();
+    };
+    // A real drag must not also open the card link under the finger
+    const onClickCapture = (e) => {
+      if (moved) {
+        e.preventDefault();
+        e.stopPropagation();
+        moved = false;
+      }
+    };
+    const onResize = () => {
+      const ratio = singleCopyWidth > 0 ? (offset - singleCopyWidth) / singleCopyWidth : 0;
+      singleCopyWidth = track.scrollWidth / REPEAT_COUNT;
+      offset = wrap(ratio * singleCopyWidth);
+      render();
+    };
+
+    render();
+    track.addEventListener("touchstart", onTouchStart, { passive: true });
+    track.addEventListener("touchmove", onTouchMove, { passive: true });
+    track.addEventListener("touchend", onTouchEnd);
+    track.addEventListener("touchcancel", onTouchEnd);
+    track.addEventListener("click", onClickCapture, true);
+    window.addEventListener("resize", onResize);
 
     return () => {
       cancelAnimationFrame(rafId);
       clearTimeout(resumeTimer);
-      track.removeEventListener("touchstart", pause);
-      track.removeEventListener("touchend", resumeAfterDelay);
-      track.removeEventListener("touchcancel", resumeAfterDelay);
-      track.removeEventListener("scroll", wrapIfNeeded);
+      track.removeEventListener("touchstart", onTouchStart);
+      track.removeEventListener("touchmove", onTouchMove);
+      track.removeEventListener("touchend", onTouchEnd);
+      track.removeEventListener("touchcancel", onTouchEnd);
+      track.removeEventListener("click", onClickCapture, true);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -242,15 +281,17 @@ const PartnerProjectsSlider = ({
           </div>
         </div>
 
-        {/* Mobile — real touch-drag, auto-scroll runs in parallel */}
-        <div
-          className="flex md:hidden overflow-x-auto no-scrollbar"
-          style={{ WebkitOverflowScrolling: "touch" }}
-          ref={mobileTrackRef}
-        >
-          {repeatedProjects.map((project, index) =>
-            renderCard(project, `mobile-${project.id ?? project.name}-${index}`)
-          )}
+        {/* Mobile — touch-drag and auto-scroll share one transform offset */}
+        <div className="md:hidden w-full overflow-hidden">
+          <div
+            className="flex w-fit will-change-transform"
+            style={{ touchAction: "pan-y" }}
+            ref={mobileTrackRef}
+          >
+            {repeatedProjects.map((project, index) =>
+              renderCard(project, `mobile-${project.id ?? project.name}-${index}`)
+            )}
+          </div>
         </div>
       </motion.div>
     </section>

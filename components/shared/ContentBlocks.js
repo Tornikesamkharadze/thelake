@@ -226,10 +226,12 @@ export const TableBlock = ({ rows, contentColor = "#000000" }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6 }}
-      className="my-8 md:my-10 overflow-x-auto flex justify-center"
+      // Not flex-centered: a centered flex child wider than the box overflows on both sides and
+      // the part past the left edge can't be scrolled to. mx-auto centers only when it fits.
+      className="my-8 md:my-10 overflow-x-auto"
     >
       <table
-        className="border-collapse text-sm md:text-base"
+        className="mx-auto border-collapse text-sm md:text-base"
         style={{ border: `1px solid ${borderColor}` }}
       >
         <tbody>
@@ -238,7 +240,7 @@ export const TableBlock = ({ rows, contentColor = "#000000" }) => {
               {cells.map((cell, j) => (
                 <td
                   key={j}
-                  className={`py-3 px-4 align-top ${isHeader || j === 0 ? "font-bold" : ""}`}
+                  className={`py-3 px-4 align-top min-w-36 md:min-w-0 ${isHeader || j === 0 ? "font-bold" : ""}`}
                   style={{ color: contentColor, border: `1px solid ${borderColor}` }}
                 >
                   {cell}
