@@ -372,7 +372,7 @@ export default function StayInTouchWithContact({
                   >
                     <motion.a
                       whileHover={{ scale: 1.02 }}
-                      href="https://web.whatsapp.com/send?phone=15558702876"
+                      href="https://web.whatsapp.com/send?phone=995511553333"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="no-underline transition-colors duration-300 tbc-regular"
