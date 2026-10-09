@@ -192,7 +192,7 @@ export const TextBlock = ({ content, isHtml, contentColor, contentSize, linkColo
     >
       {isHtml ? (
         <p
-          className="leading-relaxed [&_a]:underline [&_a]:underline-offset-2 [&_a]:text-(--link-color)"
+          className="leading-relaxed wrap-break-word [&_a]:underline [&_a]:underline-offset-2 [&_a]:text-(--link-color)"
           style={{
             color: contentColor,
             fontSize: getResponsiveSize(contentSize),
@@ -202,7 +202,7 @@ export const TextBlock = ({ content, isHtml, contentColor, contentSize, linkColo
         />
       ) : (
         <p
-          className="leading-relaxed whitespace-pre-line"
+          className="leading-relaxed whitespace-pre-line wrap-break-word"
           style={{
             color: contentColor,
             fontSize: getResponsiveSize(contentSize),

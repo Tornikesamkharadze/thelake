@@ -16,6 +16,8 @@ const PartnerDetail = ({
   blocks,
   heroImage,
   heroImageAlt,
+  heroImageWidth,
+  heroImageHeight,
   logo,
   backgroundColor = "#ffffff",
   contentBackgroundColor = "#f5f0e8",
@@ -28,6 +30,32 @@ const PartnerDetail = ({
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
+  // Hero images are uploaded for the partners slider, so most aren't wide
+  // banners — a near-square or portrait photo stretched to full width shows
+  // only a strip of it. Those are shown whole over a blurred fill of themselves.
+  const heroRatio =
+    heroImageWidth && heroImageHeight ? heroImageWidth / heroImageHeight : null;
+  const isBanner = !heroRatio || heroRatio >= 1.6;
+
+  const heroTitle = logo?.src ? (
+    <div className="relative w-56 h-24 md:w-72 md:h-28 max-w-full">
+      <Image
+        src={logo.src}
+        alt={logo.alt || name}
+        fill
+        className="object-contain"
+        unoptimized={isLocalhostImage(logo.src)}
+      />
+    </div>
+  ) : (
+    <span
+      className="font-serif text-white text-center wrap-break-word max-w-full text-[clamp(1.5rem,10cqw,3.75rem)] leading-tight"
+      style={{ textShadow: "1px 1px 8px rgba(0,0,0,0.5)" }}
+    >
+      {name}
+    </span>
+  );
+
   const resolvedBlocks =
     blocks && blocks.length > 0
       ? blocks
@@ -37,35 +65,37 @@ const PartnerDetail = ({
     <section style={{ backgroundColor }}>
       {heroImage && (
         <div className="relative w-full h-[45vh] md:h-[55vh] overflow-hidden">
+          {!isBanner && (
+            <Image
+              src={heroImage}
+              alt=""
+              aria-hidden
+              fill
+              className="object-cover scale-110 blur-2xl"
+              sizes="100vw"
+              unoptimized={isLocalhostImage(heroImage)}
+            />
+          )}
           <Image
             src={heroImage}
             alt={heroImageAlt || name}
             fill
-            className="object-cover"
+            className={isBanner ? "object-cover object-top" : "object-contain"}
             sizes="100vw"
             priority
             unoptimized={isLocalhostImage(heroImage)}
           />
           <div className="absolute inset-0 bg-black/20" />
-          <div className="absolute inset-0 flex items-center justify-center px-6">
-            {logo?.src ? (
-              <div className="relative w-56 h-24 md:w-72 md:h-28">
-                <Image
-                  src={logo.src}
-                  alt={logo.alt || name}
-                  fill
-                  className="object-contain"
-                  unoptimized={isLocalhostImage(logo.src)}
-                />
-              </div>
-            ) : (
-              <span
-                className="font-serif text-white text-4xl md:text-6xl text-center"
-                style={{ textShadow: "1px 1px 8px rgba(0,0,0,0.5)" }}
-              >
-                {name}
-              </span>
-            )}
+          {/* Title box matches the shown photo's own size (object-contain keeps
+              it centered at its ratio), so the name never spills past the photo
+              onto the blurred fill; font size scales with that box's width. */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className="@container h-full max-w-full flex items-center justify-center px-6"
+              style={isBanner ? { width: "100%" } : { aspectRatio: heroRatio }}
+            >
+              {heroTitle}
+            </div>
           </div>
         </div>
       )}

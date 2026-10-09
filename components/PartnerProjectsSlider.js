@@ -191,7 +191,7 @@ const PartnerProjectsSlider = ({
               src={project.backgroundImage?.src || project.image?.src}
               alt={project.backgroundImage?.alt || project.name || "Partner project"}
               fill
-              className="object-cover"
+              className="object-cover object-top"
               sizes="(max-width: 640px) 85vw, (max-width: 768px) 400px, 475px"
             />
           )}

@@ -112,6 +112,8 @@ export default async function PartnerPage({ params }) {
         blocks={partner.blocks}
         heroImage={partner.heroImage}
         heroImageAlt={partner.heroImageAlt}
+        heroImageWidth={partner.heroImageWidth}
+        heroImageHeight={partner.heroImageHeight}
         logo={partner.logo}
       />
     </main>
